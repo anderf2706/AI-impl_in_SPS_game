@@ -268,16 +268,17 @@ public class Player implements Screen, InputProcessor{
 	}
 	
 	public void overlap(int button) {
-		if((Intersector.overlaps(gamescreen.the_mouse, the_player) && button != Input.Buttons.RIGHT)){
+		if((Intersector.overlaps(gamescreen.the_mouse, the_player) && button != Input.Buttons.RIGHT)) {
 			playerChosen = true;
-			/*"Player Chosen \n"
-					+"health:" + this.health + "\n"
-					+"attack" + this.attack + "\n"
-					+"defence" + this.defense);
-			*/
-		
+
 		}
-		if(!(Intersector.overlaps(gamescreen.the_mouse, the_player)) && (button == Input.Buttons.LEFT)) {
+
+		//if((Intersector.overlaps(gamescreen.mousedrag, the_player) && button != Input.Buttons.RIGHT)) {
+		//	playerChosen = true;
+		//}
+		if(!(Intersector.overlaps(gamescreen.the_mouse, the_player)) &&
+				//!(Intersector.overlaps(gamescreen.mousedrag, the_player) &&
+						(button == Input.Buttons.LEFT)) {
 			playerChosen = false;
 			/*JTextArea jTextArea = new JTextArea();
 			jTextArea.append( "Player UnChosen" );
@@ -291,6 +292,7 @@ public class Player implements Screen, InputProcessor{
 
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 			overlap(button);
+
 			
 			if(playerChosen) {
 				if(button == Input.Buttons.RIGHT) {
@@ -348,6 +350,7 @@ public class Player implements Screen, InputProcessor{
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		// TODO Auto-generated method stub
+
 		executed = false;
 		return false;
 	}

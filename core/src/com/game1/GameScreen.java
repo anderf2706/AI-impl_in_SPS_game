@@ -36,6 +36,8 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	Node chosenNode;
 	float touchX;
 	float touchY;
+
+	Rectangle mousedrag;
 	
 	boolean makeP = false;
 	boolean makeB = false;
@@ -454,6 +456,9 @@ public void makeCastle() {
 
 	@Override
 	public boolean keyUp(int keycode) {
+
+
+
 		if(keycode == Input.Keys.D) {
 			right = 0;
 		}
@@ -502,10 +507,7 @@ public void makeCastle() {
 				makeWall = false;
 				makeCastle = false;
 			}
-			float touchX = mouseInWorld2D.x;
-			float touchY = mouseInWorld2D.y;
-			this.touchX = touchX;
-			this.touchY = touchY;
+
 			
 			Rectangle mouserec = new Rectangle(the_mouse.x, the_mouse.y, 1,1);
 			for (Node node : allnodes) {
@@ -547,6 +549,9 @@ public void makeCastle() {
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		//mousedrag = new Rectangle(chosenNode.x, chosenNode.y, the_mouse.x-chosenNode.x,
+		//			the_mouse.y-chosenNode.y);
+
 		// TODO Auto-generated method stub
 		for (Player player : players) {
 			player.touchUp(screenX, screenY, pointer, button);
