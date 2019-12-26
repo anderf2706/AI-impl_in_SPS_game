@@ -41,6 +41,10 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	
 	boolean makeP = false;
 	boolean makeB = false;
+	boolean rendersqaureformouse = false;
+
+	float touchdownmouseX;
+	float touchdownmouseY;
 	
 	Hud hud;
 	
@@ -88,12 +92,14 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	ArrayList<RectangleMapObject> mapobjects;
 	
 	InputMultiplexer multiplexer;
+
+	ShapeRenderer ss;
 	
 
 	
 	public GameScreen(Game1 game) {
-		
-		
+
+
 		map = new TmxMapLoader().load("nystart.tmx");
 		tilelayer = (TiledMapTileLayer) map.getLayers().get(0);
 		tileSize = (int) tilelayer.getTileWidth();
@@ -126,19 +132,20 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		
 		multiplexer.addProcessor(0, hud.stage);
 		multiplexer.addProcessor(1, this);
-		
 
-		
-		
-		
-		
-	
-		
-		
-		
-		
-		
-		
+		ss = new ShapeRenderer();
+
+
+
+
+
+
+
+
+
+
+
+
 		renderer = new OrthogonalTiledMapRenderer(map);
 		
 		
@@ -165,16 +172,18 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 				}
 				int good = 0;
 				for (int k = 0; k < mapobjects.size(); k++) {
-					if (!Intersector.overlaps(mapobjects.get(k).getRectangle(), new Rectangle(i,j,1,1))) {
+					if (Intersector.overlaps(mapobjects.get(k).getRectangle(), new Rectangle(i,j,1,1))) {
 				    	good += 1;
 					}
 					continue;
 					
 				}
-				if(good == mapobjects.size()) {
-					allnodes.add(new Node(i,j, this));
+				Node node = new Node(i,j, this);
+				allnodes.add(node);
+				if(good > 0) {
+					node.occupied = true;
 				}
-				continue;
+
 			}
 		}
 		for(Node node : allnodes) {
@@ -232,7 +241,8 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
         
         
         game.batch.begin();
-        
+
+
         
         for(Player player : players) {
 			player.batch(game.batch);
@@ -241,7 +251,6 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
         for(Building building : buildings) {
 			building.batch(game.batch);
 		}
-        
        
         if(chosenNode != null) {
         	game.batch.draw(green, chosenNode.x - 8, chosenNode.y - 8, 16, 16);
@@ -255,6 +264,13 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		// game.batch.setProjectionMatrix(hud.getStage().getCamera().combined); //set the spriteBatch to draw what our stageViewport sees
 	     hud.getStage().act(delta); //act the Hud
 	     hud.getStage().draw(); //draw the Hud
+
+		if (rendersqaureformouse && Gdx.input.getX() != 0){
+			ss.begin(ShapeRenderer.ShapeType.Line);
+
+			ss.rect(touchdownmouseX, 1080 - touchdownmouseY,-(touchdownmouseX - Gdx.input.getX()),((touchdownmouseY) - Gdx.input.getY()));
+			ss.end();
+		}
 		
 	  
         
@@ -292,6 +308,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
+
 		 //dispose our hud
 	}
 	
@@ -396,6 +413,7 @@ public void makeCastle() {
 
 	@Override
 	public boolean keyDown(int keycode) {
+
 		if(keycode == Input.Keys.M) {
 			menu= !menu;
 		}
@@ -500,47 +518,53 @@ public void makeCastle() {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
+		if(button == Input.Buttons.LEFT){
+			rendersqaureformouse = true;
+			touchdownmouseX = Gdx.input.getX();
+			touchdownmouseY = Gdx.input.getY();
+		}
 		
-			if(button == Input.Buttons.RIGHT) {
+		if(button == Input.Buttons.RIGHT) {
 				makeBarracks = false;
 				makeHouse = false;
 				makeWall = false;
 				makeCastle = false;
-			}
+		}
 
 			
-			Rectangle mouserec = new Rectangle(the_mouse.x, the_mouse.y, 1,1);
-			for (Node node : allnodes) {
+		Rectangle mouserec = new Rectangle(the_mouse.x, the_mouse.y, 1,1);
+		for (Node node : allnodes) {
 				
-			    if (Intersector.overlaps(node.body, mouserec)) {
+			if (Intersector.overlaps(node.body, mouserec)) {
 			    	this.chosenNode = node;
 			    
-			    }
 			}
+		}
 			
-			for (Player player : players) {
+		for (Player player : players) {
 				player.touchDown(screenX, screenY, pointer, button);
-			}
-			for(Building building : buildings) {
+		}
+		for(Building building : buildings) {
 				building.touchDown(screenX, screenY, pointer, button);
-			}      
+		}
 			
-			if(makeP && button == Input.Buttons.LEFT) {
-				makeP();
-			}
+		if(makeP && button == Input.Buttons.LEFT) {
+			makeP();
+		}
 			
-			if(makeBarracks && button == Input.Buttons.LEFT) {
-				makeBarracks();
-			}
-			if(makeHouse && button == Input.Buttons.LEFT) {
-				makeHouse();
-			}
-			if(makeWall && button == Input.Buttons.LEFT) {
-				makeWall();
-			}
-			if(makeCastle && button == Input.Buttons.LEFT) {
-				makeCastle();
-			}
+		if(makeBarracks && button == Input.Buttons.LEFT) {
+			makeBarracks();
+		}
+		if(makeHouse && button == Input.Buttons.LEFT) {
+			makeHouse();
+		}
+		if(makeWall && button == Input.Buttons.LEFT) {
+			makeWall();
+		}
+		if(makeCastle && button == Input.Buttons.LEFT) {
+			makeCastle();
+		}
 			
 		return false;
 			
@@ -549,8 +573,25 @@ public void makeCastle() {
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		//mousedrag = new Rectangle(chosenNode.x, chosenNode.y, the_mouse.x-chosenNode.x,
-		//			the_mouse.y-chosenNode.y);
+		rendersqaureformouse = false;
+
+
+		if (the_mouse.x > chosenNode.x && the_mouse.y > chosenNode.y) {
+			mousedrag = new Rectangle(chosenNode.x, chosenNode.y, the_mouse.x - chosenNode.x,
+					the_mouse.y - chosenNode.y);
+		}
+		if (the_mouse.x < chosenNode.x && the_mouse.y > chosenNode.y) {
+			mousedrag = new Rectangle(the_mouse.x, chosenNode.y, chosenNode.x - the_mouse.x,
+					the_mouse.y - chosenNode.y);
+		}
+		if (the_mouse.x < chosenNode.x && the_mouse.y < chosenNode.y) {
+			mousedrag = new Rectangle(the_mouse.x, the_mouse.y, chosenNode.x - the_mouse.x,
+					chosenNode.y - the_mouse.y);
+		}
+		if (the_mouse.x > chosenNode.x && the_mouse.y < chosenNode.y) {
+			mousedrag = new Rectangle(chosenNode.x, the_mouse.y, the_mouse.x - chosenNode.x,
+					chosenNode.y - the_mouse.y);
+		}
 
 		// TODO Auto-generated method stub
 		for (Player player : players) {

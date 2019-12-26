@@ -13,6 +13,7 @@ public class StartScreen extends ApplicationAdapter implements Screen{
 	
 	public StartScreen(final Game1 game) {
 		this.game = game;
+		System.out.println("her er jeg");
 		
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1900, 1080);

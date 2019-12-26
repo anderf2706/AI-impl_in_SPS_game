@@ -33,15 +33,18 @@ public class Building implements InputProcessor, Screen{
 		the_building.width = width;
 		the_building.x = x - the_building.width / 2;
 		the_building.y= y - the_building.height / 2;
+		for(Node node : gamescreen.allnodes) {
+			if(Intersector.overlaps(node.body, the_building)) {
+				node.occupied = true;
+			}
+		}
 
 		building = new Texture(Gdx.files.internal("bucket.png"));
 		green = new Texture(Gdx.files.internal("green.jpg"));
 		
 		
 		this.gamescreen.buildings.add(this);
-		
-		setBN();
-		
+
 		
 	}
 	
@@ -56,17 +59,7 @@ public class Building implements InputProcessor, Screen{
 		    	
 		    
 		    }
-		    
-		}
-		for (Node node : BNlist) {
-	    	for (Node innernode : node.adjecent) {
-				if(innernode != null) {
-					if(!innernode.BN) {
-						innernode.ACNode = true;
-					}
-				}
-			}
-			
+
 		}
 		
 	}

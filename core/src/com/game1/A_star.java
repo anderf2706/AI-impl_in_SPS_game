@@ -20,7 +20,7 @@ public class A_star{
 		this.gamescreen = gamescreen;
 	}
 	
-	public ArrayList<Node> pathfinder(Node Start, Node End) {//A*-algoritmen. Setter start og end node med findnode metoden. 
+	public ArrayList<Node> pathfinder(Node Start, Node End, Player target) {//A*-algoritmen. Setter start og end node med findnode metoden.
 		
 		Node end = End;
 		ArrayList<Node> closedList = new ArrayList<Node>(); //generer listene som skal brukes. 
@@ -31,7 +31,6 @@ public class A_star{
 		Node current_Node;
 		int i= 0;
 		while(!closedList.contains(end)) {//kj?rer loopen til vi har funnet m?l 
-			
 			i = i + 1;
 			if(openList.size() > 1) {
 				Collections.sort(openList, new Comparator<Node>() {
@@ -73,19 +72,35 @@ public class A_star{
 					continue;
 					
 				}
-				if(!openList.contains(node)) {//hvis noden ikke er p? opnelist skal vi legge den inn, gi den parentnode som current og regne ut f.
-					openList.add(node);
-					node.parent = current_Node;
-					if(node.x != node.parent.x && node.y != node.parent.y) {
-						node.cost = Math.sqrt(2);
+				if(target != null) {
+					if (!openList.contains(node) && (!node.occupied || target.playerNode == node)) {//hvis noden ikke er p? opnelist skal vi legge den inn, gi den parentnode som current og regne ut f.
+						openList.add(node);
+						node.parent = current_Node;
+						if (node.x != node.parent.x && node.y != node.parent.y) {
+							node.cost = Math.sqrt(2);
+						} else {
+							node.cost = 1;
+						}
+						node.g = node.parent.g + node.cost;
+						node.h = Math.max(Math.abs(node.x - end.x), Math.abs(node.y - end.y));
+						node.f = node.h + node.g;
+
 					}
-					else {
-						node.cost = 1;
+				}
+				else {
+					if (!openList.contains(node) && !node.occupied) {//hvis noden ikke er p? opnelist skal vi legge den inn, gi den parentnode som current og regne ut f.
+						openList.add(node);
+						node.parent = current_Node;
+						if (node.x != node.parent.x && node.y != node.parent.y) {
+							node.cost = Math.sqrt(2);
+						} else {
+							node.cost = 1;
+						}
+						node.g = node.parent.g + node.cost;
+						node.h = Math.max(Math.abs(node.x - end.x), Math.abs(node.y - end.y));
+						node.f = node.h + node.g;
+
 					}
-					node.g = node.parent.g + node.cost;
-					node.h = Math.max(Math.abs(node.x - end.x), Math.abs(node.y - end.y));
-					node.f = node.h + node.g;
-					
 				}
 			
 						

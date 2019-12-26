@@ -28,6 +28,7 @@ public class Node {
 	boolean ACNode = false;
 	boolean BN = false;
 	boolean PN = false;
+	boolean occupied = false;
 	double f;
 	double g;
 	double h;
