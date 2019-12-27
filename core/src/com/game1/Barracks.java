@@ -9,6 +9,10 @@ public class Barracks extends Building{
 		super(gamescreen, x, y, 64, 64);
 		// TODO Auto-generated constructor stub
 	}
+
+
+
+
 	
 	
 	

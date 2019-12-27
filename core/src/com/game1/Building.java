@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
+import com.game1.huds.BuildingHud;
 
 public class Building implements InputProcessor, Screen{
 	
@@ -18,12 +19,15 @@ public class Building implements InputProcessor, Screen{
 	GameScreen gamescreen;
 	Texture building;
 	Texture green;
+
 	
 	boolean buildingChosen = false;
 	
 	BitmapFont font = new BitmapFont();
 	
 	ArrayList<Node> BNlist = new ArrayList<Node>();
+
+	BuildingHud bhud;
 
 	
 	public Building(GameScreen gamescreen, int x, int y, int width, int height) {
@@ -39,6 +43,8 @@ public class Building implements InputProcessor, Screen{
 			}
 		}
 
+		bhud = new BuildingHud(gamescreen.game.batch, gamescreen);
+
 		building = new Texture(Gdx.files.internal("bucket.png"));
 		green = new Texture(Gdx.files.internal("green.jpg"));
 		
@@ -48,21 +54,7 @@ public class Building implements InputProcessor, Screen{
 		
 	}
 	
-	
-	
-	public void setBN() {
-		for (Node node : gamescreen.allnodes) {
-			
-		    if (Intersector.overlaps(node.body, the_building)) {
-		    	node.BN = true;
-		    	BNlist.add(node);
-		    	
-		    
-		    }
 
-		}
-		
-	}
 	
 	public void overlap(int button) {
 		if((Intersector.overlaps(gamescreen.the_mouse, the_building))){
@@ -80,7 +72,7 @@ public class Building implements InputProcessor, Screen{
 		gamescreen.makenodes(gamescreen.mapobjects, gamescreen.objects);
 			
 	}
-	
+
 	public void batch(SpriteBatch batch) {
 		
 		batch.draw(building, the_building.x, the_building.y, the_building.width, the_building.height);
@@ -91,6 +83,27 @@ public class Building implements InputProcessor, Screen{
 		
 		
 	}
+
+	public void UI(float delta){
+		if(this.buildingChosen){
+			this.bhud.getStage().act(delta); //act the Hud
+			this.bhud.getStage().draw(); //draw the Hud
+			if(gamescreen.multiplexer.getProcessors().first() != this.bhud.stage) {
+				gamescreen.multiplexer.addProcessor(0, this.bhud.stage);
+			}
+
+
+		}
+		else{
+			this.bhud.dispose();
+			if (gamescreen.multiplexer.getProcessors().contains(this.bhud.stage, true)) {
+				gamescreen.multiplexer.removeProcessor(gamescreen.multiplexer.getProcessors().indexOf(this
+						.bhud.stage, true));
+			}
+		}
+	}
+
+
 
 
 
@@ -104,6 +117,9 @@ public class Building implements InputProcessor, Screen{
 
 	@Override
 	public void render(float delta) {
+
+		UI(delta);
+
 		// TODO Auto-generated method stub
 		
 	}

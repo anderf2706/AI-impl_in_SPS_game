@@ -25,6 +25,9 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.game1.huds.BuildingHud;
+import com.game1.huds.Maingamehud;
+import com.game1.huds.Playerhud;
 
 public class GameScreen extends ApplicationAdapter implements Screen, InputProcessor{
 
@@ -46,15 +49,17 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	float touchdownmouseX;
 	float touchdownmouseY;
 	
-	Hud hud;
+	Maingamehud MGhud;
+
 	
-	boolean makeBarracks = false;
-	boolean makeHouse = false;
-	boolean makeWall = false;
-	boolean makeCastle = false;
+	public boolean makeBarracks = false;
+	public boolean makeHouse = false;
+	public boolean makeWall = false;
+	public boolean makeCastle = false;
 	boolean menu = false;
 	boolean rotate1 = false;
 	boolean rotate2 = false;
+	boolean nothud = false;
 	
 	BitmapFont font;
 	
@@ -91,7 +96,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	MapObjects objects;
 	ArrayList<RectangleMapObject> mapobjects;
 	
-	InputMultiplexer multiplexer;
+	public InputMultiplexer multiplexer;
 
 	ShapeRenderer ss;
 	
@@ -124,16 +129,18 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		
 		font = new BitmapFont();
 		
-		hud = new Hud(game.batch, this);
+		MGhud = new Maingamehud(game.batch, this);
+
+
 		
 		
 		
 		multiplexer = new InputMultiplexer();
-		
-		multiplexer.addProcessor(0, hud.stage);
-		multiplexer.addProcessor(1, this);
+		multiplexer.addProcessor(this);
+
 
 		ss = new ShapeRenderer();
+
 
 
 
@@ -203,6 +210,8 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 	@Override
 	public void render(float delta) {
+		nothud = false;
+
 		Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -217,13 +226,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		  
 		the_mouse.x = mouseInWorld2D.x;
 		the_mouse.y = mouseInWorld2D.y;
-        
-		for(Player player : players) {
-			player.render(delta);
-		}
-		for(Building building : buildings) {
-			building.render(delta);
-		}       
+
 		
         viewX = right + left;
         viewY = up + down;
@@ -260,10 +263,40 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
         
         
 		game.batch.end();
-		
+
+		for(Building building : buildings) {
+			building.render(delta);
+			if(building.buildingChosen){
+				nothud = true;
+			}
+
+		}
+
+		for(Player player : players) {
+			player.render(delta);
+			if(player.playerChosen){
+				nothud = true;
+			}
+
+		}
+		if (!nothud){
+			MGhud.getStage().act(delta); //act the Hud
+			MGhud.getStage().draw(); //draw the Hud
+			if(multiplexer.getProcessors().first() != MGhud.stage) {
+				multiplexer.addProcessor(0, MGhud.stage);
+			}
+
+		}
+		else{
+			MGhud.dispose();
+			if (multiplexer.getProcessors().contains(MGhud, true)) {
+				multiplexer.removeProcessor(multiplexer.getProcessors().indexOf(MGhud, true));
+			}
+		}
+
+
 		// game.batch.setProjectionMatrix(hud.getStage().getCamera().combined); //set the spriteBatch to draw what our stageViewport sees
-	     hud.getStage().act(delta); //act the Hud
-	     hud.getStage().draw(); //draw the Hud
+
 
 		if (rendersqaureformouse && Gdx.input.getX() != 0){
 			ss.begin(ShapeRenderer.ShapeType.Line);
@@ -575,22 +608,23 @@ public void makeCastle() {
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		rendersqaureformouse = false;
 
-
-		if (the_mouse.x > chosenNode.x && the_mouse.y > chosenNode.y) {
-			mousedrag = new Rectangle(chosenNode.x, chosenNode.y, the_mouse.x - chosenNode.x,
-					the_mouse.y - chosenNode.y);
-		}
-		if (the_mouse.x < chosenNode.x && the_mouse.y > chosenNode.y) {
-			mousedrag = new Rectangle(the_mouse.x, chosenNode.y, chosenNode.x - the_mouse.x,
-					the_mouse.y - chosenNode.y);
-		}
-		if (the_mouse.x < chosenNode.x && the_mouse.y < chosenNode.y) {
-			mousedrag = new Rectangle(the_mouse.x, the_mouse.y, chosenNode.x - the_mouse.x,
-					chosenNode.y - the_mouse.y);
-		}
-		if (the_mouse.x > chosenNode.x && the_mouse.y < chosenNode.y) {
-			mousedrag = new Rectangle(chosenNode.x, the_mouse.y, the_mouse.x - chosenNode.x,
-					chosenNode.y - the_mouse.y);
+		if(chosenNode != null) {
+			if (the_mouse.x > chosenNode.x && the_mouse.y > chosenNode.y) {
+				mousedrag = new Rectangle(chosenNode.x, chosenNode.y, the_mouse.x - chosenNode.x,
+						the_mouse.y - chosenNode.y);
+			}
+			if (the_mouse.x < chosenNode.x && the_mouse.y > chosenNode.y) {
+				mousedrag = new Rectangle(the_mouse.x, chosenNode.y, chosenNode.x - the_mouse.x,
+						the_mouse.y - chosenNode.y);
+			}
+			if (the_mouse.x < chosenNode.x && the_mouse.y < chosenNode.y) {
+				mousedrag = new Rectangle(the_mouse.x, the_mouse.y, chosenNode.x - the_mouse.x,
+						chosenNode.y - the_mouse.y);
+			}
+			if (the_mouse.x > chosenNode.x && the_mouse.y < chosenNode.y) {
+				mousedrag = new Rectangle(chosenNode.x, the_mouse.y, the_mouse.x - chosenNode.x,
+						chosenNode.y - the_mouse.y);
+			}
 		}
 
 		// TODO Auto-generated method stub

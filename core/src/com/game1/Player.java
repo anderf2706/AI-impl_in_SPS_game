@@ -18,6 +18,7 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.game1.huds.Playerhud;
 import sun.reflect.generics.tree.Tree;
 
 public class Player implements Screen, InputProcessor{
@@ -85,7 +86,9 @@ public class Player implements Screen, InputProcessor{
 	
 	float oldX;
 	float oldY;
-	
+
+	Playerhud playerhud;
+
 	public Player(GameScreen gamescreen, Game1 game, int x, int y) {
 		this.gamescreen = gamescreen;
 		this.game = game;
@@ -108,6 +111,7 @@ public class Player implements Screen, InputProcessor{
 		health = 100;
 		attack = 10;
 		defense = 10;
+		playerhud = new Playerhud(game.batch, gamescreen);
 		
 	    
 	    
@@ -504,13 +508,31 @@ public class Player implements Screen, InputProcessor{
 	public void render(float delta) {
 		// TODO Auto-generated method stub
 		 
-		  
+		  UI(delta);
 		  check_player();
 		  collision();
+
 		  	
 		  
 		  
 		  
+	}
+
+	public void UI(float delta){
+		if(this.playerChosen){
+			this.playerhud.getStage().act(delta); //act the Hud
+			this.playerhud.getStage().draw(); //draw the Hud
+			if(gamescreen.multiplexer.getProcessors().first() != this.playerhud.stage) {
+				gamescreen.multiplexer.addProcessor(0, this.playerhud.stage);
+			}
+		}
+		else {
+			this.playerhud.dispose();
+			if (gamescreen.multiplexer.getProcessors().contains(this.playerhud.stage, true)) {
+				gamescreen.multiplexer.removeProcessor(gamescreen.multiplexer.getProcessors().indexOf(this
+				.playerhud.stage, true));
+			}
+		}
 	}
 	
 	public void check_player() {
