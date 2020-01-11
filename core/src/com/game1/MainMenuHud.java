@@ -9,9 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -31,14 +29,15 @@ public class MainMenuHud extends InputAdapter implements Screen{
      GameScreen gamescreen;
      Table table;
      MainMenu mainmenu;
+	 Skin skin;
+
 
 	public MainMenuHud(SpriteBatch spriteBatch, final Game1 game, final MainMenu mainmenu) {
 		stageViewport = new FitViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 	    stage = new Stage(stageViewport, spriteBatch); //create stage with the stageViewport and the SpriteBatch given in Constructor
-	    texture = new Texture(Gdx.files.internal("Fighter-Front.gif"));
-	    background = new Texture(Gdx.files.internal("brown rectangle.jfif"));
+		skin = new Skin(Gdx.files.internal("uiskin.json"));
+	    background = new Texture(Gdx.files.internal("Hjm8sUt.png"));
 	    drawablebackground = new TextureRegionDrawable((new TextureRegion(background)));
-	    drawable = new TextureRegionDrawable((new TextureRegion(texture)));
 	    this.game = game;
 	    //this.gamescreen = new GameScreen(game);
 	   // this.MPSS = new MultiplayerStartScreen(game);
@@ -47,67 +46,62 @@ public class MainMenuHud extends InputAdapter implements Screen{
 
 	    table = new Table();
 	    table.setVisible(true);
-	    
-	   
-       ImageButton imageButton = new ImageButton(drawable);
-       imageButton.setPosition(Gdx.graphics.getWidth() / 2, 900);
-       imageButton.addListener( new ClickListener() {              
-    	    @Override
-    	    public void clicked(InputEvent event, float x, float y) {
-    		    gamescreen = new GameScreen(game);
 
-    	    	game.setScreen(gamescreen);
-    	    	mainmenu.dispose();
-    	    	
-    	    	
-     	    };
-    	});
-       
-       ImageButton imageButton2 = new ImageButton(drawable);
-       imageButton2.setPosition(Gdx.graphics.getWidth() / 2, 800);
-       imageButton2.addListener( new ClickListener() {              
-    	    @Override
-    	    public void clicked(InputEvent event, float x, float y) {
 
-    	    };
-    	});
-       
-       ImageButton imageButton3 = new ImageButton(drawable);
-       imageButton3.setPosition(Gdx.graphics.getWidth() / 2, 700);
-       imageButton3.addListener( new ClickListener() {              
-    	    @Override
-    	    public void clicked(InputEvent event, float x, float y) {
-    	    	
-    	    };
-    	});
-       
-       ImageButton imageButton4 = new ImageButton(drawable);
-       imageButton4.setPosition(Gdx.graphics.getWidth() / 2, 600);
-       imageButton4.addListener( new ClickListener() {              
-    	    @Override
-    	    public void clicked(InputEvent event, float x, float y) {
-    	    	
-    	    };
-    	});
-       
-       ImageButton imageButton5 = new ImageButton(drawable);
-       imageButton5.setPosition(Gdx.graphics.getWidth() / 2, 500);
-       imageButton5.addListener( new ClickListener() {              
-    	    @Override
-    	    public void clicked(InputEvent event, float x, float y) {
-    	    };
-    	});
-       
-     
+		Button textbutton = new TextButton("singelplayer", skin);
+		textbutton.setPosition(Gdx.graphics.getWidth() / 2, 900);
+		textbutton.addListener( new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				gamescreen = new GameScreen(game);
+
+				game.setScreen(gamescreen);
+				mainmenu.dispose();
+			};
+		});
+
+
+		Button textbutton2 = new TextButton("multiplayer", skin);
+		textbutton2.setPosition(Gdx.graphics.getWidth() / 2 + 5, 800);
+		textbutton2.addListener( new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+
+			};
+		});
+
+		Button textbutton3 = new TextButton("settings", skin);
+		textbutton3.setPosition(Gdx.graphics.getWidth() / 2 + 15, 700);
+		textbutton3.addListener( new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+
+			};
+		});
+
+		Button textbutton4 = new TextButton("exit", skin);
+		textbutton4.setPosition(Gdx.graphics.getWidth() / 2 + 25, 600);
+		textbutton4.addListener( new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				game.dispose();
+			};
+		});
+
+		Image background = new Image(drawablebackground);
+		background.setPosition(0, 0);
+		background.setWidth(Gdx.graphics.getWidth());
+		background.setHeight(Gdx.graphics.getHeight());
+		background.toBack();
+
+
        
               	
-        //stage.addActor(imageButton);
-        table.addActor(imageButton);
-        table.addActor(imageButton2);
-        table.addActor(imageButton3);
-        table.addActor(imageButton4);
-        table.addActor(imageButton5);
-
+        table.addActor(textbutton);
+        table.addActor(textbutton2);
+        table.addActor(textbutton3);
+        table.addActor(textbutton4);
+		stage.addActor(background);
         stage.addActor(table);
         //stage.addActor(imageButton2);
 	}

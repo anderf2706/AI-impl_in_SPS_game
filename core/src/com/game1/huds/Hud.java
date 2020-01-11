@@ -41,6 +41,29 @@ class Hud extends InputAdapter implements Screen{
 		table = new Table();
 		table.setVisible(true);
 
+		Image background = new Image(drawablebackground);
+		background.setPosition(0, 0);
+		background.setWidth(Gdx.graphics.getWidth());
+		background.setHeight(100);
+		background.toBack();
+
+		ImageButton backgroundbutton = new ImageButton(drawablebackground);
+		backgroundbutton.setPosition(0, 0);
+		backgroundbutton.setSize(1920, 100);
+		backgroundbutton.toBack();
+		backgroundbutton.addListener( new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+
+			}
+		});
+
+
+
+		stage.addActor(background);
+		stage.addActor(backgroundbutton);
+
+
 
 	}
 

@@ -8,25 +8,31 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.game1.GameScreen;
+import com.game1.*;
+
+import java.util.ArrayList;
+import java.util.TreeMap;
 
 public class BuildingHud extends Hud {
 
 	GameScreen gamescreen;
 
-	public BuildingHud(SpriteBatch spriteBatch, final GameScreen gamescreen) {
+	public BuildingHud(SpriteBatch spriteBatch, final GameScreen gamescreen, final Building building) {
 		super(spriteBatch, gamescreen);
 		this.gamescreen = gamescreen;
-		Button textbutton = new TextButton("hallabygg", super.skin);
+		Button textbutton = new TextButton("solider", super.skin);
 		textbutton.setPosition(200, 50);
 		textbutton.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				gamescreen.makeHouse = false;
-				gamescreen.makeWall = false;
-				gamescreen.makeCastle = false;
-				//gamescreen.makeBarracks = !gamescreen.makeBarracks;
-			};
+				Node node = gamescreen.findavailablenode(building.buildingnode);
+
+				new Player(gamescreen, gamescreen.game, node.x
+						, node.y);
+
+
+
+			}
 		});
 
 		ImageButton imageButton2 = new ImageButton(drawable);
@@ -34,10 +40,10 @@ public class BuildingHud extends Hud {
 		imageButton2.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				gamescreen.makeBarracks = false;
-				gamescreen.makeWall = false;
-				gamescreen.makeCastle = false;
-				gamescreen.makeHouse = !gamescreen.makeHouse;
+				Node node = gamescreen.findavailablenode(building.buildingnode);
+				new Wall(gamescreen, node.x, node.y);
+
+
 			};
 		});
 
@@ -46,10 +52,7 @@ public class BuildingHud extends Hud {
 		imageButton3.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				gamescreen.makeHouse = false;
-				gamescreen.makeBarracks = false;
-				gamescreen.makeCastle = false;
-				gamescreen.makeWall = !gamescreen.makeWall;
+
 			};
 		});
 
@@ -58,10 +61,7 @@ public class BuildingHud extends Hud {
 		imageButton4.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				gamescreen.makeHouse = false;
-				gamescreen.makeWall = false;
-				gamescreen.makeBarracks = false;
-				gamescreen.makeCastle = !gamescreen.makeCastle;
+
 			};
 		});
 
@@ -70,25 +70,18 @@ public class BuildingHud extends Hud {
 		imageButton5.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				System.out.println("dd");
 			};
 		});
 
-		Image background = new Image(drawablebackground);
-		background.setPosition(0, 0);
-		background.setWidth(Gdx.graphics.getWidth());
-		background.setHeight(100);
-		background.toBack();
 
-
-
-		//stage.addActor(imageButton);
-		table.addActor(textbutton);
+		//if(building.getClass() == Barracks.class){
+			table.addActor(textbutton);
+		//}
 		table.addActor(imageButton2);
 		table.addActor(imageButton3);
 		table.addActor(imageButton4);
 		table.addActor(imageButton5);
-		stage.addActor(background);
+
 
 		stage.addActor(table);
 		//stage.addActor(imageButton2);

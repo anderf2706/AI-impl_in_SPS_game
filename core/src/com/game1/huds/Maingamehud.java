@@ -16,7 +16,7 @@ public class Maingamehud extends Hud {
 		super(spriteBatch, gamescreen);
 
 		this.gamescreen = gamescreen;
-		Button textbutton = new TextButton("halla", super.skin);
+		Button textbutton = new TextButton("Barracks", super.skin);
 		textbutton.setPosition(200, 50);
 		textbutton.addListener( new ClickListener() {
 			@Override
@@ -24,7 +24,7 @@ public class Maingamehud extends Hud {
 				gamescreen.makeHouse = false;
 				gamescreen.makeWall = false;
 				gamescreen.makeCastle = false;
-				//gamescreen.makeBarracks = !gamescreen.makeBarracks;
+				gamescreen.makeBarracks = !gamescreen.makeBarracks;
 			};
 		});
 
@@ -73,12 +73,6 @@ public class Maingamehud extends Hud {
 			};
 		});
 
-		Image background = new Image(drawablebackground);
-		background.setPosition(0, 0);
-		background.setWidth(Gdx.graphics.getWidth());
-		background.setHeight(100);
-		background.toBack();
-
 
 
 		//stage.addActor(imageButton);
@@ -87,7 +81,7 @@ public class Maingamehud extends Hud {
 		table.addActor(imageButton3);
 		table.addActor(imageButton4);
 		table.addActor(imageButton5);
-		stage.addActor(background);
+
 
 		stage.addActor(table);
 		//stage.addActor(imageButton2);

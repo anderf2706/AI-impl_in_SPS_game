@@ -14,8 +14,9 @@ import com.badlogic.gdx.math.Rectangle;
 import com.game1.huds.BuildingHud;
 
 public class Building implements InputProcessor, Screen{
-	
-	Rectangle the_building;
+
+	public Node buildingnode;
+	public Rectangle the_building;
 	GameScreen gamescreen;
 	Texture building;
 	Texture green;
@@ -37,13 +38,15 @@ public class Building implements InputProcessor, Screen{
 		the_building.width = width;
 		the_building.x = x - the_building.width / 2;
 		the_building.y= y - the_building.height / 2;
-		for(Node node : gamescreen.allnodes) {
-			if(Intersector.overlaps(node.body, the_building)) {
-				node.occupied = true;
+			for (Node node : gamescreen.allnodes){
+				if(Intersector.overlaps(node.body, the_building)) {
+					this.buildingnode = node;
+					node.occupied = true;
+				}
 			}
-		}
 
-		bhud = new BuildingHud(gamescreen.game.batch, gamescreen);
+
+		bhud = new BuildingHud(gamescreen.game.batch, gamescreen, this);
 
 		building = new Texture(Gdx.files.internal("bucket.png"));
 		green = new Texture(Gdx.files.internal("green.jpg"));
@@ -69,7 +72,7 @@ public class Building implements InputProcessor, Screen{
 	}
 	
 	public void destroyed() {
-		gamescreen.makenodes(gamescreen.mapobjects, gamescreen.objects);
+		gamescreen.makenodes();
 			
 	}
 
@@ -80,8 +83,10 @@ public class Building implements InputProcessor, Screen{
 		if(buildingChosen) {
 			batch.draw(green, the_building.x, the_building.y + 75, 50, 10);
 		}
-		
-		
+		batch.draw(green, buildingnode.x, buildingnode.y , 10, 10);
+
+
+
 	}
 
 	public void UI(float delta){

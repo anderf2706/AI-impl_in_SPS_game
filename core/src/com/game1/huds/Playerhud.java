@@ -9,10 +9,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.game1.GameScreen;
+import com.game1.Player;
 import com.game1.huds.Hud;
 
 public class Playerhud extends Hud {
-	public Playerhud(SpriteBatch spriteBatch, final GameScreen gamescreen) {
+	public Playerhud(SpriteBatch spriteBatch, final GameScreen gamescreen, Player player) {
 		super(spriteBatch, gamescreen);
 
 		this.gamescreen = gamescreen;
@@ -73,11 +74,6 @@ public class Playerhud extends Hud {
 			};
 		});
 
-		Image background = new Image(drawablebackground);
-		background.setPosition(0, 0);
-		background.setWidth(Gdx.graphics.getWidth());
-		background.setHeight(100);
-		background.toBack();
 
 
 
@@ -87,7 +83,7 @@ public class Playerhud extends Hud {
 		table.addActor(imageButton3);
 		table.addActor(imageButton4);
 		table.addActor(imageButton5);
-		stage.addActor(background);
+
 
 		stage.addActor(table);
 		//stage.addActor(imageButton2);

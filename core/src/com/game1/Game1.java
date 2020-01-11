@@ -46,6 +46,7 @@ public class Game1 extends Game {
 	@Override
 	public void render () {
 		super.render();
+
 	}
 	
 	

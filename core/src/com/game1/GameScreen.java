@@ -1,6 +1,8 @@
 package com.game1;
 
-import java.util.ArrayList;
+import java.util.*;
+import java.util.stream.Collectors;
+
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -25,33 +27,38 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.game1.huds.BuildingHud;
-import com.game1.huds.Maingamehud;
-import com.game1.huds.Playerhud;
 
-public class GameScreen extends ApplicationAdapter implements Screen, InputProcessor{
+import com.game1.huds.Maingamehud;
+
+
+public class GameScreen extends ApplicationAdapter implements Screen, InputProcessor {
 
 	Rectangle the_mouse;
 	Vector2 mouseInWorld2D;
-    Vector3 mouseInWorld3D;
-    Vector2 start;
+	Vector3 mouseInWorld3D;
+	Vector2 start;
 	Vector2 end;
-	Node chosenNode;
+	public Node chosenNode;
 	float touchX;
 	float touchY;
 
 	Rectangle mousedrag;
-	
+
 	boolean makeP = false;
 	boolean makeB = false;
 	boolean rendersqaureformouse = false;
+	boolean A = true;
+	boolean W = true;
+	boolean S = true;
+	boolean D = true;
+
 
 	float touchdownmouseX;
 	float touchdownmouseY;
-	
+
 	Maingamehud MGhud;
 
-	
+
 	public boolean makeBarracks = false;
 	public boolean makeHouse = false;
 	public boolean makeWall = false;
@@ -60,142 +67,220 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	boolean rotate1 = false;
 	boolean rotate2 = false;
 	boolean nothud = false;
-	
+
 	BitmapFont font;
-	
-	
-	
-	Game1 game;
+
+
+	public Game1 game;
 	OrthographicCamera camera;
 	OrthogonalTiledMapRenderer renderer;
 	SpriteBatch batch;
-	
+
 	TiledMap map;
 	TiledMapTileLayer tilelayer;
 	int tileSize;
-	int mapWidth;  
+	int mapWidth;
 	int mapHeight;
 	AssetManager manager;
-	
-	ArrayList<Node> allnodes = new ArrayList<Node>();
+
 	ArrayList<Player> players = new ArrayList<Player>();
 	ArrayList<Building> buildings = new ArrayList<Building>();
+	ArrayList<Node> allnodes2 = new ArrayList<Node>();
 
 	ShapeRenderer sr;
-	
+	ArrayList<ArrayList> dalist;
+
 	float up;
 	float down;
 	float right;
 	float left;
 	float viewX;
 	float viewY;
-	
+
 	Texture green;
 	Texture blue;
-	
-	MapObjects objects;
-	ArrayList<RectangleMapObject> mapobjects;
-	
+
+
 	public InputMultiplexer multiplexer;
 
 	ShapeRenderer ss;
-	
 
-	
+	ArrayList<Node> allnodes;
+	ArrayList<Node> nodes;
+	Map<Integer, Node> nodedict = new HashMap<Integer, Node>();
+
+
+	int nodewidth;
+
+
+
 	public GameScreen(Game1 game) {
 
 
-		map = new TmxMapLoader().load("nystart.tmx");
-		tilelayer = (TiledMapTileLayer) map.getLayers().get(0);
-		tileSize = (int) tilelayer.getTileWidth();
-		mapWidth = tilelayer.getWidth() * tileSize;  
-		mapHeight = tilelayer.getHeight() * tileSize;
-		
+
+
+
+
+
+
+
+		nodewidth = 100;
+
+		mapWidth = 100 * 32;
+		mapHeight = 100*32;
+
 		this.game = game;
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
-		
+
 		green = new Texture(Gdx.files.internal("green.jpg"));
 		blue = new Texture(Gdx.files.internal("blue.png"));
-		
+
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, w, h);
 		camera.update();
-		objects = map.getLayers().get(1).getObjects();              //<- HER MAN VELGER LAYER 
 
-		mapobjects = new ArrayList<RectangleMapObject>();
+		nodes = new ArrayList<Node>();
+
+		allnodes = new ArrayList<Node>();
 		sr = new ShapeRenderer();
-		makenodes(mapobjects, objects);
-		
+		makenodes();
 		font = new BitmapFont();
-		
+
 		MGhud = new Maingamehud(game.batch, this);
+		chosenNode = new Node(500, 500, this);
 
-
-		
-		
-		
 		multiplexer = new InputMultiplexer();
 		multiplexer.addProcessor(this);
 
 
 		ss = new ShapeRenderer();
-
-
-
-
-
-
-
-
-
-
-
-
-
-		renderer = new OrthogonalTiledMapRenderer(map);
-		
-		
-		
-		the_mouse = new Rectangle();
-		the_mouse.height = 2;
-		the_mouse.width = 2;
-		
-		Vector2 mouseInWorld2D = new Vector2();
-	    Vector3 mouseInWorld3D = new Vector3();
-	    this.mouseInWorld2D = mouseInWorld2D;
-	    this.mouseInWorld3D = mouseInWorld3D;
-	    
-	     
-	}
-	
-	public void makenodes(ArrayList<RectangleMapObject> mapobjects, MapObjects objects) {
-		for (int i = 16; i < mapWidth; i += 32) {
-			for (int j = 16; j < mapHeight; j += 32) {
-				for (RectangleMapObject rectangleObject : objects.getByType(RectangleMapObject.class)) {
-					mapobjects.add(rectangleObject);
-				
-				    
-				}
-				int good = 0;
-				for (int k = 0; k < mapobjects.size(); k++) {
-					if (Intersector.overlaps(mapobjects.get(k).getRectangle(), new Rectangle(i,j,1,1))) {
-				    	good += 1;
-					}
-					continue;
-					
-				}
-				Node node = new Node(i,j, this);
-				allnodes.add(node);
-				if(good > 0) {
-					node.occupied = true;
-				}
+		/*
+		world = new ArrayList<ArrayList<Integer>>();
+		for (int i = 0; i < 10000; i++) {
+			for (int j = 0; j < 10000; j++) {
 
 			}
 		}
-		for(Node node : allnodes) {
-			node.makeNabour();
+
+		 */
+
+
+		the_mouse = new Rectangle();
+		the_mouse.height = 2;
+		the_mouse.width = 2;
+
+		Vector2 mouseInWorld2D = new Vector2();
+		Vector3 mouseInWorld3D = new Vector3();
+		this.mouseInWorld2D = mouseInWorld2D;
+		this.mouseInWorld3D = mouseInWorld3D;
+
+
+	}
+
+
+
+
+
+
+
+	public Node findavailablenode(Node playerNode){
+		ArrayList<ArrayList> available_nodes = new ArrayList<ArrayList>();
+		for(Node node : playerNode.adjecent){
+			if(!node.occupied){
+				double key = Math.sqrt(Math.pow((node.x - playerNode.x), 2) + Math.pow((node.y - playerNode.y), 2));
+				available_nodes.add(new ArrayList<Object>(Arrays.asList(key, node)));
+			}
+			if (node.occupied){
+				double key = 10000000;
+				available_nodes.add(new ArrayList<Object>(Arrays.asList(key, node)));
+
+			}
 		}
+
+		/*
+		outerloop:
+		for(Node node : playerNode.closest){
+			if (node.occupied || node.players.size() > 0) {
+
+				double key = 10000000;
+				available_nodes.add(new ArrayList<Object>(Arrays.asList(key, node)));
+				continue;
+			}
+			for(List searchlist : available_nodes) {
+				if (node == searchlist.get(1)) {
+					continue outerloop;
+				}
+			}
+			double key = Math.sqrt(Math.pow((node.x - playerNode.x), 2)
+					+ Math.pow((node.y - playerNode.y), 2));
+
+			available_nodes.add(new ArrayList<Object>(Arrays.asList(key, node)));
+
+
+		}
+
+		 */
+		System.out.println(available_nodes.size());
+		Collections.sort(available_nodes, new Doublecomparator());
+
+		return (Node)available_nodes.get(0).get(1);
+	}
+	
+	public void makenodes() {
+		for (int i = 0; i < nodewidth; i += 1) {
+			for (int j = 0; j < nodewidth; j += 1) {
+				Node node = new Node(i*32, j*32, this);
+				allnodes.add(node);
+				nodedict.put(node.id, node);
+
+
+			}
+		}
+
+		System.out.println(nodedict.size());
+		System.out.println(nodedict.keySet());
+
+
+
+		for (Node node : allnodes){
+			node.makeClosest(node.id, node.adjecent, false);
+			node.makeClosest(node.id + (nodewidth*3), node.closest, true);
+			node.makeClosest(node.id - (nodewidth*3), node.closest, true);
+			node.makeClosest(node.id + (3), node.closest, true);
+			node.makeClosest(node.id - (3), node.closest, true);
+			node.makeClosest((node.id + 3) + (nodewidth*3), node.closest, true);
+			node.makeClosest((node.id + 3) - (nodewidth*3), node.closest, true);
+			node.makeClosest((node.id - 3) + (nodewidth*3), node.closest, true);
+			node.makeClosest((node.id - 3) - (nodewidth*3), node.closest, true);
+
+
+
+
+
+
+		}
+		/*
+		outerloop:
+		for (Node node : allnodes){
+
+			for (Node node2 : allnodes2) {
+				if (node2.x == node.x && node2.y == node.y) {
+					continue outerloop;
+				}
+			}
+
+
+			allnodes2.add(node);
+		}
+		allnodes = allnodes2;
+
+
+		 */
+
+
+
+
 	}
 	
 	
@@ -210,6 +295,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 	@Override
 	public void render(float delta) {
+
 		nothud = false;
 
 		Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -228,41 +314,80 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		the_mouse.y = mouseInWorld2D.y;
 
 		
-        viewX = right + left;
-        viewY = up + down;
+        viewX = right * 32 + left * 32;
+        viewY = up * 32 + down * 32;
         game.batch.setProjectionMatrix(camera.combined);
         camera.translate(viewX, viewY);
         camera.update();
-        renderer.setView(camera);
-        renderer.render();
+        up = 0;
+        down = 0;
+        right = 0;
+        left = 0;
+        camera.translate(viewX, viewY);
+        //renderer.setView(camera);
+        //renderer.render();
         if(rotate1) {
         	rotate(40);
         }
         if(rotate2) {
         	rotate(-40);
         }
-        
-        
+
         game.batch.begin();
 
 
-        
-        for(Player player : players) {
-			player.batch(game.batch);
-			
+		for (int i = 1; i < 1920/32; i++) {
+			for (int j = 0; j < 1080/32; j++) {
+				game.batch.draw(blue, (nodedict.get(i + (nodewidth*j)).x - 16), (nodedict.get(i + (nodewidth*j))).y - 16);
+
+			}
 		}
-        for(Building building : buildings) {
-			building.batch(game.batch);
-		}
+
        
         if(chosenNode != null) {
         	game.batch.draw(green, chosenNode.x - 8, chosenNode.y - 8, 16, 16);
-        }
-        	
-		
-        
-        
+			for(Node node2 : chosenNode.adjecent){
+				game.batch.draw(green, node2.x - 8, node2.y - 8, 16, 16);
+
+			}
+			for(Node node2 : chosenNode.closest){
+				game.batch.draw(green, node2.x - 8, node2.y - 8, 16, 16);
+
+			}
+		}
+
+		for(Player player : players) {
+			player.batch(game.batch);
+		}
+		for(Building building : buildings) {
+			building.batch(game.batch);
+		}
+
+
+
 		game.batch.end();
+
+        for (Player player : players){
+        	if (player.endnode != null) {
+				if (player.endnode.players.size() > 1) {
+					int i = 0;
+					for (Player innerplayer : player.endnode.players) {
+						if (i > 0){
+							innerplayer.stopmove();
+							innerplayer.endnode = findavailablenode(innerplayer.endnode);
+							innerplayer.finalpath = innerplayer.astar.pathfinder(innerplayer.playerNode, innerplayer.endnode, null);
+							innerplayer.move(null);
+							innerplayer.endnode.players.add(innerplayer);
+							innerplayer.playerNode = innerplayer.endnode;
+							innerplayer.playerNode.occupied = true;
+						}
+					}
+				}
+				player.endnode.players.clear();
+				player.endnode.players.add(player);
+			}
+
+		}
 
 		for(Building building : buildings) {
 			building.render(delta);
@@ -347,7 +472,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	
 	public void makeP() {
 		try {
-			new Player(this, game, chosenNode.x, chosenNode.y);
+			new Player(this, game, findavailablenode(chosenNode).x, findavailablenode(chosenNode).y);
 			
 		}
 		catch(Exception e) {
@@ -450,18 +575,36 @@ public void makeCastle() {
 		if(keycode == Input.Keys.M) {
 			menu= !menu;
 		}
+
 		if(keycode == Input.Keys.D) {
-			right = 600 * Gdx.graphics.getDeltaTime();
+			if(D) {
+				right = 1;
+				D = false;
+				}
+
 		}
 		if(keycode == Input.Keys.A) {
-			left = -600 * Gdx.graphics.getDeltaTime();
+			if(A) {
+				left = -1;
+				A = false;
+			}
 		}
 		if(keycode == Input.Keys.W) {
-			up = 600 * Gdx.graphics.getDeltaTime();
+			if(W) {
+				up = 1;
+				W = false;
+			}
 		}
 		if(keycode == Input.Keys.S) {
-			down = -600 * Gdx.graphics.getDeltaTime();
+			if(S) {
+				down = -1;
+				S = false;
+			}
 		}
+
+
+
+
 		if(keycode == Input.Keys.Q) {
 			rotate1 = true;
 		}
@@ -512,18 +655,20 @@ public void makeCastle() {
 
 		if(keycode == Input.Keys.D) {
 			right = 0;
+			D = true;
 		}
 		if(keycode == Input.Keys.A) {
 			left = 0;
+			A = true;
 		}
 			
 		if(keycode == Input.Keys.W) {
 			up = 0;
-			
+			W = true;
 		}
 		if(keycode == Input.Keys.S) {
 			down = 0;
-			
+			S = true;
 		}
 		if(keycode == Input.Keys.Q) {
 			rotate1 = false;
@@ -545,12 +690,16 @@ public void makeCastle() {
 	@Override
 	public boolean keyTyped(char character) {
 		// TODO Auto-generated method stub
+
+
 		return false;
 	}
 
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
+		System.out.println(the_mouse.x + " " + the_mouse.y);
 
 		if(button == Input.Buttons.LEFT){
 			rendersqaureformouse = true;
@@ -567,13 +716,13 @@ public void makeCastle() {
 
 			
 		Rectangle mouserec = new Rectangle(the_mouse.x, the_mouse.y, 1,1);
-		for (Node node : allnodes) {
-				
-			if (Intersector.overlaps(node.body, mouserec)) {
-			    	this.chosenNode = node;
-			    
+			for (Node node : allnodes){
+				if (Intersector.overlaps(node.body, mouserec)) {
+					System.out.println("inne");
+					this.chosenNode = node;
+				}
 			}
-		}
+
 			
 		for (Player player : players) {
 				player.touchDown(screenX, screenY, pointer, button);
@@ -598,7 +747,18 @@ public void makeCastle() {
 		if(makeCastle && button == Input.Buttons.LEFT) {
 			makeCastle();
 		}
-			
+		for (Player player : players) {
+			if (player.playerChosen) {
+				if (button == Input.Buttons.RIGHT) {
+					if (player.endnode.players.size() > 1){
+						player.endnode.players.remove(player);
+						player.endnode = findavailablenode(player.endnode);
+						player.endnode.players.add(player);
+
+					}
+				}
+			}
+		}
 		return false;
 			
 	}

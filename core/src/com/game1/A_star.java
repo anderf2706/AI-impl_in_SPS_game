@@ -21,7 +21,9 @@ public class A_star{
 	}
 	
 	public ArrayList<Node> pathfinder(Node Start, Node End, Player target) {//A*-algoritmen. Setter start og end node med findnode metoden.
-		
+		if (End.occupied){
+			End = gamescreen.findavailablenode(End);
+		}
 		Node end = End;
 		ArrayList<Node> closedList = new ArrayList<Node>(); //generer listene som skal brukes. 
 		ArrayList<Node> openList = new ArrayList<Node>();
