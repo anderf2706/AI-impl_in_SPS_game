@@ -7,7 +7,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
 
+import com.badlogic.gdx.ai.StandaloneFileSystem;
 import com.badlogic.gdx.math.Vector2;
 
 public class A_star{
@@ -20,7 +22,7 @@ public class A_star{
 		this.gamescreen = gamescreen;
 	}
 	
-	public ArrayList<Node> pathfinder(Node Start, Node End, Player target) {//A*-algoritmen. Setter start og end node med findnode metoden.
+	public ArrayList<Node> pathfinder(Node Start, Node End, Player target) throws InterruptedException {//A*-algoritmen. Setter start og end node med findnode metoden.
 		if (End.occupied){
 			End = gamescreen.findavailablenode(End);
 		}
@@ -32,7 +34,8 @@ public class A_star{
 		openList.add(start);//adder start til nodelisten 
 		Node current_Node;
 		int i= 0;
-		while(!closedList.contains(end)) {//kj?rer loopen til vi har funnet m?l 
+		while(!closedList.contains(end)) {//kj?rer loopen til vi har funnet m?l
+			System.out.println("astar");
 			i = i + 1;
 			if(openList.size() > 1) {
 				Collections.sort(openList, new Comparator<Node>() {
@@ -41,6 +44,11 @@ public class A_star{
 						return Double.compare(n1.f, n2.f);
 					}
 				});
+			}
+			if (openList.size() == 0){
+				TimeUnit.SECONDS.sleep(1);
+				i = i - 1;
+				continue;
 			}
 			closedList.add(0, openList.get(0));//flytter den beste noden over til closedlist, og av openlist
 			openList.remove(0);

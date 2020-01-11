@@ -201,17 +201,20 @@ public class Player implements Screen, InputProcessor{
 				@Override
 				public void run() {
 					// TODO Auto-generated method stub
-					follow_t(player);
+					try {
+						follow_t(player);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 
-			    
-			    	
-			    }
+
+				}
 			}, 0, 500);
 			
 		}
 	}
 	
-	public void follow_t(Player player) {
+	public void follow_t(Player player) throws InterruptedException {
 		if (!this.playerNode.adjecent.contains(player.playerNode)) {
 			finalpath = astar.pathfinder(this.playerNode, player.playerNode, player);
 
@@ -299,6 +302,12 @@ public class Player implements Screen, InputProcessor{
 					endnode = gamescreen.chosenNode;
 					finalnode = gamescreen.chosenNode;
 					endnode.players.add(this);
+					if (endnode.players.size() > 1){
+						endnode.players.remove(this);
+						endnode = gamescreen.findavailablenode(endnode);
+						endnode.players.add(this);
+
+					}
 					if(!executed) {
 						if(t != null) {
 						t.cancel();
@@ -310,30 +319,9 @@ public class Player implements Screen, InputProcessor{
 						
 						moving = true;						
 
-
-
-								/*
-								if (players.endnode == endnode && players.disttogoal<disttogoal){
-									System.out.println("ee");
-									endnode = gamescreen.findavailablenode(endnode);
-									astar.pathfinder(playerNode, endnode, null);
-									dush = 0;
-									System.out.println(disttogoal + players.disttogoal);
-								}
-
-								 */
 							}
 
 
-
-						
-						/*for (Player player : gamescreen.players) {
-							if( Intersector.overlaps(player.the_player, gamescreen.chosenNode.body)) {
-								Player target = player;
-								following = true;
-								follow(target);
-							}
-						}*/
 						for (Player player : gamescreen.players) {
 							if(Intersector.overlaps(gamescreen.the_mouse, player.the_player)){
 								Player target = player;
@@ -356,7 +344,11 @@ public class Player implements Screen, InputProcessor{
 
 						if(!following) {
 
-							finalpath = astar.pathfinder(this.playerNode, this.endnode, null);
+							try {
+								finalpath = astar.pathfinder(this.playerNode, this.endnode, null);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
 							move(null);
 						}
 

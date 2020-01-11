@@ -186,8 +186,8 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 	public Node findavailablenode(Node playerNode){
 		ArrayList<ArrayList> available_nodes = new ArrayList<ArrayList>();
-		for(Node node : playerNode.adjecent){
-			if(!node.occupied){
+		for(Node node : playerNode.closest){
+			if(!node.occupied && node.players.size() == 0){
 				double key = Math.sqrt(Math.pow((node.x - playerNode.x), 2) + Math.pow((node.y - playerNode.y), 2));
 				available_nodes.add(new ArrayList<Object>(Arrays.asList(key, node)));
 			}
@@ -198,29 +198,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 			}
 		}
 
-		/*
-		outerloop:
-		for(Node node : playerNode.closest){
-			if (node.occupied || node.players.size() > 0) {
 
-				double key = 10000000;
-				available_nodes.add(new ArrayList<Object>(Arrays.asList(key, node)));
-				continue;
-			}
-			for(List searchlist : available_nodes) {
-				if (node == searchlist.get(1)) {
-					continue outerloop;
-				}
-			}
-			double key = Math.sqrt(Math.pow((node.x - playerNode.x), 2)
-					+ Math.pow((node.y - playerNode.y), 2));
-
-			available_nodes.add(new ArrayList<Object>(Arrays.asList(key, node)));
-
-
-		}
-
-		 */
 		System.out.println(available_nodes.size());
 		Collections.sort(available_nodes, new Doublecomparator());
 
@@ -245,6 +223,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 		for (Node node : allnodes){
 			node.makeClosest(node.id, node.adjecent, false);
+			node.makeClosest(node.id, node.closest, true);
 			node.makeClosest(node.id + (nodewidth*3), node.closest, true);
 			node.makeClosest(node.id - (nodewidth*3), node.closest, true);
 			node.makeClosest(node.id + (3), node.closest, true);
@@ -336,11 +315,9 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
         game.batch.begin();
 
 
-		for (int i = 1; i < 1920/32; i++) {
-			for (int j = 0; j < 1080/32; j++) {
-				game.batch.draw(blue, (nodedict.get(i + (nodewidth*j)).x - 16), (nodedict.get(i + (nodewidth*j))).y - 16);
-
-			}
+		for (Node node : allnodes){
+			game.batch.draw(blue, node.x, node.y, 32,32);
+			font.draw(game.batch, "" + node.players.size(), node.x + 16, node.y + 16);
 		}
 
        
@@ -375,7 +352,11 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 						if (i > 0){
 							innerplayer.stopmove();
 							innerplayer.endnode = findavailablenode(innerplayer.endnode);
-							innerplayer.finalpath = innerplayer.astar.pathfinder(innerplayer.playerNode, innerplayer.endnode, null);
+							try {
+								innerplayer.finalpath = innerplayer.astar.pathfinder(innerplayer.playerNode, innerplayer.endnode, null);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
 							innerplayer.move(null);
 							innerplayer.endnode.players.add(innerplayer);
 							innerplayer.playerNode = innerplayer.endnode;
