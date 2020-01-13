@@ -1,7 +1,6 @@
 package com.game1;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 import com.badlogic.gdx.ApplicationAdapter;
@@ -335,7 +334,9 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 		for(Player player : players) {
 			player.batch(game.batch);
+
 		}
+
 		for(Building building : buildings) {
 			building.batch(game.batch);
 		}
@@ -347,6 +348,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
         for (Player player : players){
         	if (player.endnode != null) {
 				if (player.endnode.players.size() > 1) {
+
 					int i = 0;
 					for (Player innerplayer : player.endnode.players) {
 						if (i > 0){
@@ -358,14 +360,14 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 								e.printStackTrace();
 							}
 							innerplayer.move(null);
-							innerplayer.endnode.players.add(innerplayer);
+
 							innerplayer.playerNode = innerplayer.endnode;
 							innerplayer.playerNode.occupied = true;
 						}
 					}
 				}
 				player.endnode.players.clear();
-				player.endnode.players.add(player);
+
 			}
 
 		}
@@ -732,9 +734,9 @@ public void makeCastle() {
 			if (player.playerChosen) {
 				if (button == Input.Buttons.RIGHT) {
 					if (player.endnode.players.size() > 1){
-						player.endnode.players.remove(player);
+
 						player.endnode = findavailablenode(player.endnode);
-						player.endnode.players.add(player);
+
 
 					}
 				}

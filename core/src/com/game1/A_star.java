@@ -1,12 +1,6 @@
 package com.game1;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import com.badlogic.gdx.ai.StandaloneFileSystem;
@@ -22,19 +16,24 @@ public class A_star{
 		this.gamescreen = gamescreen;
 	}
 	
-	public ArrayList<Node> pathfinder(Node Start, Node End, Player target) throws InterruptedException {//A*-algoritmen. Setter start og end node med findnode metoden.
+	public ArrayList<Node> pathfinder(final Node Start, Node End, final Player target) {//A*-algoritmen. Setter start og end node med findnode metoden.
+
 		if (End.occupied){
 			End = gamescreen.findavailablenode(End);
 		}
-		Node end = End;
+
+		final Node end = End;
 		ArrayList<Node> closedList = new ArrayList<Node>(); //generer listene som skal brukes. 
 		ArrayList<Node> openList = new ArrayList<Node>();
 		Node start = Start;
 		start.g = 0;//setter g til start lik null s? den kan regnes ut i Node klassen. 
 		openList.add(start);//adder start til nodelisten 
 		Node current_Node;
+		current_Node = Start;
 		int i= 0;
-		while(!closedList.contains(end)) {//kj?rer loopen til vi har funnet m?l
+        Timer t = new Timer();
+
+        while(!closedList.contains(end)) {//kj?rer loopen til vi har funnet m?l
 			System.out.println("astar");
 			i = i + 1;
 			if(openList.size() > 1) {
@@ -45,11 +44,8 @@ public class A_star{
 					}
 				});
 			}
-			if (openList.size() == 0){
-				TimeUnit.SECONDS.sleep(1);
-				i = i - 1;
-				continue;
-			}
+
+
 			closedList.add(0, openList.get(0));//flytter den beste noden over til closedlist, og av openlist
 			openList.remove(0);
 			
@@ -76,6 +72,7 @@ public class A_star{
 								 }
 							});
 						}
+
 				}
 				
 				if(closedList.contains(node) ) {//hvis noden er p? closedlist skal vi ignorere den ? hoppe videre med continue
@@ -111,6 +108,7 @@ public class A_star{
 						node.f = node.h + node.g;
 
 					}
+
 				}
 			
 						
@@ -122,13 +120,13 @@ public class A_star{
 				
 		
 		ArrayList<Node> finalPath = new ArrayList<Node>();//lager listen vi legger de fungerende nodene i for ? f? final path.
-		finalPath.add(end);//legger til endnode 
-		while(!finalPath.contains(start)) {//kj?rer loopen til vi har startnode i listen. Da har vi funnet veien 
-			finalPath.add(0, finalPath.get(0).parent); //legger her til parent til den f?rste noden for ? jobbe seg bakover. 
-		}
-		 //setter tilslutt listen lik variabelen for classen. 
-		
-		return finalPath;
+        finalPath.add(end);//legger til endnode
+        while(!finalPath.contains(start)) {//kj?rer loopen til vi har startnode i listen. Da har vi funnet veien
+            finalPath.add(0, finalPath.get(0).parent); //legger her til parent til den f?rste noden for ? jobbe seg bakover.
+        }
+        //setter tilslutt listen lik variabelen for classen.
+
+        return finalPath;
 		
 			
 			

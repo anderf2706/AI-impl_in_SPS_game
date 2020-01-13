@@ -228,7 +228,7 @@ public class Player implements Screen, InputProcessor{
 		
 	public void stopmove() {
 		t.cancel();
-		endnode.players.remove(this);
+
 	}
 
 
@@ -297,64 +297,79 @@ public class Player implements Screen, InputProcessor{
 
 			
 			if(playerChosen) {
-				if(button == Input.Buttons.RIGHT) {
+                if (button == Input.Buttons.RIGHT) {
 
-					endnode = gamescreen.chosenNode;
-					finalnode = gamescreen.chosenNode;
-					endnode.players.add(this);
-					if (endnode.players.size() > 1){
-						endnode.players.remove(this);
-						endnode = gamescreen.findavailablenode(endnode);
-						endnode.players.add(this);
+                    endnode = gamescreen.chosenNode;
+                    finalnode = gamescreen.chosenNode;
 
-					}
-					if(!executed) {
-						if(t != null) {
-						t.cancel();
-						}
-						following = false;
-						attacking = false;
+                    if (endnode.players.size() > 1) {
 
-					
-						
-						moving = true;						
-
-							}
+                        endnode = gamescreen.findavailablenode(endnode);
 
 
-						for (Player player : gamescreen.players) {
-							if(Intersector.overlaps(gamescreen.the_mouse, player.the_player)){
-								Player target = player;
-								following = true;
-								follow(target);
-
-							}
-
-						}
-						for (Building building : gamescreen.buildings) {
-							if(Intersector.overlaps(gamescreen.the_mouse, building.the_building)){
-								this.buildingtarget = building;
-								attacking = true;
+                    }
+                    if (!executed) {
+                        if (t != null) {
+                            t.cancel();
+                        }
+                        following = false;
+                        attacking = false;
 
 
-							}
+                        moving = true;
 
-						}
+                    }
 
 
-						if(!following) {
+                    for (Player player : gamescreen.players) {
+                        if (Intersector.overlaps(gamescreen.the_mouse, player.the_player)) {
+                            Player target = player;
+                            following = true;
+                            follow(target);
 
-							try {
-								finalpath = astar.pathfinder(this.playerNode, this.endnode, null);
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}
-							move(null);
-						}
+                        }
 
-						executed = true;
-					}
-				}
+                    }
+                    for (Building building : gamescreen.buildings) {
+                        if (Intersector.overlaps(gamescreen.the_mouse, building.the_building)) {
+                            this.buildingtarget = building;
+                            attacking = true;
+
+
+                        }
+
+                    }
+
+
+                    if (!following) {
+
+
+                        if (attacking) {
+                            endnode = gamescreen.findavailablenode(buildingtarget.buildingnode);
+                        }
+
+                        finalpath = astar.pathfinder(this.playerNode, this.endnode, null);
+                                /*
+                                int k = 0;
+                                for (Node node2 : playerNode.adjecent) {
+                                    if (!node2.occupied) {
+                                        k += 1;
+                                    }
+                                }
+                                if (k == 0){
+                                    finalpath.add(0, playerNode);
+                                }
+
+                                 */
+
+
+                        move(null);
+
+
+                        executed = true;
+                    }
+                }
+            }
 
 		return false;
 		
@@ -460,7 +475,7 @@ public class Player implements Screen, InputProcessor{
 		  check_player();
 		  collision();
 		  if (!(moving || following) && endnode != null){
-		  	endnode.players.remove(this);
+
 		  }
 
 		  	
@@ -489,11 +504,13 @@ public class Player implements Screen, InputProcessor{
 	public void check_player() {
 		 if(!Intersector.overlaps(the_player, playerNode.body)) {
 		 	  playerNode.occupied = false;
+
 				 for (Node node : gamescreen.allnodes) {
 
 					 if (Intersector.overlaps(node.body, the_player)) {
 						 this.playerNode = node;
 						 playerNode.occupied = true;
+
 						 break;
 					 }
 				 }
@@ -505,7 +522,7 @@ public class Player implements Screen, InputProcessor{
 		 }
 		 if(t != null && (Intersector.overlaps(endnode.body, this.the_player))) {
 				stopmove();
-				endnode.players.remove(this);
+
 			}
 
 		for(Player player : gamescreen.players){
@@ -517,17 +534,9 @@ public class Player implements Screen, InputProcessor{
 				this.playerNode.occupied = true;
 
 
-
 			}
 
 		}
-
-
-
-
-
-
-
 	}
 
 
