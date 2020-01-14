@@ -354,11 +354,14 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 						if (i > 0){
 							innerplayer.stopmove();
 							innerplayer.endnode = findavailablenode(innerplayer.endnode);
+							/*
 							try {
 								innerplayer.finalpath = innerplayer.astar.pathfinder(innerplayer.playerNode, innerplayer.endnode, null);
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}
+
+							 */
 							innerplayer.move(null);
 
 							innerplayer.playerNode = innerplayer.endnode;

@@ -1,6 +1,9 @@
 package com.game1;
 
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.management.openmbean.TabularData;
 import javax.swing.JOptionPane;
@@ -348,8 +351,8 @@ public class Player implements Screen, InputProcessor{
                             endnode = gamescreen.findavailablenode(buildingtarget.buildingnode);
                         }
 
-                        finalpath = astar.pathfinder(this.playerNode, this.endnode, null);
-                                /*
+
+
                                 int k = 0;
                                 for (Node node2 : playerNode.adjecent) {
                                     if (!node2.occupied) {
@@ -357,10 +360,15 @@ public class Player implements Screen, InputProcessor{
                                     }
                                 }
                                 if (k == 0){
-                                    finalpath.add(0, playerNode);
-                                }
+									final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+									executorService.schedule(A_star::pathfinder(), 5, TimeUnit.SECONDS)
 
-                                 */
+									}
+                                else{
+                                	finalpath = astar.pathfinder(playerNode, endnode, null);
+								}
+
+
 
 
                         move(null);
@@ -374,6 +382,8 @@ public class Player implements Screen, InputProcessor{
 		return false;
 		
 	}
+
+
 
 
 
