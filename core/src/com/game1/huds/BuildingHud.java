@@ -20,6 +20,7 @@ public class BuildingHud extends Hud {
 	public BuildingHud(SpriteBatch spriteBatch, final GameScreen gamescreen, final Building building) {
 		super(spriteBatch, gamescreen);
 		this.gamescreen = gamescreen;
+
 		Button textbutton = new TextButton("solider", super.skin);
 		textbutton.setPosition(200, 50);
 		textbutton.addListener( new ClickListener() {
@@ -28,7 +29,7 @@ public class BuildingHud extends Hud {
 				Node node = gamescreen.findavailablenode(building.buildingnode);
 
 				new Player(gamescreen, gamescreen.game, node.x
-						, node.y);
+						, node.y, gamescreen.team);
 
 
 
@@ -41,7 +42,7 @@ public class BuildingHud extends Hud {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				Node node = gamescreen.findavailablenode(building.buildingnode);
-				new Wall(gamescreen, node.x, node.y);
+				new Wall(gamescreen, node.x, node.y, gamescreen.team);
 
 
 			};
@@ -73,18 +74,38 @@ public class BuildingHud extends Hud {
 			};
 		});
 
+		Button textbutton2 = new TextButton("solider", super.skin);
+		textbutton2.setPosition(200, 50);
+		textbutton2.addListener( new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				Node node = gamescreen.findavailablenode(building.buildingnode);
 
-		//if(building.getClass() == Barracks.class){
+				new Wall(gamescreen, node.x, node.y, gamescreen.team);
+
+
+
+			}
+		});
+
+
+		if(building.getClass() == Barracks.class){
 			table.addActor(textbutton);
-		//}
-		table.addActor(imageButton2);
-		table.addActor(imageButton3);
-		table.addActor(imageButton4);
-		table.addActor(imageButton5);
+			table.addActor(imageButton2);
+			table.addActor(imageButton3);
+			table.addActor(imageButton4);
+			table.addActor(imageButton5);
+		}
+
+		if(building.getClass() == Wall.class){
+			table.addActor(textbutton2);
+			table.addActor(imageButton2);
+
+		}
 
 
 		stage.addActor(table);
-		//stage.addActor(imageButton2);
+
 	}
 
 

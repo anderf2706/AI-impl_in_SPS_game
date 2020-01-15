@@ -41,6 +41,8 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	float touchX;
 	float touchY;
 
+	public int team;
+
 	Rectangle mousedrag;
 
 	boolean makeP = false;
@@ -173,6 +175,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		Vector3 mouseInWorld3D = new Vector3();
 		this.mouseInWorld2D = mouseInWorld2D;
 		this.mouseInWorld3D = mouseInWorld3D;
+
 
 
 	}
@@ -314,22 +317,17 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
         game.batch.begin();
 
 
+
+
 		for (Node node : allnodes){
 			game.batch.draw(blue, node.x, node.y, 32,32);
-			font.draw(game.batch, "" + node.players.size(), node.x + 16, node.y + 16);
 		}
 
        
         if(chosenNode != null) {
         	game.batch.draw(green, chosenNode.x - 8, chosenNode.y - 8, 16, 16);
-			for(Node node2 : chosenNode.adjecent){
-				game.batch.draw(green, node2.x - 8, node2.y - 8, 16, 16);
 
-			}
-			for(Node node2 : chosenNode.closest){
-				game.batch.draw(green, node2.x - 8, node2.y - 8, 16, 16);
 
-			}
 		}
 
 		for(Player player : players) {
@@ -341,9 +339,17 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 			building.batch(game.batch);
 		}
 
+		if (team != 0){
+			Vector3 midscreen = new Vector3(500,500,0);
+			font.draw(game.batch, "" + this.team, camera.project(midscreen).x, camera.project(midscreen).y);
+
+		}
+
 
 
 		game.batch.end();
+
+		/*
 
         for (Player player : players){
         	if (player.endnode != null) {
@@ -361,7 +367,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 								e.printStackTrace();
 							}
 
-							 */
+
 							innerplayer.move(null);
 
 							innerplayer.playerNode = innerplayer.endnode;
@@ -373,7 +379,10 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 			}
 
+
 		}
+
+		 */
 
 		for(Building building : buildings) {
 			building.render(delta);
@@ -384,9 +393,14 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		}
 
 		for(Player player : players) {
-			player.render(delta);
-			if(player.playerChosen){
-				nothud = true;
+			if (player.health == 0){
+				player = null;
+			}
+			if (player != null) {
+				player.render(delta);
+				if (player.playerChosen) {
+					nothud = true;
+				}
 			}
 
 		}
@@ -458,7 +472,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	
 	public void makeP() {
 		try {
-			new Player(this, game, findavailablenode(chosenNode).x, findavailablenode(chosenNode).y);
+			new Player(this, game, findavailablenode(chosenNode).x, findavailablenode(chosenNode).y, team);
 			
 		}
 		catch(Exception e) {
@@ -484,7 +498,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 					}
 					
 				}
-				new Barracks(this, chosenNode.x, chosenNode.y);
+				new Barracks(this, chosenNode.x, chosenNode.y, team);
 		
 	}
 	
@@ -504,7 +518,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		}
 			
 		
-		new House(this, chosenNode.x, chosenNode.y);
+		new House(this, chosenNode.x, chosenNode.y, team);
 
 	}
 	
@@ -523,7 +537,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 			}
 				
 			
-			new Wall(this, chosenNode.x, chosenNode.y);
+			new Wall(this, chosenNode.x, chosenNode.y, team);
 	
 	}
 		
@@ -542,7 +556,7 @@ public void makeCastle() {
 			}
 				
 			
-			new Castle(this, chosenNode.x, chosenNode.y);
+			new Castle(this, chosenNode.x, chosenNode.y, team);
 	
 	}
 		
@@ -636,7 +650,22 @@ public void makeCastle() {
 
 	@Override
 	public boolean keyUp(int keycode) {
+		switch (keycode){
+			case Input.Keys.NUM_1:
+				System.out.println("switch");
+				team = 1;
+				break;
+			case Input.Keys.NUM_2:
+				team = 2;
+				break;
+			case Input.Keys.NUM_3:
+				team = 3;
+				break;
+			case Input.Keys.NUM_4:
+				team = 4;
+				break;
 
+		}
 
 
 		if(keycode == Input.Keys.D) {
@@ -668,7 +697,8 @@ public void makeCastle() {
 		}
 		for(Building building : buildings) {
 			building.keyUp(keycode);
-		}      
+		}
+
 		return false;
 	}
 

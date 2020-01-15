@@ -75,6 +75,8 @@ public class Maingamehud extends Hud {
 
 
 
+
+
 		//stage.addActor(imageButton);
 		table.addActor(textbutton);
 		table.addActor(imageButton2);

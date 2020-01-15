@@ -1,9 +1,7 @@
 package com.game1;
 
 import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 import javax.management.openmbean.TabularData;
 import javax.swing.JOptionPane;
@@ -23,6 +21,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.game1.huds.Playerhud;
+import sun.jvm.hotspot.debugger.posix.elf.ELFSectionHeader;
 
 public class Player implements Screen, InputProcessor{
 	
@@ -81,6 +80,7 @@ public class Player implements Screen, InputProcessor{
 	Timer t;
 	
 	int i;
+	boolean isAttacking = false;
 	
 	boolean playerChosen = false;
 	boolean moving = false;
@@ -91,16 +91,17 @@ public class Player implements Screen, InputProcessor{
 	Node playerNode;
 	int k;
 	
-
+	int team;
 	
 	float oldX;
 	float oldY;
 
 	Playerhud playerhud;
 
-	public Player(GameScreen gamescreen, Game1 game, int x, int y) {
+	public Player(GameScreen gamescreen, Game1 game, int x, int y, int team) {
 		this.gamescreen = gamescreen;
 		this.game = game;
+		this.team = team;
 		
 		the_player = new Rectangle();
 		
@@ -119,7 +120,7 @@ public class Player implements Screen, InputProcessor{
 		
 		health = 100;
 		attack = 10;
-		defense = 10;
+		defense = 1;
 		playerhud = new Playerhud(game.batch, gamescreen, this);
 		
 	    
@@ -151,13 +152,12 @@ public class Player implements Screen, InputProcessor{
 	}
 	
 	public void collision() {
-		for (int i = 0; i < gamescreen.players.size(); i++) {
-			if(Intersector.overlaps(gamescreen.players.get(i).the_player, this.the_player) && !gamescreen.players.get(i).equals(this)) {
-				//stopmove();	
-				colliding = true;
-				
+		for (Player player : gamescreen.players){
+			if (this.playerNode.adjecent.contains(player.playerNode) && player.team != this.team && !isAttacking && !moving && !following){
+				attack(player, 500);
+				isAttacking = true;
 			}
-			
+
 		}
 	}
 	
@@ -196,7 +196,6 @@ public class Player implements Screen, InputProcessor{
 	
 	public void follow(final Player player) {
 		dush = 0;
-		if(dush < finalpath.size()) {
 			t = new Timer();
 
 			t.schedule(new TimerTask() {
@@ -214,7 +213,7 @@ public class Player implements Screen, InputProcessor{
 				}
 			}, 0, 500);
 			
-		}
+
 	}
 	
 	public void follow_t(Player player) throws InterruptedException {
@@ -223,6 +222,10 @@ public class Player implements Screen, InputProcessor{
 
 			this.the_player.x = finalpath.get(1).x - the_player.width / 2;
 			this.the_player.y = finalpath.get(1).y - the_player.width / 2;
+		}
+		if (this.playerNode.adjecent.contains(player.playerNode) && player.team != this.team && !isAttacking && following){
+			attack(player, 0);
+			isAttacking = true;
 		}
 	}
 
@@ -237,6 +240,30 @@ public class Player implements Screen, InputProcessor{
 
 
 	public void attack(Building building){
+
+	}
+
+	public void attack(final Player player, int delay){
+		final Timer tattack = new Timer();
+
+			tattack.schedule(new TimerTask() {
+
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					if(player.health > 0 && playerNode.adjecent.contains(player.playerNode)) {
+						player.health = player.health - attack;
+					}
+					else {
+						tattack.cancel();
+						isAttacking = false;
+					}
+
+				}
+			}, delay, 2000);
+
+
+
 
 	}
 	
@@ -298,16 +325,21 @@ public class Player implements Screen, InputProcessor{
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
 
-			
+
 			if(playerChosen) {
                 if (button == Input.Buttons.RIGHT) {
-
+                	if (endnode != null) {
+						endnode.players.remove(this);
+					}
                     endnode = gamescreen.chosenNode;
-                    finalnode = gamescreen.chosenNode;
+                    endnode.players.add(this);
+					finalnode = gamescreen.chosenNode;
+					isAttacking = false;
 
                     if (endnode.players.size() > 1) {
-
+						endnode.players.remove(this);
                         endnode = gamescreen.findavailablenode(endnode);
+                        endnode.players.add(this);
 
 
                     }
@@ -349,6 +381,7 @@ public class Player implements Screen, InputProcessor{
 
                         if (attacking) {
                             endnode = gamescreen.findavailablenode(buildingtarget.buildingnode);
+                            endnode.players.add(this);
                         }
 
 
@@ -360,12 +393,19 @@ public class Player implements Screen, InputProcessor{
                                     }
                                 }
                                 if (k == 0){
-									final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-									executorService.schedule(A_star::pathfinder(), 5, TimeUnit.SECONDS)
+									finalpath.clear();
+
+
+								}
+
+                                else{
+                                	try {
+										finalpath = astar.pathfinder(playerNode, endnode, null);
+									}
+                                	catch (IndexOutOfBoundsException ignored){
+                                		finalpath = astar.pathfinder(playerNode, gamescreen.findavailablenode(endnode), null);
 
 									}
-                                else{
-                                	finalpath = astar.pathfinder(playerNode, endnode, null);
 								}
 
 
@@ -512,6 +552,11 @@ public class Player implements Screen, InputProcessor{
 	}
 	
 	public void check_player() {
+		 if (this.health == 0){
+		 	gamescreen.players.remove(this);
+		 	this.playerNode.occupied = false;
+
+		 }
 		 if(!Intersector.overlaps(the_player, playerNode.body)) {
 		 	  playerNode.occupied = false;
 
@@ -532,17 +577,24 @@ public class Player implements Screen, InputProcessor{
 		 }
 		 if(t != null && (Intersector.overlaps(endnode.body, this.the_player))) {
 				stopmove();
+				moving = false;
 
 			}
 
 		for(Player player : gamescreen.players){
 			if (player.playerNode == this.playerNode && !(this == player)){
-				Node node = gamescreen.findavailablenode(this.playerNode);
-				this.playerNode = node;
-				this.the_player.x = this.playerNode.x - the_player.width/2;
-				this.the_player.y = this.playerNode.y - the_player.height/2;
-				this.playerNode.occupied = true;
+				Node node;
+				if(attacking && !moving){
+					node = gamescreen.findavailablenode(buildingtarget.buildingnode);
+				}
+				else {
+					node = gamescreen.findavailablenode(this.playerNode);
 
+				}
+				this.playerNode = node;
+				this.the_player.x = this.playerNode.x - the_player.width / 2;
+				this.the_player.y = this.playerNode.y - the_player.height / 2;
+				this.playerNode.occupied = true;
 
 			}
 

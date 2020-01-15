@@ -23,6 +23,7 @@ public class Building implements InputProcessor, Screen{
 
 	
 	boolean buildingChosen = false;
+	int team;
 	
 	BitmapFont font = new BitmapFont();
 	
@@ -31,8 +32,9 @@ public class Building implements InputProcessor, Screen{
 	BuildingHud bhud;
 
 	
-	public Building(GameScreen gamescreen, int x, int y, int width, int height) {
+	public Building(GameScreen gamescreen, int x, int y, int width, int height, int team) {
 		this.gamescreen = gamescreen;
+		this.team = team;
 		the_building = new Rectangle();
 		the_building.height = height;
 		the_building.width = width;
@@ -44,10 +46,7 @@ public class Building implements InputProcessor, Screen{
 					node.occupied = true;
 				}
 			}
-
-
 		bhud = new BuildingHud(gamescreen.game.batch, gamescreen, this);
-
 		building = new Texture(Gdx.files.internal("bucket.png"));
 		green = new Texture(Gdx.files.internal("green.jpg"));
 		
