@@ -57,7 +57,7 @@ public class Player implements Screen, InputProcessor{
 	boolean executed = false;
 	boolean colliding = false;
 	boolean attacking = false;
-	
+
 
 	int objectLayerId = 2;
 	
@@ -102,6 +102,7 @@ public class Player implements Screen, InputProcessor{
 		this.gamescreen = gamescreen;
 		this.game = game;
 		this.team = team;
+
 		
 		the_player = new Rectangle();
 		
@@ -552,9 +553,10 @@ public class Player implements Screen, InputProcessor{
 	}
 	
 	public void check_player() {
-		 if (this.health == 0){
-		 	gamescreen.players.remove(this);
+		 if (this.health <= 0){
 		 	this.playerNode.occupied = false;
+
+
 
 		 }
 		 if(!Intersector.overlaps(the_player, playerNode.body)) {

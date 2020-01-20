@@ -125,7 +125,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 
 
-		nodewidth = 100;
+		nodewidth = 500;
 
 		mapWidth = 100 * 32;
 		mapHeight = 100*32;
@@ -175,6 +175,9 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		Vector3 mouseInWorld3D = new Vector3();
 		this.mouseInWorld2D = mouseInWorld2D;
 		this.mouseInWorld3D = mouseInWorld3D;
+
+        camera.translate((500*32)/2, (500*32)/2);
+        camera.update();
 
 
 
@@ -331,8 +334,10 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		}
 
 		for(Player player : players) {
-			player.batch(game.batch);
+		    if(player != null) {
+                player.batch(game.batch);
 
+            }
 		}
 
 		for(Building building : buildings) {
@@ -393,7 +398,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		}
 
 		for(Player player : players) {
-			if (player.health == 0){
+			if (player.health <= 0){
 				player = null;
 			}
 			if (player != null) {
@@ -579,6 +584,7 @@ public void makeCastle() {
 		if(keycode == Input.Keys.D) {
 			if(D) {
 				right = 1;
+
 				D = false;
 				}
 

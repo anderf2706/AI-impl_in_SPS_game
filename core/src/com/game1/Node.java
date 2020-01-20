@@ -93,6 +93,7 @@ public class Node {
 
 
 	public void addmeaning() {
+
 		//TODO, occupied og color.
 
 	}
