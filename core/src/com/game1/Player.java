@@ -21,7 +21,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.game1.huds.Playerhud;
-import sun.jvm.hotspot.debugger.posix.elf.ELFSectionHeader;
 
 public class Player implements Screen, InputProcessor{
 	
@@ -47,6 +46,8 @@ public class Player implements Screen, InputProcessor{
 	int health;
 	int attack;
 	int defense;
+
+	boolean alive = true;
 	
 	Vector2 nodeFin;
 	
@@ -330,20 +331,11 @@ public class Player implements Screen, InputProcessor{
 			if(playerChosen) {
                 if (button == Input.Buttons.RIGHT) {
                 	if (endnode != null) {
-						endnode.players.remove(this);
 					}
                     endnode = gamescreen.chosenNode;
-                    endnode.players.add(this);
 					finalnode = gamescreen.chosenNode;
 					isAttacking = false;
 
-                    if (endnode.players.size() > 1) {
-						endnode.players.remove(this);
-                        endnode = gamescreen.findavailablenode(endnode);
-                        endnode.players.add(this);
-
-
-                    }
                     if (!executed) {
                         if (t != null) {
                             t.cancel();
@@ -382,7 +374,6 @@ public class Player implements Screen, InputProcessor{
 
                         if (attacking) {
                             endnode = gamescreen.findavailablenode(buildingtarget.buildingnode);
-                            endnode.players.add(this);
                         }
 
 

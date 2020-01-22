@@ -324,11 +324,14 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 		for (Node node : allnodes){
 			game.batch.draw(blue, node.x, node.y, 32,32);
+
 		}
 
        
         if(chosenNode != null) {
         	game.batch.draw(green, chosenNode.x - 8, chosenNode.y - 8, 16, 16);
+			font.draw(game.batch, "" + chosenNode.players, chosenNode.x, chosenNode.y);
+
 
 
 		}
@@ -397,15 +400,18 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 		}
 
-		for(Player player : players) {
-			if (player.health <= 0){
-				player = null;
+		for(int i = 0; i<players.size(); i++ ) {
+			if (players.get(i).health <= 0){
+				players.get(i).playerNode.players.remove(players.get(i));
+				players.get(i).playerNode.occupied = false;
+				players.remove(players.get(i));
+				i -= 1;
 			}
-			if (player != null) {
-				player.render(delta);
-				if (player.playerChosen) {
-					nothud = true;
-				}
+		}
+		for(Player player2 : players) {
+			player2.render(delta);
+			if (player2.playerChosen) {
+				nothud = true;
 			}
 
 		}
@@ -434,38 +440,38 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 			ss.rect(touchdownmouseX, 1080 - touchdownmouseY,-(touchdownmouseX - Gdx.input.getX()),((touchdownmouseY) - Gdx.input.getY()));
 			ss.end();
 		}
-		
-	  
-        
-        
-        
-        
-        
+
+
+
+
+
+
+
 	}
-	
+
 
 	@Override
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void pause() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void resume() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -474,100 +480,100 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 		 //dispose our hud
 	}
-	
+
 	public void makeP() {
 		try {
 			new Player(this, game, findavailablenode(chosenNode).x, findavailablenode(chosenNode).y, team);
-			
+
 		}
 		catch(Exception e) {
-			
+
 		}
-				
-		
+
+
 	}
-	
+
 	public void makeBarracks() {
-		
+
 				for (int i = 0; i < this.buildings.size(); i++) {
-					
+
 					if((Intersector.overlaps(new Rectangle(chosenNode.x - 32, chosenNode.y - 32, 64, 64), buildings.get(i).the_building))){
-						
+
 						return;
 					}
 				}
-				
+
 				for (Node node : chosenNode.adjecent) {
 					if(node == null) {
 						return;
 					}
-					
+
 				}
 				new Barracks(this, chosenNode.x, chosenNode.y, team);
-		
+
 	}
-	
+
 	public void makeHouse() {
-		
+
 		for (int i = 0; i < this.buildings.size(); i++) {
-			
+
 			if((Intersector.overlaps(new Rectangle(chosenNode.x - 16, chosenNode.y - 16, 32, 32), buildings.get(i).the_building))){
-				
+
 				return;
 			}
 		}
-		
-		
+
+
 		if(chosenNode == null) {
 			return;
 		}
-			
-		
+
+
 		new House(this, chosenNode.x, chosenNode.y, team);
 
 	}
-	
+
 		public void makeWall() {
-			
+
 			for (int i = 0; i < this.buildings.size(); i++) {
-				
+
 				if((Intersector.overlaps(new Rectangle(chosenNode.x - 16, chosenNode.y - 16, 32, 32), buildings.get(i).the_building))){
-					
+
 					return;
 				}
 			}
-			
+
 			if(chosenNode == null) {
 				return;
 			}
-				
-			
+
+
 			new Wall(this, chosenNode.x, chosenNode.y, team);
-	
+
 	}
-		
+
 public void makeCastle() {
-			
+
 			for (int i = 0; i < this.buildings.size(); i++) {
-				
+
 				if((Intersector.overlaps(new Rectangle(chosenNode.x - 64, chosenNode.y - 64, 128, 128), buildings.get(i).the_building))){
-					
+
 					return;
 				}
 			}
-			
+
 			if(chosenNode == null && chosenNode.adjecent.contains(null)) {
 				return;
 			}
-				
-			
+
+
 			new Castle(this, chosenNode.x, chosenNode.y, team);
-	
+
 	}
-		
-	
-		
-		
+
+
+
+
 	public void rotate(int b) {
 		camera.rotate(b * Gdx.graphics.getDeltaTime());
 	}
@@ -617,13 +623,13 @@ public void makeCastle() {
 		if(keycode == Input.Keys.E) {
 			rotate2 = true;
 		}
-		
+
 		if(keycode == Input.Keys.P) {
-			
+
 			makeP = !makeP;
 		}
 		if(keycode == Input.Keys.B) {
-			
+
 			makeB = !makeB;
 
 		}
@@ -744,8 +750,16 @@ public void makeCastle() {
 					this.chosenNode = node;
 				}
 			}
-
-			
+		for (int i =0; i<players.size(); i++) {
+			if (players.get(i).playerChosen) {
+				if (button == Input.Buttons.RIGHT) {
+					if (i != 0){
+						players.get(i).endnode = findavailablenode(chosenNode);
+						players.get(i).endnode.occupied = true;
+					}
+				}
+			}
+		}
 		for (Player player : players) {
 				player.touchDown(screenX, screenY, pointer, button);
 		}
@@ -769,18 +783,7 @@ public void makeCastle() {
 		if(makeCastle && button == Input.Buttons.LEFT) {
 			makeCastle();
 		}
-		for (Player player : players) {
-			if (player.playerChosen) {
-				if (button == Input.Buttons.RIGHT) {
-					if (player.endnode.players.size() > 1){
 
-						player.endnode = findavailablenode(player.endnode);
-
-
-					}
-				}
-			}
-		}
 		return false;
 			
 	}
