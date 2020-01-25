@@ -111,21 +111,23 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	Map<Integer, Node> nodedict = new HashMap<Integer, Node>();
 
 
-	int nodewidth;
 
+	int nodewidth;
+    List<List<Node>> listOfLists;
 
 
 	public GameScreen(Game1 game) {
+        listOfLists = new ArrayList<List<Node>>();
+        for(int i = 0; i < 64; i++)  {
+            listOfLists.add(new ArrayList<Node>());
+        }
 
 
 
 
 
 
-
-
-
-		nodewidth = 500;
+        nodewidth = 500;
 
 		mapWidth = 100 * 32;
 		mapHeight = 100*32;
@@ -180,6 +182,13 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
         camera.update();
 
 
+        for (int i = 0; i < 64; i++) {
+            for (int j = 0; j < 36; j++) {
+                listOfLists.get(i).add(j, nodedict.get((((248 + i)*500)+(254 + j))));
+            }
+
+        }
+
 
 	}
 
@@ -221,8 +230,8 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 			}
 		}
 
-		System.out.println(nodedict.size());
-		System.out.println(nodedict.keySet());
+
+
 
 
 
@@ -326,6 +335,19 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 			game.batch.draw(blue, node.x, node.y, 32,32);
 
 		}
+		for (List<Node> list : listOfLists){
+		    for(Node node : list){
+                game.batch.draw(green, node.x, node.y, 20,20);
+            }
+
+        }
+
+
+
+
+
+
+
 
        
         if(chosenNode != null) {
@@ -590,6 +612,25 @@ public void makeCastle() {
 		if(keycode == Input.Keys.D) {
 			if(D) {
 				right = 1;
+
+                ArrayList<Node> templist = new ArrayList<Node>();
+                for (Node node : listOfLists.get(listOfLists.size() - 1)){
+                    templist.add(nodedict.get(node.id + 1*500));
+                }
+                System.out.println(templist.size());
+                listOfLists.add(templist);
+
+				ArrayList<Node> templist2 = new ArrayList<Node>();
+                for (Node node : listOfLists.get(listOfLists.size() - 1 )){
+                    templist2.add(nodedict.get(node.id + 2*500));
+                }
+                System.out.println(templist2.size());
+                listOfLists.add(templist2);
+
+
+
+				listOfLists.remove(1);
+				listOfLists.remove(0);
 
 				D = false;
 				}
