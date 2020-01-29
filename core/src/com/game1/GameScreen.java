@@ -184,7 +184,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
         for (int i = 0; i < 64; i++) {
             for (int j = 0; j < 36; j++) {
-                listOfLists.get(i).add(j, nodedict.get((((248 + i)*500)+(254 + j))));
+                listOfLists.get(i).add(j, nodedict.get((((248 + i)*500)+(252 + j))));
             }
 
         }
@@ -622,9 +622,9 @@ public void makeCastle() {
 
 				ArrayList<Node> templist2 = new ArrayList<Node>();
                 for (Node node : listOfLists.get(listOfLists.size() - 1 )){
-                    templist2.add(nodedict.get(node.id + 2*500));
+                    templist2.add(nodedict.get(node.id + 1*500));
                 }
-                System.out.println(templist2.size());
+
                 listOfLists.add(templist2);
 
 
@@ -639,18 +639,71 @@ public void makeCastle() {
 		if(keycode == Input.Keys.A) {
 			if(A) {
 				left = -1;
+
+				ArrayList<Node> templist = new ArrayList<Node>();
+				for (Node node : listOfLists.get(0)){
+					templist.add(nodedict.get(node.id - 1*500));
+				}
+				System.out.println(templist.size());
+				listOfLists.add(0, templist);
+
+				ArrayList<Node> templist2 = new ArrayList<Node>();
+				for (Node node : listOfLists.get(0)){
+					templist2.add(nodedict.get(node.id - 1*500));
+				}
+
+				listOfLists.add(0, templist2);
+
+
+
+				listOfLists.remove(listOfLists.size() - 2);
+				listOfLists.remove(listOfLists.size() - 1);
+
+
 				A = false;
 			}
 		}
 		if(keycode == Input.Keys.W) {
 			if(W) {
 				up = 1;
+
+
+
+				Node node = nodedict.get(listOfLists.get(0).get(listOfLists.get(0).size() - 1).id + 1);
+				Node node2 = nodedict.get(listOfLists.get(0).get(listOfLists.get(0).size() - 1).id + 2);
+				for (int i = 0; i < 64; i++) {
+					listOfLists.get(i).add(listOfLists.get(i).size(), nodedict.get(node.id + (i * 500)));
+					listOfLists.get(i).add(listOfLists.get(i).size(), nodedict.get(node2.id + (i * 500)));
+					listOfLists.get(i).remove(1);
+					listOfLists.get(i).remove(0);
+				}
+
+				System.out.println(listOfLists.get(0).size());
+
+
+
+
+
+
+
 				W = false;
 			}
 		}
 		if(keycode == Input.Keys.S) {
 			if(S) {
 				down = -1;
+
+				Node node = nodedict.get(listOfLists.get(0).get(0).id - 1);
+				Node node2 = nodedict.get(listOfLists.get(0).get(0).id - 2);
+				for (int i = 0; i < 64; i++) {
+					listOfLists.get(i).add(0, nodedict.get(node.id + (i * 500)));
+					listOfLists.get(i).add(0, nodedict.get(node2.id + (i * 500)));
+					listOfLists.get(i).remove(listOfLists.get(i).size() - 1);
+					listOfLists.get(i).remove(listOfLists.get(i).size() - 1);
+				}
+
+
+
 				S = false;
 			}
 		}
