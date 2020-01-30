@@ -237,6 +237,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 		for (Node node : allnodes){
 			node.makeClosest(node.id, node.adjecent, false);
+
 			node.makeClosest(node.id, node.closest, true);
 			node.makeClosest(node.id + (nodewidth*3), node.closest, true);
 			node.makeClosest(node.id - (nodewidth*3), node.closest, true);
@@ -246,6 +247,8 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 			node.makeClosest((node.id + 3) - (nodewidth*3), node.closest, true);
 			node.makeClosest((node.id - 3) + (nodewidth*3), node.closest, true);
 			node.makeClosest((node.id - 3) - (nodewidth*3), node.closest, true);
+
+
 
 
 
@@ -331,10 +334,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 
 
-		for (Node node : allnodes){
-			game.batch.draw(blue, node.x, node.y, 32,32);
 
-		}
 		for (List<Node> list : listOfLists){
 		    for(Node node : list){
                 game.batch.draw(green, node.x, node.y, 20,20);
