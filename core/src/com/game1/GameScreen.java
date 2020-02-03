@@ -1,5 +1,8 @@
 package com.game1;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.*;
 
 
@@ -116,7 +119,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
     List<List<Node>> listOfLists;
 
 
-	public GameScreen(Game1 game) {
+	public GameScreen(Game1 game) throws IOException {
         listOfLists = new ArrayList<List<Node>>();
         for(int i = 0; i < 64; i++)  {
             listOfLists.add(new ArrayList<Node>());
@@ -127,7 +130,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 		//TODO make a nodemap that is saved in the assets folder. So it dosent need to be maked each time.
 
-        nodewidth = 2000;
+        nodewidth = 500;
 
 		mapWidth = 100 * 32;
 		mapHeight = 100*32;
@@ -219,7 +222,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		return (Node)available_nodes.get(0).get(1);
 	}
 	
-	public void makenodes() {
+	public void makenodes() throws IOException {
 		for (int i = 0; i < nodewidth; i += 1) {
 			for (int j = 0; j < nodewidth; j += 1) {
 				Node node = new Node(i*32, j*32, this);
@@ -256,9 +259,6 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 
 		}
-
-
-
 
 	}
 	
@@ -320,7 +320,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 		for (List<Node> list : listOfLists){
 		    for(Node node : list){
-                game.batch.draw(green, node.x, node.y, 20,20);
+                game.batch.draw(green, node.x, node.y, 32,32);
             }
 
         }
@@ -827,6 +827,7 @@ public void makeCastle() {
 					this.chosenNode = node;
 				}
 			}
+			/*
 		for (int i =0; i<players.size(); i++) {
 			if (players.get(i).playerChosen) {
 				if (button == Input.Buttons.RIGHT) {
@@ -836,7 +837,10 @@ public void makeCastle() {
 					}
 				}
 			}
+
 		}
+
+			 */
 		for (Player player : players) {
 				player.touchDown(screenX, screenY, pointer, button);
 		}

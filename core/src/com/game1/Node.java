@@ -1,5 +1,6 @@
 package com.game1;
 
+import java.io.Serializable;
 import java.util.*;
 
 import com.badlogic.gdx.graphics.Texture;
@@ -7,7 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 
-public class Node {
+public class Node implements Serializable {
 	ArrayList<Node> adjecent = new ArrayList<Node>();
 	ArrayList<Node> closest = new ArrayList<Node>();
 	ArrayList<Player> players = new ArrayList<Player>();
@@ -93,6 +94,8 @@ public class Node {
 
 
 	public void addmeaning() {
+
+		
 
 		//TODO, occupied og color.
 

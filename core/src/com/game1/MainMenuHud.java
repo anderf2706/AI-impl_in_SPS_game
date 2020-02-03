@@ -15,6 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import java.io.IOException;
+
 
 public class MainMenuHud extends InputAdapter implements Screen{
 	
@@ -53,7 +55,11 @@ public class MainMenuHud extends InputAdapter implements Screen{
 		textbutton.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				gamescreen = new GameScreen(game);
+				try {
+					gamescreen = new GameScreen(game);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 
 				game.setScreen(gamescreen);
 				mainmenu.dispose();

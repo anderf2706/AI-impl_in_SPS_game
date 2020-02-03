@@ -1,5 +1,6 @@
 package com.game1;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
@@ -70,7 +71,7 @@ public class Building implements InputProcessor, Screen{
 		}
 	}
 	
-	public void destroyed() {
+	public void destroyed() throws IOException {
 		gamescreen.makenodes();
 			
 	}
