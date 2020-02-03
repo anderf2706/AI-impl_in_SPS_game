@@ -125,9 +125,9 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 
 
+		//TODO make a nodemap that is saved in the assets folder. So it dosent need to be maked each time.
 
-
-        nodewidth = 500;
+        nodewidth = 2000;
 
 		mapWidth = 100 * 32;
 		mapHeight = 100*32;
@@ -178,13 +178,13 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		this.mouseInWorld2D = mouseInWorld2D;
 		this.mouseInWorld3D = mouseInWorld3D;
 
-        camera.translate((500*32)/2, (500*32)/2);
+        camera.translate((nodewidth*32)/2, (nodewidth*32)/2);
         camera.update();
 
 
         for (int i = 0; i < 64; i++) {
             for (int j = 0; j < 36; j++) {
-                listOfLists.get(i).add(j, nodedict.get((((248 + i)*500)+(252 + j))));
+                listOfLists.get(i).add(j, nodedict.get(((((nodewidth/2 - 2) + i)*nodewidth)+((nodewidth/2 + 2) + j))));
             }
 
         }
@@ -256,23 +256,6 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 
 		}
-		/*
-		outerloop:
-		for (Node node : allnodes){
-
-			for (Node node2 : allnodes2) {
-				if (node2.x == node.x && node2.y == node.y) {
-					continue outerloop;
-				}
-			}
-
-
-			allnodes2.add(node);
-		}
-		allnodes = allnodes2;
-
-
-		 */
 
 
 
@@ -615,14 +598,14 @@ public void makeCastle() {
 
                 ArrayList<Node> templist = new ArrayList<Node>();
                 for (Node node : listOfLists.get(listOfLists.size() - 1)){
-                    templist.add(nodedict.get(node.id + 1*500));
+                    templist.add(nodedict.get(node.id + 1*nodewidth));
                 }
                 System.out.println(templist.size());
                 listOfLists.add(templist);
 
 				ArrayList<Node> templist2 = new ArrayList<Node>();
                 for (Node node : listOfLists.get(listOfLists.size() - 1 )){
-                    templist2.add(nodedict.get(node.id + 1*500));
+                    templist2.add(nodedict.get(node.id + 1*nodewidth));
                 }
 
                 listOfLists.add(templist2);
@@ -642,14 +625,14 @@ public void makeCastle() {
 
 				ArrayList<Node> templist = new ArrayList<Node>();
 				for (Node node : listOfLists.get(0)){
-					templist.add(nodedict.get(node.id - 1*500));
+					templist.add(nodedict.get(node.id - 1*nodewidth));
 				}
 				System.out.println(templist.size());
 				listOfLists.add(0, templist);
 
 				ArrayList<Node> templist2 = new ArrayList<Node>();
 				for (Node node : listOfLists.get(0)){
-					templist2.add(nodedict.get(node.id - 1*500));
+					templist2.add(nodedict.get(node.id - 1*nodewidth));
 				}
 
 				listOfLists.add(0, templist2);
@@ -672,8 +655,8 @@ public void makeCastle() {
 				Node node = nodedict.get(listOfLists.get(0).get(listOfLists.get(0).size() - 1).id + 1);
 				Node node2 = nodedict.get(listOfLists.get(0).get(listOfLists.get(0).size() - 1).id + 2);
 				for (int i = 0; i < 64; i++) {
-					listOfLists.get(i).add(listOfLists.get(i).size(), nodedict.get(node.id + (i * 500)));
-					listOfLists.get(i).add(listOfLists.get(i).size(), nodedict.get(node2.id + (i * 500)));
+					listOfLists.get(i).add(listOfLists.get(i).size(), nodedict.get(node.id + (i * nodewidth)));
+					listOfLists.get(i).add(listOfLists.get(i).size(), nodedict.get(node2.id + (i * nodewidth)));
 					listOfLists.get(i).remove(1);
 					listOfLists.get(i).remove(0);
 				}
@@ -696,8 +679,8 @@ public void makeCastle() {
 				Node node = nodedict.get(listOfLists.get(0).get(0).id - 1);
 				Node node2 = nodedict.get(listOfLists.get(0).get(0).id - 2);
 				for (int i = 0; i < 64; i++) {
-					listOfLists.get(i).add(0, nodedict.get(node.id + (i * 500)));
-					listOfLists.get(i).add(0, nodedict.get(node2.id + (i * 500)));
+					listOfLists.get(i).add(0, nodedict.get(node.id + (i * nodewidth)));
+					listOfLists.get(i).add(0, nodedict.get(node2.id + (i * nodewidth)));
 					listOfLists.get(i).remove(listOfLists.get(i).size() - 1);
 					listOfLists.get(i).remove(listOfLists.get(i).size() - 1);
 				}
