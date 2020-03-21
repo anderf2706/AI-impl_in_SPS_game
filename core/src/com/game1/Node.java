@@ -95,7 +95,7 @@ public class Node implements Serializable {
 
 	public void addmeaning() {
 
-		
+
 
 		//TODO, occupied og color.
 

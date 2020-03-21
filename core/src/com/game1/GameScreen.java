@@ -128,7 +128,6 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 
 
-		//TODO make a nodemap that is saved in the assets folder. So it dosent need to be maked each time.
 
         nodewidth = 500;
 
