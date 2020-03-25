@@ -62,6 +62,8 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 	Maingamehud MGhud;
 
+	Player me;
+
 
 	public boolean makeBarracks = false;
 	public boolean makeHouse = false;
@@ -103,6 +105,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 	Texture green;
 	Texture blue;
+	Texture playersprite;
 
 
 	public InputMultiplexer multiplexer;
@@ -170,6 +173,8 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 		 */
 
+		playersprite = new Texture(Gdx.files.internal("Fighter-Front.gif"));
+
 
 		the_mouse = new Rectangle();
 		the_mouse.height = 2;
@@ -190,6 +195,9 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
             }
 
         }
+
+
+        me = new Player(this, game ,(nodewidth*32)/2, (nodewidth*32)/2, 0);
 
 
 	}
@@ -358,43 +366,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		}
 
 
-
 		game.batch.end();
-
-		/*
-
-        for (Player player : players){
-        	if (player.endnode != null) {
-				if (player.endnode.players.size() > 1) {
-
-					int i = 0;
-					for (Player innerplayer : player.endnode.players) {
-						if (i > 0){
-							innerplayer.stopmove();
-							innerplayer.endnode = findavailablenode(innerplayer.endnode);
-							/*
-							try {
-								innerplayer.finalpath = innerplayer.astar.pathfinder(innerplayer.playerNode, innerplayer.endnode, null);
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}
-
-
-							innerplayer.move(null);
-
-							innerplayer.playerNode = innerplayer.endnode;
-							innerplayer.playerNode.occupied = true;
-						}
-					}
-				}
-				player.endnode.players.clear();
-
-			}
-
-
-		}
-
-		 */
 
 		for(Building building : buildings) {
 			building.render(delta);
@@ -591,7 +563,7 @@ public void makeCastle() {
 			menu= !menu;
 		}
 
-		if(keycode == Input.Keys.D) {
+		if(	keycode == Input.Keys.D) {
 			if(D) {
 				right = 1;
 
@@ -707,6 +679,25 @@ public void makeCastle() {
 		if(keycode == Input.Keys.B) {
 
 			makeB = !makeB;
+
+		}
+		if(keycode == Input.Keys.SPACE){
+			listOfLists = new ArrayList<List<Node>>();
+			for(int i = 0; i < 64; i++)  {
+				listOfLists.add(new ArrayList<Node>());
+			}
+
+			for (int i = 0; i < 64; i++) {
+				for (int j = 0; j < 36; j++) {
+					listOfLists.get(i).add(j, nodedict.get((me.playerNode.id - ((32*nodewidth) + 18)) + ((i*nodewidth)+ j)));
+				}
+
+			}
+
+
+			camera.position.x = me.the_player.x;
+			camera.position.y = me.the_player.y;
+
 
 		}
 		/*if(makeB) {

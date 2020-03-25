@@ -31,9 +31,10 @@ public class Building implements InputProcessor, Screen{
 	ArrayList<Node> BNlist = new ArrayList<Node>();
 
 	BuildingHud bhud;
-
+	boolean notrun = false;
 	
 	public Building(GameScreen gamescreen, int x, int y, int width, int height, int team) {
+
 		this.gamescreen = gamescreen;
 		this.team = team;
 		the_building = new Rectangle();
@@ -44,6 +45,7 @@ public class Building implements InputProcessor, Screen{
 			for (Node node : gamescreen.allnodes){
 				if(Intersector.overlaps(node.body, the_building)) {
 					this.buildingnode = gamescreen.chosenNode;
+
 					node.occupied = true;
 				}
 			}
@@ -108,6 +110,10 @@ public class Building implements InputProcessor, Screen{
 		}
 	}
 
+	public void activate(){
+		notrun = true;
+	}
+
 
 
 
@@ -118,12 +124,20 @@ public class Building implements InputProcessor, Screen{
 		
 	}
 
+	protected void generate(){
+
+	}
+
 
 
 	@Override
 	public void render(float delta) {
 
 		UI(delta);
+		if (notrun){
+			generate();
+			notrun = false;
+		}
 
 		// TODO Auto-generated method stub
 		

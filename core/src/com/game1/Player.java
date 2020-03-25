@@ -22,10 +22,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.game1.huds.Playerhud;
 
+
 public class Player implements Screen, InputProcessor{
 	
 	GameScreen gamescreen;
 	Game1 game;
+
+	Timer timer;
 	
 	Rectangle the_player;
 	Rectangle future_the_player;	
@@ -50,11 +53,7 @@ public class Player implements Screen, InputProcessor{
 	boolean alive = true;
 	
 	Vector2 nodeFin;
-	
-	Texture playersprite;
-	Texture green;
-	Texture blue;
-	
+
 	boolean executed = false;
 	boolean colliding = false;
 	boolean attacking = false;
@@ -77,7 +76,6 @@ public class Player implements Screen, InputProcessor{
 	
 	float distance;
 	
-	BitmapFont font = new BitmapFont();
 	Timer t;
 	
 	int i;
@@ -123,21 +121,9 @@ public class Player implements Screen, InputProcessor{
 		health = 100;
 		attack = 10;
 		defense = 1;
-		playerhud = new Playerhud(game.batch, gamescreen, this);
-		
-	    
-	    
-		
-		
-
-		
-		
-	
-		
-		playersprite = new Texture(Gdx.files.internal("Fighter-Front.gif"));
-		green = new Texture(Gdx.files.internal("green.jpg"));
-		blue = new Texture(Gdx.files.internal("blue.png"));
-
+		if (team == 0) {
+			playerhud = new Playerhud(game.batch, gamescreen, this);
+		}
 
 
 			for (Node node : gamescreen.allnodes){
@@ -150,6 +136,10 @@ public class Player implements Screen, InputProcessor{
 
 		
 		gamescreen.players.add(this);
+
+		if (team==1){
+			monitor();
+		}
 		
 	}
 	
@@ -268,13 +258,7 @@ public class Player implements Screen, InputProcessor{
 
 
 	}
-	
-	
-	public void makevector() {
-		//if() {
 
-		//}
-	}
 	
 
 	
@@ -469,21 +453,21 @@ public class Player implements Screen, InputProcessor{
 	
 	public void batch(SpriteBatch batch) {
 		
-		batch.draw(playersprite, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
+		batch.draw(gamescreen.playersprite, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
 		
 		if(playerChosen) {
-			batch.draw(green, the_player.x, the_player.y + 75, 50, 10);
-			font.draw(batch, "" + health, this.the_player.x + 20, this.the_player.y + 70);
+			batch.draw(gamescreen.green, the_player.x, the_player.y + 75, 50, 10);
+			gamescreen.font.draw(batch, "" + health, this.the_player.x + 20, this.the_player.y + 70);
 			
 			
 		}
 		
 		if(gamescreen.chosenNode != null) {
-			batch.draw(green, gamescreen.chosenNode.x, gamescreen.chosenNode.y, 5, 5);
+			batch.draw(gamescreen.green, gamescreen.chosenNode.x, gamescreen.chosenNode.y, 5, 5);
 		
 		}
 		if(playerNode != null) {
-			batch.draw(green, playerNode.x, playerNode.y, 5, 5);
+			batch.draw(gamescreen.green, playerNode.x, playerNode.y, 5, 5);
 		
 		/*for(Node node : closedlist) {
 			batch.draw(green, node.x, node.y, 5, 5);
@@ -506,19 +490,71 @@ public class Player implements Screen, InputProcessor{
 		
 	}
 
+	public void monitorwalk(){
+		Node menode = gamescreen.me.playerNode;
+		ArrayList<Node> openList = new ArrayList<Node>();
+		for (Node node: this.playerNode.adjecent
+			 ) {
+			if (!node.occupied) {
+				openList.add(node);
+				if (node.x != this.playerNode.x && node.y != this.playerNode.y) {
+					node.cost = Math.sqrt(2);
+				} else {
+					node.cost = 1;
+				}
+				node.h = Math.max(Math.abs(node.x - menode.x), Math.abs(node.y - menode.y));
+				node.f = node.h + node.cost;
+
+			}
+		}
+		Collections.sort(openList, new Comparator<Node>() {
+			@Override
+			public int compare(Node n1, Node n2) {
+				return Double.compare(n1.f, n2.f);
+			}
+		});
+		System.out.println(openList.size());
+		this.playerNode.occupied = false;
+		this.playerNode = openList.get(0);
+		this.the_player.x = this.playerNode.x - 16;
+		this.the_player.y = this.playerNode.y - 16;
+		this.playerNode.occupied = true;
+		System.out.println("fff");
+	}
+
+	class monitortimer extends TimerTask {
+		public void run() {
+			monitorwalk();
+		}
+	}
+
+	public void monitor(){
+		if (timer == null) {
+			timer = new Timer();
+			timer.schedule(new monitortimer(), 0, 1000);
+
+		}
+
+	}
+
+
+
 
 
 
 	@Override
 	public void render(float delta) {
 		// TODO Auto-generated method stub
-		 
-		  UI(delta);
+		if (team == 0) {
+			UI(delta);
+		}
 		  check_player();
 		  collision();
 		  if (!(moving || following) && endnode != null){
 
 		  }
+
+
 
 		  	
 		  
@@ -535,6 +571,7 @@ public class Player implements Screen, InputProcessor{
 			}
 		}
 		else {
+
 			this.playerhud.dispose();
 			if (gamescreen.multiplexer.getProcessors().contains(this.playerhud.stage, true)) {
 				gamescreen.multiplexer.removeProcessor(gamescreen.multiplexer.getProcessors().indexOf(this

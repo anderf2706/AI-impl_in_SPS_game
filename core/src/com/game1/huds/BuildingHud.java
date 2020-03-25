@@ -36,16 +36,14 @@ public class BuildingHud extends Hud {
 			}
 		});
 
-		ImageButton imageButton2 = new ImageButton(drawable);
-		imageButton2.setPosition(300, 50);
-		imageButton2.addListener( new ClickListener() {
+		Button textbutton2 = new TextButton("activate", super.skin);
+		textbutton2.setPosition(300, 50);
+		textbutton2.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				Node node = gamescreen.findavailablenode(building.buildingnode);
-				new Wall(gamescreen, node.x, node.y, gamescreen.team);
+				building.activate();
 
-
-			};
+			}
 		});
 
 		ImageButton imageButton3 = new ImageButton(drawable);
@@ -74,32 +72,17 @@ public class BuildingHud extends Hud {
 			};
 		});
 
-		Button textbutton2 = new TextButton("solider", super.skin);
-		textbutton2.setPosition(200, 50);
-		textbutton2.addListener( new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				Node node = gamescreen.findavailablenode(building.buildingnode);
-
-				new Wall(gamescreen, node.x, node.y, gamescreen.team);
-
-
-
-			}
-		});
-
 
 		if(building.getClass() == Barracks.class){
 			table.addActor(textbutton);
-			table.addActor(imageButton2);
+			table.addActor(textbutton2);
 			table.addActor(imageButton3);
 			table.addActor(imageButton4);
 			table.addActor(imageButton5);
 		}
 
 		if(building.getClass() == Wall.class){
-			table.addActor(textbutton2);
-			table.addActor(imageButton2);
+
 
 		}
 
