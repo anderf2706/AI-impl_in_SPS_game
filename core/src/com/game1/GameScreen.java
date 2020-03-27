@@ -1,8 +1,6 @@
 package com.game1;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.*;
 
 
@@ -19,18 +17,20 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.MapObjects;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+import com.game1.buildings.Barracks;
+import com.game1.buildings.Castle;
+import com.game1.buildings.House;
+import com.game1.buildings.Wall;
 import com.game1.huds.Maingamehud;
+import com.game1.players.protagonist;
 
 
 public class GameScreen extends ApplicationAdapter implements Screen, InputProcessor {
@@ -62,7 +62,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 	Maingamehud MGhud;
 
-	Player me;
+	public Player me;
 
 
 	public boolean makeBarracks = false;
@@ -105,7 +105,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 	Texture green;
 	Texture blue;
-	Texture playersprite;
+
 
 
 	public InputMultiplexer multiplexer;
@@ -120,6 +120,8 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 	int nodewidth;
     List<List<Node>> listOfLists;
+
+	public textures tex;
 
 
 	public GameScreen(Game1 game) throws IOException {
@@ -161,6 +163,8 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		multiplexer = new InputMultiplexer();
 		multiplexer.addProcessor(this);
 
+		tex = new textures();
+
 
 		ss = new ShapeRenderer();
 		/*
@@ -173,7 +177,9 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 		 */
 
-		playersprite = new Texture(Gdx.files.internal("Fighter-Front.gif"));
+
+
+
 
 
 		the_mouse = new Rectangle();
@@ -197,7 +203,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
         }
 
 
-        me = new Player(this, game ,(nodewidth*32)/2, (nodewidth*32)/2, 0);
+        me = new protagonist(this, game ,(nodewidth*32)/2, (nodewidth*32)/2, 0);
 
 
 	}
@@ -223,7 +229,6 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		}
 
 
-		System.out.println(available_nodes.size());
 		Collections.sort(available_nodes, new Doublecomparator());
 
 		return (Node)available_nodes.get(0).get(1);
@@ -459,7 +464,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 	public void makeP() {
 		try {
-			new Player(this, game, findavailablenode(chosenNode).x, findavailablenode(chosenNode).y, team);
+			new protagonist(this, game, findavailablenode(chosenNode).x, findavailablenode(chosenNode).y, team);
 
 		}
 		catch(Exception e) {
@@ -571,7 +576,6 @@ public void makeCastle() {
                 for (Node node : listOfLists.get(listOfLists.size() - 1)){
                     templist.add(nodedict.get(node.id + 1*nodewidth));
                 }
-                System.out.println(templist.size());
                 listOfLists.add(templist);
 
 				ArrayList<Node> templist2 = new ArrayList<Node>();
@@ -598,7 +602,6 @@ public void makeCastle() {
 				for (Node node : listOfLists.get(0)){
 					templist.add(nodedict.get(node.id - 1*nodewidth));
 				}
-				System.out.println(templist.size());
 				listOfLists.add(0, templist);
 
 				ArrayList<Node> templist2 = new ArrayList<Node>();
@@ -632,7 +635,6 @@ public void makeCastle() {
 					listOfLists.get(i).remove(0);
 				}
 
-				System.out.println(listOfLists.get(0).size());
 
 
 
@@ -731,7 +733,6 @@ public void makeCastle() {
 	public boolean keyUp(int keycode) {
 		switch (keycode){
 			case Input.Keys.NUM_1:
-				System.out.println("switch");
 				team = 1;
 				break;
 			case Input.Keys.NUM_2:
@@ -794,7 +795,6 @@ public void makeCastle() {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
-		System.out.println(the_mouse.x + " " + the_mouse.y);
 
 		if(button == Input.Buttons.LEFT){
 			rendersqaureformouse = true;
@@ -813,7 +813,6 @@ public void makeCastle() {
 		Rectangle mouserec = new Rectangle(the_mouse.x, the_mouse.y, 1,1);
 			for (Node node : allnodes){
 				if (Intersector.overlaps(node.body, mouserec)) {
-					System.out.println("inne");
 					this.chosenNode = node;
 				}
 			}

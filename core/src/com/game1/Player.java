@@ -13,6 +13,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObjects;
@@ -25,18 +26,20 @@ import com.game1.huds.Playerhud;
 
 public class Player implements Screen, InputProcessor{
 	
-	GameScreen gamescreen;
+	public GameScreen gamescreen;
 	Game1 game;
 
-	Timer timer;
+	public Timer timer;
 	
-	Rectangle the_player;
+	public Rectangle the_player;
 	Rectangle future_the_player;	
 	Rectangle future_the_player2;
 
 	Building buildingtarget;
 	
 	Node endnode;
+
+	public long timerlong;
 
 	public double disttogoal;
 	
@@ -46,11 +49,17 @@ public class Player implements Screen, InputProcessor{
 	int upnum;
 	int downnum;
 	
-	int health;
-	int attack;
-	int defense;
+	public int health;
+	public int attack;
+	public int defense;
 
 	boolean alive = true;
+
+	public Texture spritefront;
+	public Texture spriteback;
+	public Texture spriteleft;
+	public Sprite spriteright;
+	public Texture fightsprite;
 	
 	Vector2 nodeFin;
 
@@ -69,7 +78,7 @@ public class Player implements Screen, InputProcessor{
     Node roadsplit;
     Node finalnode;
 	
-	float speed = 200;
+	public float speed;
 	Vector2 direction;
 	Vector2 new_direction;
 	//Vector2 new_direction2;
@@ -87,13 +96,14 @@ public class Player implements Screen, InputProcessor{
 
 	A_star astar;
 
-	Node playerNode;
+	public Node playerNode;
 	int k;
 	
 	int team;
 	
 	float oldX;
 	float oldY;
+
 
 	Playerhud playerhud;
 
@@ -104,49 +114,43 @@ public class Player implements Screen, InputProcessor{
 
 		
 		the_player = new Rectangle();
+
+
 		
 
 		future_the_player = new Rectangle();
 
 		astar = new A_star(gamescreen);
 
-		the_player.x = x - 15;
-		the_player.y = y - 15;
-		the_player.height = 30;
-		the_player.width = 30;
 		//future_the_player2 = new Rectangle();
 		
 		playerlocation = new Vector3(0,0,0);
 		
-		health = 100;
-		attack = 10;
-		defense = 1;
+
 		if (team == 0) {
 			playerhud = new Playerhud(game.batch, gamescreen, this);
 		}
 
 
-			for (Node node : gamescreen.allnodes){
-				if(Intersector.overlaps(node.body, the_player)) {
-					this.playerNode = node;
-					node.occupied = true;
-					break;
-				}
+
+		for (Node node : gamescreen.allnodes){
+			if(Intersector.overlaps(node.body, the_player)) {
+				this.playerNode = node;
+				node.occupied = true;
+				break;
 			}
+		}
 
 		
 		gamescreen.players.add(this);
 
-		if (team==1){
-			monitor();
-		}
 		
 	}
 	
 	public void collision() {
 		for (Player player : gamescreen.players){
 			if (this.playerNode.adjecent.contains(player.playerNode) && player.team != this.team && !isAttacking && !moving && !following){
-				attack(player, 500);
+				attack(player, 2000);
 				isAttacking = true;
 			}
 
@@ -167,7 +171,7 @@ public class Player implements Screen, InputProcessor{
 					move_t(dush);
 
 			    }
-			}, 0, 500);
+			}, 0, (long) (5000/speed));
 			
 		}
 	}
@@ -203,7 +207,7 @@ public class Player implements Screen, InputProcessor{
 
 
 				}
-			}, 0, 500);
+			}, 0, (long) (5000/speed));
 			
 
 	}
@@ -244,7 +248,7 @@ public class Player implements Screen, InputProcessor{
 				public void run() {
 					// TODO Auto-generated method stub
 					if(player.health > 0 && playerNode.adjecent.contains(player.playerNode)) {
-						player.health = player.health - attack;
+						player.health -= (int)(attack/(player.defense*0.5));
 					}
 					else {
 						tattack.cancel();
@@ -453,7 +457,7 @@ public class Player implements Screen, InputProcessor{
 	
 	public void batch(SpriteBatch batch) {
 		
-		batch.draw(gamescreen.playersprite, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
+		batch.draw(this.spritefront, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
 		
 		if(playerChosen) {
 			batch.draw(gamescreen.green, the_player.x, the_player.y + 75, 50, 10);
@@ -490,52 +494,7 @@ public class Player implements Screen, InputProcessor{
 		
 	}
 
-	public void monitorwalk(){
-		Node menode = gamescreen.me.playerNode;
-		ArrayList<Node> openList = new ArrayList<Node>();
-		for (Node node: this.playerNode.adjecent
-			 ) {
-			if (!node.occupied) {
-				openList.add(node);
-				if (node.x != this.playerNode.x && node.y != this.playerNode.y) {
-					node.cost = Math.sqrt(2);
-				} else {
-					node.cost = 1;
-				}
-				node.h = Math.max(Math.abs(node.x - menode.x), Math.abs(node.y - menode.y));
-				node.f = node.h + node.cost;
 
-			}
-		}
-		Collections.sort(openList, new Comparator<Node>() {
-			@Override
-			public int compare(Node n1, Node n2) {
-				return Double.compare(n1.f, n2.f);
-			}
-		});
-		System.out.println(openList.size());
-		this.playerNode.occupied = false;
-		this.playerNode = openList.get(0);
-		this.the_player.x = this.playerNode.x - 16;
-		this.the_player.y = this.playerNode.y - 16;
-		this.playerNode.occupied = true;
-		System.out.println("fff");
-	}
-
-	class monitortimer extends TimerTask {
-		public void run() {
-			monitorwalk();
-		}
-	}
-
-	public void monitor(){
-		if (timer == null) {
-			timer = new Timer();
-			timer.schedule(new monitortimer(), 0, 1000);
-
-		}
-
-	}
 
 
 
@@ -583,6 +542,8 @@ public class Player implements Screen, InputProcessor{
 	public void check_player() {
 		 if (this.health <= 0){
 		 	this.playerNode.occupied = false;
+		 	this.playerNode = null;
+
 
 
 

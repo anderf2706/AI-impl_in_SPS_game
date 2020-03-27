@@ -1,17 +1,15 @@
 package com.game1.huds;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.game1.*;
-
-import java.util.ArrayList;
-import java.util.TreeMap;
+import com.game1.buildings.Barracks;
+import com.game1.buildings.Wall;
+import com.game1.players.footenemy;
 
 public class BuildingHud extends Hud {
 
@@ -28,7 +26,7 @@ public class BuildingHud extends Hud {
 			public void clicked(InputEvent event, float x, float y) {
 				Node node = gamescreen.findavailablenode(building.buildingnode);
 
-				new Player(gamescreen, gamescreen.game, node.x
+				new footenemy(gamescreen, gamescreen.game, node.x
 						, node.y, gamescreen.team);
 
 

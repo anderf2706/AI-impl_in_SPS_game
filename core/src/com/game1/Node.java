@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 
 
 public class Node implements Serializable {
-	ArrayList<Node> adjecent = new ArrayList<Node>();
+	public ArrayList<Node> adjecent = new ArrayList<Node>();
 	ArrayList<Node> closest = new ArrayList<Node>();
 	ArrayList<Player> players = new ArrayList<Player>();
 	Set<Node> adjecent2 = new HashSet<Node>();
@@ -34,10 +34,10 @@ public class Node implements Serializable {
 	boolean BN = false;
 	boolean PN = false;
 	public boolean occupied = false;
-	double f;
-	double g;
-	double h;
-	double cost;
+	public double f;
+	public double g;
+	public double h;
+	public double cost;
 	
 	GameScreen gamescreen;
 

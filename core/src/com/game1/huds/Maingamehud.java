@@ -69,7 +69,6 @@ public class Maingamehud extends Hud {
 		imageButton5.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				System.out.println("dd");
 			};
 		});
 

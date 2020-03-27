@@ -34,7 +34,7 @@ public class A_star{
         Timer t = new Timer();
 
         while(!closedList.contains(end)) {//kj?rer loopen til vi har funnet m?l
-			System.out.println("astar");
+
 			i = i + 1;
 			if(openList.size() > 1) {
 				Collections.sort(openList, new Comparator<Node>() {

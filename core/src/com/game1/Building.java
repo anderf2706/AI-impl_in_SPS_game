@@ -64,12 +64,10 @@ public class Building implements InputProcessor, Screen{
 	public void overlap(int button) {
 		if((Intersector.overlaps(gamescreen.the_mouse, the_building))){
 			buildingChosen = true;
-			System.out.println("player_chosen");
-		
+
 		}
 		if(!(Intersector.overlaps(gamescreen.the_mouse, the_building)) && (button == Input.Buttons.LEFT)) {
 			buildingChosen = false;
-			System.out.println("unchosen");
 		}
 	}
 	

@@ -1,13 +1,18 @@
-package com.game1;
+package com.game1.buildings;
 
 
+import com.game1.Building;
+import com.game1.GameScreen;
+import com.game1.Node;
+import com.game1.Player;
 import com.game1.huds.BuildingHud;
+import com.game1.players.*;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class Barracks extends Building{
+public class Barracks extends Building {
 
 	GameScreen gamescreen;
 	Timer timer;
@@ -26,7 +31,6 @@ public class Barracks extends Building{
 	@Override
 	protected void generate() {
 		super.generate();
-		System.out.println("yessss");
 		if (timer == null) {
 			timer = new Timer();
 			timer.schedule(new makemen(), 0, 5000);
@@ -43,7 +47,7 @@ public class Barracks extends Building{
 		public void run() {
 			Node node = gamescreen.findavailablenode(buildingnode);
 
-			new Player(gamescreen, gamescreen.game, node.x
+			new footenemy(gamescreen, gamescreen.game, node.x
 					, node.y, 1);
 
 		}
