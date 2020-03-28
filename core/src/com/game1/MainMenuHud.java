@@ -38,8 +38,8 @@ public class MainMenuHud extends InputAdapter implements Screen{
 	public MainMenuHud(SpriteBatch spriteBatch, final Game1 game, final MainMenu mainmenu) {
 		stageViewport = new FitViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 	    stage = new Stage(stageViewport, spriteBatch); //create stage with the stageViewport and the SpriteBatch given in Constructor
-		skin = new Skin(Gdx.files.internal("ssu.json"));
-	    background = new Texture(Gdx.files.internal("Hjm8sUt.png"));
+		skin = new Skin(Gdx.files.internal("ui/star-solider-ui.json"));
+	    background = new Texture(Gdx.files.internal("data/Hjm8sUt.png"));
 	    drawablebackground = new TextureRegionDrawable((new TextureRegion(background)));
 	    this.game = game;
 	    //this.gamescreen = new GameScreen(game);
