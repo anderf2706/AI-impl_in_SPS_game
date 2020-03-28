@@ -35,7 +35,7 @@ class Hud extends InputAdapter implements Screen{
 		background = new Texture(Gdx.files.internal("brown rectangle.jfif"));
 		drawablebackground = new TextureRegionDrawable((new TextureRegion(background)));
 		drawable = new TextureRegionDrawable((new TextureRegion(texture)));
-		skin = new Skin(Gdx.files.internal("uiskin.json"));
+		skin = new Skin(Gdx.files.internal("ui\\skin\\plain-james-ui.json"));
 		this.gamescreen = gamescreen;
 
 		table = new Table();

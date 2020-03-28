@@ -39,7 +39,7 @@ public class MainMenuHud extends InputAdapter implements Screen{
 		stageViewport = new FitViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 	    stage = new Stage(stageViewport, spriteBatch); //create stage with the stageViewport and the SpriteBatch given in Constructor
 		//TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("star-solider-ui.atlas"));
-		skin = new Skin(Gdx.files.internal("uiskin.json"));
+		skin = new Skin(Gdx.files.internal("ui\\skin\\plain-james-ui.json"));
 	    background = new Texture(Gdx.files.internal("data\\Hjm8sUt.png"));
 	    drawablebackground = new TextureRegionDrawable((new TextureRegion(background)));
 	    this.game = game;
@@ -50,10 +50,12 @@ public class MainMenuHud extends InputAdapter implements Screen{
 
 	    table = new Table();
 	    table.setVisible(true);
+	    table.center();
+
+
 
 
 		Button textbutton = new TextButton("singelplayer", skin);
-		textbutton.setPosition(Gdx.graphics.getWidth() / 2, 900);
 		textbutton.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -70,7 +72,6 @@ public class MainMenuHud extends InputAdapter implements Screen{
 
 
 		Button textbutton2 = new TextButton("multiplayer", skin);
-		textbutton2.setPosition(Gdx.graphics.getWidth() / 2 + 5, 800);
 		textbutton2.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -79,7 +80,7 @@ public class MainMenuHud extends InputAdapter implements Screen{
 		});
 
 		Button textbutton3 = new TextButton("settings", skin);
-		textbutton3.setPosition(Gdx.graphics.getWidth() / 2 + 15, 700);
+
 		textbutton3.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -88,7 +89,6 @@ public class MainMenuHud extends InputAdapter implements Screen{
 		});
 
 		Button textbutton4 = new TextButton("exit", skin);
-		textbutton4.setPosition(Gdx.graphics.getWidth() / 2 + 25, 600);
 		textbutton4.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -105,10 +105,14 @@ public class MainMenuHud extends InputAdapter implements Screen{
 
        
               	
-        table.addActor(textbutton);
-        table.addActor(textbutton2);
-        table.addActor(textbutton3);
-        table.addActor(textbutton4);
+        table.add(textbutton);
+        table.row();
+        table.add(textbutton2);
+        table.row();
+        table.add(textbutton3);
+        table.row();
+        table.add(textbutton4);
+        table.setFillParent(true);
 		stage.addActor(background);
         stage.addActor(table);
         //stage.addActor(imageButton2);

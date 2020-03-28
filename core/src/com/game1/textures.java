@@ -30,10 +30,10 @@ public class textures {
 		spriteright.flip(true, false);
 		fightsprite = new Texture(Gdx.files.internal("sprites/Fighter-Front.gif"));
 
-		spriteprotfront = new Texture(Gdx.files.internal("sprites/front_man.gif"));
-		spriteprotback = new Texture(Gdx.files.internal("sprites/back_man.gif"));
-		spriteprotleft = new Texture(Gdx.files.internal("sprites/left_man.gif"));
-		spriteprotright = new Texture(Gdx.files.internal("sprites/right_man.gif"));
+		spriteprotfront = new Texture(Gdx.files.internal("sprites/front_man.png"));
+		spriteprotback = new Texture(Gdx.files.internal("sprites/back_man.png"));
+		spriteprotleft = new Texture(Gdx.files.internal("sprites/left_man.png"));
+		spriteprotright = new Texture(Gdx.files.internal("sprites/right_man.png"));
 
 
 
