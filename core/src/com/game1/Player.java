@@ -59,6 +59,7 @@ public class Player implements Screen, InputProcessor{
 	public Texture spriteback;
 	public Texture spriteleft;
 	public Sprite spriteright;
+
 	public Texture fightsprite;
 	
 	Vector2 nodeFin;
@@ -86,6 +87,8 @@ public class Player implements Screen, InputProcessor{
 	float distance;
 	
 	Timer t;
+
+	int spritedir;
 	
 	int i;
 	boolean isAttacking = false;
@@ -177,9 +180,26 @@ public class Player implements Screen, InputProcessor{
 	}
 		
 	public void move_t(int b) {
+		Node nextnode = finalpath.get(b);
 
-		this.the_player.x = finalpath.get(b).x - the_player.width/2;
-		this.the_player.y = finalpath.get(b).y - the_player.height/2;
+		if (nextnode.id == this.playerNode.id + 1 || nextnode.id == this.playerNode.id + (1+gamescreen.nodewidth)
+		|| nextnode.id == this.playerNode.id + (1-gamescreen.nodewidth)){
+			spritedir = 0;
+		}
+		if (nextnode.id == this.playerNode.id - 1 || nextnode.id == this.playerNode.id + ((-1) + gamescreen.nodewidth)
+				|| nextnode.id == this.playerNode.id + ((-1) - gamescreen.nodewidth)){
+			spritedir = 1;
+		}
+		if (nextnode.id == this.playerNode.id + gamescreen.nodewidth){
+			spritedir = 2;
+		}
+		if (nextnode.id == this.playerNode.id - gamescreen.nodewidth){
+			spritedir = 3;
+		}
+
+
+		this.the_player.x = nextnode.x - the_player.width/2;
+		this.the_player.y = nextnode.y - the_player.height/2;
 
 		if(colliding) {
 				
@@ -456,9 +476,34 @@ public class Player implements Screen, InputProcessor{
 	}
 	
 	public void batch(SpriteBatch batch) {
+		if (isAttacking){
+			spritedir = 4;
+		}
+
+		switch (spritedir){
+			case 4:
+				batch.draw(this.fightsprite, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
+
+				break;
+			case 0:
+				batch.draw(this.spritefront, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
+
+				break;
+			case 1:
+				batch.draw(this.spriteback, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
+
+				break;
+			case 2:
+				batch.draw(this.spriteright, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
+
+				break;
+			case 3:
+				batch.draw(this.spriteleft, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
+
+				break;
+		}
 		
-		batch.draw(this.spritefront, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
-		
+
 		if(playerChosen) {
 			batch.draw(gamescreen.green, the_player.x, the_player.y + 75, 50, 10);
 			gamescreen.font.draw(batch, "" + health, this.the_player.x + 20, this.the_player.y + 70);
@@ -504,6 +549,9 @@ public class Player implements Screen, InputProcessor{
 	@Override
 	public void render(float delta) {
 		// TODO Auto-generated method stub
+
+
+
 		if (team == 0) {
 			UI(delta);
 		}

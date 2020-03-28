@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -37,7 +38,7 @@ public class MainMenuHud extends InputAdapter implements Screen{
 	public MainMenuHud(SpriteBatch spriteBatch, final Game1 game, final MainMenu mainmenu) {
 		stageViewport = new FitViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 	    stage = new Stage(stageViewport, spriteBatch); //create stage with the stageViewport and the SpriteBatch given in Constructor
-		skin = new Skin(Gdx.files.internal("uiskin.json"));
+		skin = new Skin(Gdx.files.internal("ssu.json"));
 	    background = new Texture(Gdx.files.internal("Hjm8sUt.png"));
 	    drawablebackground = new TextureRegionDrawable((new TextureRegion(background)));
 	    this.game = game;

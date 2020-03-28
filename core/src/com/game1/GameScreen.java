@@ -564,8 +564,8 @@ public void makeCastle() {
 	@Override
 	public boolean keyDown(int keycode) {
 
-		if(keycode == Input.Keys.M) {
-			menu= !menu;
+		if (keycode == Input.Keys.ESCAPE){
+			game.dispose();
 		}
 
 		if(	keycode == Input.Keys.D) {
