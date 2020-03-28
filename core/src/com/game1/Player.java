@@ -58,7 +58,7 @@ public class Player implements Screen, InputProcessor{
 	public Texture spritefront;
 	public Texture spriteback;
 	public Texture spriteleft;
-	public Sprite spriteright;
+	public Texture spriteright;
 
 	public Texture fightsprite;
 	
@@ -184,11 +184,11 @@ public class Player implements Screen, InputProcessor{
 
 		if (nextnode.id == this.playerNode.id + 1 || nextnode.id == this.playerNode.id + (1+gamescreen.nodewidth)
 		|| nextnode.id == this.playerNode.id + (1-gamescreen.nodewidth)){
-			spritedir = 0;
+			spritedir = 1;
 		}
 		if (nextnode.id == this.playerNode.id - 1 || nextnode.id == this.playerNode.id + ((-1) + gamescreen.nodewidth)
 				|| nextnode.id == this.playerNode.id + ((-1) - gamescreen.nodewidth)){
-			spritedir = 1;
+			spritedir = 0;
 		}
 		if (nextnode.id == this.playerNode.id + gamescreen.nodewidth){
 			spritedir = 2;
@@ -235,6 +235,23 @@ public class Player implements Screen, InputProcessor{
 	public void follow_t(Player player) throws InterruptedException {
 		if (!this.playerNode.adjecent.contains(player.playerNode)) {
 			finalpath = astar.pathfinder(this.playerNode, player.playerNode, player);
+
+			Node nextnode = finalpath.get(1);
+
+			if (nextnode.id == this.playerNode.id + 1 || nextnode.id == this.playerNode.id + (1+gamescreen.nodewidth)
+					|| nextnode.id == this.playerNode.id + (1-gamescreen.nodewidth)){
+				spritedir = 1;
+			}
+			if (nextnode.id == this.playerNode.id - 1 || nextnode.id == this.playerNode.id + ((-1) + gamescreen.nodewidth)
+					|| nextnode.id == this.playerNode.id + ((-1) - gamescreen.nodewidth)){
+				spritedir = 0;
+			}
+			if (nextnode.id == this.playerNode.id + gamescreen.nodewidth){
+				spritedir = 2;
+			}
+			if (nextnode.id == this.playerNode.id - gamescreen.nodewidth){
+				spritedir = 3;
+			}
 
 			this.the_player.x = finalpath.get(1).x - the_player.width / 2;
 			this.the_player.y = finalpath.get(1).y - the_player.width / 2;

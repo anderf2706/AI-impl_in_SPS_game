@@ -20,7 +20,7 @@ public class footenemy extends Player {
 		spritefront = gamescreen.tex.spritefront;
 		spriteback = gamescreen.tex.spriteback;
 		spriteleft = gamescreen.tex.spriteleft;
-		spriteright = gamescreen.tex.spriteright;
+		spriteright = gamescreen.tex.spriteleft;
 
 		the_player.x = x - 15;
 		the_player.y = y - 15;
