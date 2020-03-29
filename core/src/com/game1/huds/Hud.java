@@ -30,6 +30,7 @@ class Hud extends InputAdapter implements Screen{
      public Table buildingtable;
      public Table playertable;
      public Table playstattable;
+	Image backgrounds;
 
      Skin skin;
 
@@ -46,23 +47,29 @@ class Hud extends InputAdapter implements Screen{
 		maintable = new Table();
 		maintable.setVisible(true);
 
+
+
 		buildertable = new Table();
 		buildertable.setVisible(true);
+
 
 		buildingtable = new Table();
 		buildingtable.setVisible(true);
 
+
 		playertable = new Table();
 		playertable.setVisible(true);
+
 
 		playstattable = new Table();
 		playstattable.setVisible(true);
 
-		Image background = new Image(drawablebackground);
-		background.setPosition(0, 0);
-		background.setWidth(Gdx.graphics.getWidth());
-		background.setHeight(100);
-		background.toBack();
+
+		backgrounds = new Image(drawablebackground);
+		backgrounds.setPosition(0, 0);
+		backgrounds.setWidth(Gdx.graphics.getWidth());
+		backgrounds.setHeight(100);
+		backgrounds.toBack();
 
 		ImageButton backgroundbutton = new ImageButton(drawablebackground);
 		backgroundbutton.setPosition(0, 0);
@@ -77,7 +84,7 @@ class Hud extends InputAdapter implements Screen{
 
 
 
-		stage.addActor(background);
+		stage.addActor(backgrounds);
 		stage.addActor(backgroundbutton);
 
 

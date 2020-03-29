@@ -414,10 +414,13 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 		if (MGhud.builder){
 			MGhud.stage.clear();
+			MGhud.stage.addActor(MGhud.background);
 			MGhud.stage.addActor(MGhud.buildertable);
+
 		}
 		if (MGhud.playstat){
 			MGhud.stage.clear();
+			MGhud.stage.addActor(MGhud.background);
 			MGhud.stage.addActor(MGhud.playstattable);
 		}
 

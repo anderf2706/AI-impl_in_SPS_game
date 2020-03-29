@@ -18,7 +18,7 @@ public class Playerhud extends Hud {
 
 		this.gamescreen = gamescreen;
 		Button textbutton = new TextButton("hallaplayer", super.skin);
-		textbutton.setPosition(200, 50);
+		textbutton.setPosition(100, 50);
 		textbutton.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {

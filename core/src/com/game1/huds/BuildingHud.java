@@ -19,9 +19,9 @@ public class BuildingHud extends Hud {
 		super(spriteBatch, gamescreen);
 		this.gamescreen = gamescreen;
 
-		Button textbutton = new TextButton("solider", super.skin);
-		textbutton.setPosition(200, 50);
-		textbutton.addListener( new ClickListener() {
+		Button barracks_footenemy = new TextButton("solider", super.skin);
+		barracks_footenemy.setPosition(100, 50);
+		barracks_footenemy.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				Node node = gamescreen.findavailablenode(building.buildingnode);
@@ -34,9 +34,9 @@ public class BuildingHud extends Hud {
 			}
 		});
 
-		Button textbutton2 = new TextButton("activate", super.skin);
-		textbutton2.setPosition(300, 50);
-		textbutton2.addListener( new ClickListener() {
+		Button barracks_activatefootenemy = new TextButton("activate", super.skin);
+		barracks_activatefootenemy.setPosition(barracks_footenemy.getX() + barracks_footenemy.getWidth(), 50);
+		barracks_activatefootenemy.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				building.activate();
