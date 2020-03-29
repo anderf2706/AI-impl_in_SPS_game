@@ -25,7 +25,12 @@ class Hud extends InputAdapter implements Screen{
      Drawable drawablebackground;
      Texture background;
      public GameScreen gamescreen;
-     Table table;
+     public Table maintable;
+     public Table buildertable;
+     public Table buildingtable;
+     public Table playertable;
+     public Table playstattable;
+
      Skin skin;
 
 	public Hud(SpriteBatch spriteBatch, final GameScreen gamescreen) {
@@ -38,8 +43,20 @@ class Hud extends InputAdapter implements Screen{
 		skin = new Skin(Gdx.files.internal("ui\\skin\\plain-james-ui.json"));
 		this.gamescreen = gamescreen;
 
-		table = new Table();
-		table.setVisible(true);
+		maintable = new Table();
+		maintable.setVisible(true);
+
+		buildertable = new Table();
+		buildertable.setVisible(true);
+
+		buildingtable = new Table();
+		buildingtable.setVisible(true);
+
+		playertable = new Table();
+		playertable.setVisible(true);
+
+		playstattable = new Table();
+		playstattable.setVisible(true);
 
 		Image background = new Image(drawablebackground);
 		background.setPosition(0, 0);

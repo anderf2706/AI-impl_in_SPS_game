@@ -72,11 +72,11 @@ public class BuildingHud extends Hud {
 
 
 		if(building.getClass() == Barracks.class){
-			table.addActor(textbutton);
-			table.addActor(textbutton2);
-			table.addActor(imageButton3);
-			table.addActor(imageButton4);
-			table.addActor(imageButton5);
+			buildingtable.addActor(textbutton);
+			buildingtable.addActor(textbutton2);
+			buildingtable.addActor(imageButton3);
+			buildingtable.addActor(imageButton4);
+			buildingtable.addActor(imageButton5);
 		}
 
 		if(building.getClass() == Wall.class){
@@ -85,7 +85,7 @@ public class BuildingHud extends Hud {
 		}
 
 
-		stage.addActor(table);
+		stage.addActor(buildingtable);
 
 	}
 

@@ -12,13 +12,57 @@ import com.game1.GameScreen;
 
 
 public class Maingamehud extends Hud {
+
+	public boolean builder = false;
+	public boolean playstat = false;
+
 	public Maingamehud(SpriteBatch spriteBatch, final GameScreen gamescreen) {
 		super(spriteBatch, gamescreen);
 
 		this.gamescreen = gamescreen;
-		Button textbutton = new TextButton("Barracks", super.skin);
-		textbutton.setPosition(200, 50);
-		textbutton.addListener( new ClickListener() {
+
+////////////////////////////mainhud/////////////////////////////////////////
+
+		Button builderbutton = new TextButton("Builder", super.skin);
+		builderbutton.setPosition(200, 50);
+		builderbutton.addListener( new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				stage.clear();
+				stage.addActor(buildertable);
+			};
+		});
+
+		Button playstatbutton = new TextButton("Playstat", super.skin);
+		playstatbutton.setPosition(300, 50);
+		playstatbutton.addListener( new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				stage.clear();
+				stage.addActor(playstattable);
+			};
+		});
+
+
+///////////////////////////////////////////////////////////////////////////
+
+
+////////////////////////////builderhud//////////////////////////////////
+
+		Button buildbackbutton = new TextButton("Back", super.skin);
+		buildbackbutton.setPosition(200, 50);
+		buildbackbutton.addListener( new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				stage.clear();
+				stage.addActor(maintable);
+			};
+		});
+
+
+		Button barracksbutton = new TextButton("Barracks", super.skin);
+		barracksbutton.setPosition(300, 50);
+		barracksbutton.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				gamescreen.makeHouse = false;
@@ -28,9 +72,9 @@ public class Maingamehud extends Hud {
 			};
 		});
 
-		ImageButton imageButton2 = new ImageButton(drawable);
-		imageButton2.setPosition(300, 50);
-		imageButton2.addListener( new ClickListener() {
+		Button housebutton = new TextButton("House", super.skin);
+		housebutton.setPosition(400, 50);
+		housebutton.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				gamescreen.makeBarracks = false;
@@ -40,9 +84,9 @@ public class Maingamehud extends Hud {
 			};
 		});
 
-		ImageButton imageButton3 = new ImageButton(drawable);
-		imageButton3.setPosition(400, 50);
-		imageButton3.addListener( new ClickListener() {
+		Button wallbutton = new TextButton("Wall", super.skin);
+		wallbutton.setPosition(500, 50);
+		wallbutton.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				gamescreen.makeHouse = false;
@@ -52,9 +96,9 @@ public class Maingamehud extends Hud {
 			};
 		});
 
-		ImageButton imageButton4 = new ImageButton(drawable);
-		imageButton4.setPosition(500, 50);
-		imageButton4.addListener( new ClickListener() {
+		Button castlebutton = new TextButton("Castle", super.skin);
+		castlebutton.setPosition(600, 50);
+		castlebutton.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				gamescreen.makeHouse = false;
@@ -64,27 +108,50 @@ public class Maingamehud extends Hud {
 			};
 		});
 
-		ImageButton imageButton5 = new ImageButton(drawable);
-		imageButton5.setPosition(600, 50);
-		imageButton5.addListener( new ClickListener() {
+////////////////////////////////////////////////////////////////////////////
+
+//////////////////////playstathud////////////////////////////////////////////
+
+		Button playstatbackbutton = new TextButton("Back", super.skin);
+		playstatbackbutton.setPosition(200, 50);
+		playstatbackbutton.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
+				stage.clear();
+				stage.addActor(maintable);
 			};
 		});
 
+		Button playerbutton = new TextButton("player", super.skin);
+		castlebutton.setPosition(300, 50);
+		castlebutton.addListener( new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+
+			};
+		});
+
+/////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////tables/////////////////////////////////
+
+		maintable.addActor(builderbutton);
+		maintable.addActor(playstatbutton);
+
+		buildertable.addActor(buildbackbutton);
+		buildertable.addActor(barracksbutton);
+		buildertable.addActor(housebutton);
+		buildertable.addActor(wallbutton);
+		buildertable.addActor(castlebutton);
+
+		playstattable.addActor(playerbutton);
+		playstattable.addActor(playstatbackbutton);
+
+		stage.addActor(maintable);
+
+////////////////////////////////////////////////////////////////////
 
 
 
-
-		//stage.addActor(imageButton);
-		table.addActor(textbutton);
-		table.addActor(imageButton2);
-		table.addActor(imageButton3);
-		table.addActor(imageButton4);
-		table.addActor(imageButton5);
-
-
-		stage.addActor(table);
-		//stage.addActor(imageButton2);
 	}
 }

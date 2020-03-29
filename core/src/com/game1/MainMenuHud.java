@@ -40,7 +40,7 @@ public class MainMenuHud extends InputAdapter implements Screen{
 	    stage = new Stage(stageViewport, spriteBatch); //create stage with the stageViewport and the SpriteBatch given in Constructor
 		//TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("star-solider-ui.atlas"));
 		skin = new Skin(Gdx.files.internal("ui\\skin\\plain-james-ui.json"));
-	    background = new Texture(Gdx.files.internal("data\\Hjm8sUt.png"));
+	    background = new Texture(Gdx.files.internal("Title_Image.png"));
 	    drawablebackground = new TextureRegionDrawable((new TextureRegion(background)));
 	    this.game = game;
 	    //this.gamescreen = new GameScreen(game);
@@ -51,8 +51,6 @@ public class MainMenuHud extends InputAdapter implements Screen{
 	    table = new Table();
 	    table.setVisible(true);
 	    table.center();
-
-
 
 
 		Button textbutton = new TextButton("singelplayer", skin);
@@ -114,7 +112,9 @@ public class MainMenuHud extends InputAdapter implements Screen{
         table.add(textbutton4);
         table.setFillParent(true);
 		stage.addActor(background);
+
         stage.addActor(table);
+
         //stage.addActor(imageButton2);
 	}
 	

@@ -78,14 +78,14 @@ public class Playerhud extends Hud {
 
 
 		//stage.addActor(imageButton);
-		table.addActor(textbutton);
-		table.addActor(imageButton2);
-		table.addActor(imageButton3);
-		table.addActor(imageButton4);
-		table.addActor(imageButton5);
+		playertable.addActor(textbutton);
+		playertable.addActor(imageButton2);
+		playertable.addActor(imageButton3);
+		playertable.addActor(imageButton4);
+		playertable.addActor(imageButton5);
 
 
-		stage.addActor(table);
+		stage.addActor(playertable);
 		//stage.addActor(imageButton2);
 	}
 

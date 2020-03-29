@@ -134,7 +134,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 
 
-        nodewidth = 500;
+        nodewidth = 200;
 
 		mapWidth = 100 * 32;
 		mapHeight = 100*32;
@@ -409,6 +409,16 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 			if (multiplexer.getProcessors().contains(MGhud, true)) {
 				multiplexer.removeProcessor(multiplexer.getProcessors().indexOf(MGhud, true));
 			}
+		}
+
+
+		if (MGhud.builder){
+			MGhud.stage.clear();
+			MGhud.stage.addActor(MGhud.buildertable);
+		}
+		if (MGhud.playstat){
+			MGhud.stage.clear();
+			MGhud.stage.addActor(MGhud.playstattable);
 		}
 
 
