@@ -1,7 +1,9 @@
 package com.game1;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
 
 
 import com.badlogic.gdx.ApplicationAdapter;
@@ -25,12 +27,14 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+
 import com.game1.buildings.Barracks;
 import com.game1.buildings.Castle;
 import com.game1.buildings.House;
 import com.game1.buildings.Wall;
 import com.game1.huds.Maingamehud;
 import com.game1.players.protagonist;
+import sun.awt.windows.WPrinterJob;
 
 
 public class GameScreen extends ApplicationAdapter implements Screen, InputProcessor {
@@ -105,6 +109,9 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 	Texture green;
 	Texture blue;
+	Texture grey;
+	Texture white;
+	Texture beige;
 
 
 
@@ -123,13 +130,14 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 	public textures tex;
 
+	float[][] noisemap;
+
 
 	public GameScreen(Game1 game) throws IOException {
         listOfLists = new ArrayList<List<Node>>();
         for(int i = 0; i < 64; i++)  {
             listOfLists.add(new ArrayList<Node>());
         }
-
 
 
 
@@ -143,8 +151,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 
-		green = new Texture(Gdx.files.internal("green.jpg"));
-		blue = new Texture(Gdx.files.internal("blue.png"));
+
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, w, h);
@@ -154,33 +161,20 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 		allnodes = new ArrayList<Node>();
 		sr = new ShapeRenderer();
+		noisemap = generateSimplexNoise(nodewidth, nodewidth);
+		settextures();
 		makenodes();
 		font = new BitmapFont();
 
 		MGhud = new Maingamehud(game.batch, this);
-		chosenNode = new Node(500, 500, this);
+
 
 		multiplexer = new InputMultiplexer();
 		multiplexer.addProcessor(this);
 
-		tex = new textures();
 
 
 		ss = new ShapeRenderer();
-		/*
-		world = new ArrayList<ArrayList<Integer>>();
-		for (int i = 0; i < 10000; i++) {
-			for (int j = 0; j < 10000; j++) {
-
-			}
-		}
-
-		 */
-
-
-
-
-
 
 		the_mouse = new Rectangle();
 		the_mouse.height = 2;
@@ -202,16 +196,10 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
         }
 
-
         me = new protagonist(this, game ,(nodewidth*32)/2, (nodewidth*32)/2, 0);
-
+		chosenNode = allnodes.get(10);
 
 	}
-
-
-
-
-
 
 
 	public Node findavailablenode(Node playerNode){
@@ -233,22 +221,27 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 		return (Node)available_nodes.get(0).get(1);
 	}
+
+	public void settextures(){
+		tex = new textures();
+		green = tex.green;
+		blue = tex.blue;
+		grey = tex.grey;
+		white = tex.white;
+		beige = tex.beige;
+	}
 	
 	public void makenodes() throws IOException {
 		for (int i = 0; i < nodewidth; i += 1) {
 			for (int j = 0; j < nodewidth; j += 1) {
-				Node node = new Node(i*32, j*32, this);
+				Node node = new Node(i*32, j*32, this, noisemap[i][j]);
 				allnodes.add(node);
 				nodedict.put(node.id, node);
 
 
+
 			}
 		}
-
-
-
-
-
 
 		for (Node node : allnodes){
 			node.makeClosest(node.id, node.adjecent, false);
@@ -262,14 +255,6 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 			node.makeClosest((node.id + 3) - (nodewidth*3), node.closest, true);
 			node.makeClosest((node.id - 3) + (nodewidth*3), node.closest, true);
 			node.makeClosest((node.id - 3) - (nodewidth*3), node.closest, true);
-
-
-
-
-
-
-
-
 		}
 
 	}
@@ -326,28 +311,17 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
         game.batch.begin();
 
-
-
-
-
 		for (List<Node> list : listOfLists){
 		    for(Node node : list){
-                game.batch.draw(green, node.x, node.y, 32,32);
-            }
+
+                game.batch.draw(node.nodetexture, node.x, node.y, 32,32);
+		    }
 
         }
 
-
-
-
-
-
-
-
-       
         if(chosenNode != null) {
         	game.batch.draw(green, chosenNode.x - 8, chosenNode.y - 8, 16, 16);
-			font.draw(game.batch, "" + chosenNode.players, chosenNode.x, chosenNode.y);
+			font.draw(game.batch, "" + chosenNode.simplexnoise, chosenNode.x, chosenNode.y);
 
 
 
@@ -435,13 +409,25 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 			ss.end();
 		}
 
-
-
-
-
-
-
 	}
+
+
+	public float[][] generateSimplexNoise(int width, int height){
+		SimplexNoise sn = new SimplexNoise();
+		float[][]simplexnoise=new float[width][height];
+		float frequency=5.0f/(float)width;
+		double random = (Math.random() * (10000) + 1);
+		for(int x=0;x<width; x++){
+			for(int y=0;y<height; y++){
+				simplexnoise[x][y]=(float) sn.noise((x+random)*frequency,(y+random)*frequency);
+				simplexnoise[x][y]=(simplexnoise[x][y]+1)/2;   //generate values between 0 and 1
+			}
+		}
+
+		return simplexnoise;
+	}
+
+
 
 
 	@Override
@@ -583,12 +569,16 @@ public void makeCastle() {
 
 		if(	keycode == Input.Keys.D) {
 			if(D) {
-				right = 1;
 
                 ArrayList<Node> templist = new ArrayList<Node>();
                 for (Node node : listOfLists.get(listOfLists.size() - 1)){
-                    templist.add(nodedict.get(node.id + 1*nodewidth));
-                }
+                	if(nodedict.get(node.id + 1*nodewidth) == null) {
+                		return false;
+					}
+					right = 1;
+					templist.add(nodedict.get(node.id + 1 * nodewidth));
+
+				}
                 listOfLists.add(templist);
 
 				ArrayList<Node> templist2 = new ArrayList<Node>();
@@ -609,12 +599,16 @@ public void makeCastle() {
 		}
 		if(keycode == Input.Keys.A) {
 			if(A) {
-				left = -1;
+
 
 				ArrayList<Node> templist = new ArrayList<Node>();
 				for (Node node : listOfLists.get(0)){
+					if (nodedict.get(node.id - 1*nodewidth) == null){
+						return false;
+					}
 					templist.add(nodedict.get(node.id - 1*nodewidth));
 				}
+				left = -1;
 				listOfLists.add(0, templist);
 
 				ArrayList<Node> templist2 = new ArrayList<Node>();
@@ -635,10 +629,11 @@ public void makeCastle() {
 		}
 		if(keycode == Input.Keys.W) {
 			if(W) {
+
+				if (nodedict.get(listOfLists.get(0).get(listOfLists.get(0).size() - 1).id + 1) == null){
+					return false;
+				}
 				up = 1;
-
-
-
 				Node node = nodedict.get(listOfLists.get(0).get(listOfLists.get(0).size() - 1).id + 1);
 				Node node2 = nodedict.get(listOfLists.get(0).get(listOfLists.get(0).size() - 1).id + 2);
 				for (int i = 0; i < 64; i++) {
@@ -660,8 +655,11 @@ public void makeCastle() {
 		}
 		if(keycode == Input.Keys.S) {
 			if(S) {
-				down = -1;
 
+				if (nodedict.get(listOfLists.get(0).get(0).id - 1) == null){
+					return false;
+				}
+				down = -1;
 				Node node = nodedict.get(listOfLists.get(0).get(0).id - 1);
 				Node node2 = nodedict.get(listOfLists.get(0).get(0).id - 2);
 				for (int i = 0; i < 64; i++) {

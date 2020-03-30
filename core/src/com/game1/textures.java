@@ -3,6 +3,7 @@ package com.game1;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 
 public class textures {
@@ -10,32 +11,50 @@ public class textures {
 	public Texture spritefront;
 	public Texture spriteback;
 	public Texture spriteleft;
-	public Texture fightsprite;
-	public Sprite spriteright;
+	public Texture spriteright;
 
 	public Texture spriteprotfront;
 	public Texture spriteprotback;
 	public Texture spriteprotleft;
 	public Texture spriteprotright;
 
+	public Texture green;
+	public Texture blue;
+	public Texture grey;
+	public Texture white;
+	public Texture beige;
+
 
 
 
 	public textures() {
 
-		spritefront = new Texture(Gdx.files.internal("sprites/Fighter-Front.gif"));
-		spriteback = new Texture(Gdx.files.internal("sprites/Fighter-Back.gif"));
-		spriteleft = new Texture(Gdx.files.internal("sprites/Fighter-Left.gif"));
-		spriteright = new Sprite(spriteleft);
-		spriteright.flip(true, false);
-		fightsprite = new Texture(Gdx.files.internal("sprites/Fighter-Front.gif"));
-
-		spriteprotfront = new Texture(Gdx.files.internal("sprites/front_man.png"));
-		spriteprotback = new Texture(Gdx.files.internal("sprites/back_man.png"));
-		spriteprotleft = new Texture(Gdx.files.internal("sprites/left_man.png"));
-		spriteprotright = new Texture(Gdx.files.internal("sprites/right_man.png"));
+		sprites();
+		landtextures();
 
 
+	}
 
+	public void sprites(){
+		spritefront = new Texture(Gdx.files.internal("sprites/knt1_fr1.gif"));
+		spriteback = new Texture(Gdx.files.internal("sprites/knt1_bk1.gif"));
+		spriteleft = new Texture(Gdx.files.internal("sprites/knt1_lf1.gif"));
+		spriteright = new Texture(Gdx.files.internal("sprites/knt1_rt1.gif"));
+
+
+		spriteprotfront = new Texture(Gdx.files.internal("sprites/man1_fr1.gif"));
+		spriteprotback = new Texture(Gdx.files.internal("sprites/man1_bk1.gif"));
+		spriteprotleft = new Texture(Gdx.files.internal("sprites/man1_lf1.gif"));
+		spriteprotright = new Texture(Gdx.files.internal("sprites/man1_rt1.gif"));
+
+
+	}
+
+	public void landtextures(){
+		green = new Texture(Gdx.files.internal("landtextures/green.jpg"));
+		blue = new Texture(Gdx.files.internal("landtextures/blue.png"));
+		grey = new Texture(Gdx.files.internal("landtextures/grey.jpg"));
+		white = new Texture(Gdx.files.internal("landtextures/white.jpg"));
+		beige = new Texture(Gdx.files.internal("landtextures/beige.jpg"));
 	}
 }

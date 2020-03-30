@@ -499,7 +499,7 @@ public class Player implements Screen, InputProcessor{
 
 		switch (spritedir){
 			case 4:
-				batch.draw(this.fightsprite, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
+				batch.draw(this.spritefront, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
 
 				break;
 			case 0:

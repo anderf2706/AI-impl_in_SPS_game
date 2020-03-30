@@ -28,7 +28,7 @@ public class Maingamehud extends Hud {
 ////////////////////////////mainhud/////////////////////////////////////////
 
 		Button builderbutton = new TextButton("Builder", super.skin);
-		builderbutton.setPosition(100, 50);
+		builderbutton.setPosition(100, 25);
 		builderbutton.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -39,7 +39,7 @@ public class Maingamehud extends Hud {
 		});
 
 		Button playstatbutton = new TextButton("Playstat", super.skin);
-		playstatbutton.setPosition(builderbutton.getX() + builderbutton.getWidth(), 50);
+		playstatbutton.setPosition(builderbutton.getX() + builderbutton.getWidth(), 25);
 		playstatbutton.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -56,7 +56,7 @@ public class Maingamehud extends Hud {
 ////////////////////////////builderhud//////////////////////////////////
 
 		Button buildbackbutton = new TextButton("Back", super.skin);
-		buildbackbutton.setPosition(100, 50);
+		buildbackbutton.setPosition(100, 25);
 		buildbackbutton.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -68,7 +68,7 @@ public class Maingamehud extends Hud {
 
 
 		Button barracksbutton = new TextButton("Barracks", super.skin);
-		barracksbutton.setPosition(buildbackbutton.getX() + buildbackbutton.getWidth() + 50, 50);
+		barracksbutton.setPosition(buildbackbutton.getX() + buildbackbutton.getWidth() + 50, 25);
 		barracksbutton.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -80,7 +80,7 @@ public class Maingamehud extends Hud {
 		});
 
 		Button housebutton = new TextButton("House", super.skin);
-		housebutton.setPosition(barracksbutton.getX() + barracksbutton.getWidth(), 50);
+		housebutton.setPosition(barracksbutton.getX() + barracksbutton.getWidth(), 25);
 		housebutton.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -92,7 +92,7 @@ public class Maingamehud extends Hud {
 		});
 
 		Button wallbutton = new TextButton("Wall", super.skin);
-		wallbutton.setPosition(housebutton.getX() + housebutton.getWidth(), 50);
+		wallbutton.setPosition(housebutton.getX() + housebutton.getWidth(), 25);
 		wallbutton.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -104,7 +104,7 @@ public class Maingamehud extends Hud {
 		});
 
 		Button castlebutton = new TextButton("Castle", super.skin);
-		castlebutton.setPosition(wallbutton.getX() + wallbutton.getWidth(), 50);
+		castlebutton.setPosition(wallbutton.getX() + wallbutton.getWidth(), 25);
 		castlebutton.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -120,7 +120,7 @@ public class Maingamehud extends Hud {
 //////////////////////playstathud////////////////////////////////////////////
 
 		Button playstatbackbutton = new TextButton("Back", super.skin);
-		playstatbackbutton.setPosition(100, 50);
+		playstatbackbutton.setPosition(100, 25);
 		playstatbackbutton.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -132,7 +132,7 @@ public class Maingamehud extends Hud {
 		});
 
 		Button playerbutton = new TextButton("player", super.skin);
-		playerbutton.setPosition(playstatbackbutton.getX() + playstatbackbutton.getWidth() + 50, 50);
+		playerbutton.setPosition(playstatbackbutton.getX() + playstatbackbutton.getWidth() + 50, 25);
 		playerbutton.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {

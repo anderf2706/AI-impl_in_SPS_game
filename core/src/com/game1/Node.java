@@ -3,6 +3,7 @@ package com.game1;
 import java.io.Serializable;
 import java.util.*;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -19,16 +20,7 @@ public class Node implements Serializable {
 	int id;
 	static int count = 1;
 	Rectangle body;
-	/*
-	Node right = null;
-	Node left = null;
-	Node up = null;
-	Node down = null;
-	Node upright = null;
-	Node upleft = null;
-	Node downright = null;
-	Node downleft = null;
-	*/
+	float simplexnoise;
 	Node parent;
 	boolean ACNode = false;
 	boolean BN = false;
@@ -41,24 +33,17 @@ public class Node implements Serializable {
 	
 	GameScreen gamescreen;
 
+	Texture nodetexture;
 
-	public Node(int x, int y, GameScreen gamescreen) {
+
+	public Node(int x, int y, GameScreen gamescreen, float simplexnoise) {
 		this.x = x;
 		this.y = y;
-		//gamescreen.camera.unproject(pos);
 		this.gamescreen = gamescreen;
-
-
+		this.simplexnoise = simplexnoise;
 		this.id = count++;
-
-		
-
-
 		body = new Rectangle(x - 16, y - 16 ,32,32);
-		/*for(Node node : gamescreen.allnodes) {
-			if(Intersector.overlaps(node.body, new Rectangle(this.x - 32, this.y, 100,100))) {
-				this.right = node;
-			}*/
+		addmeaning();
 
 	}
 
@@ -94,10 +79,29 @@ public class Node implements Serializable {
 
 
 	public void addmeaning() {
+		if(this.simplexnoise > 0.85){
+			this.nodetexture = gamescreen.white;
+		}
+		if (this.simplexnoise <= 0.85 && this.simplexnoise > 0.70){
+			this.nodetexture = gamescreen.grey;
+		}
+		if (this.simplexnoise <= 0.70 && this.simplexnoise > 0.45){
+			this.nodetexture = gamescreen.green;
+		}
+		if (this.simplexnoise <= 0.45 && this.simplexnoise > 0.30){
+			this.nodetexture = gamescreen.beige;
+		}
+		if (this.simplexnoise <= 0.30 && this.simplexnoise >= 0){
+			this.nodetexture = gamescreen.blue;
+			this.occupied = true;
+		}
+
 
 
 
 		//TODO, occupied og color.
+
+
 
 	}
 }

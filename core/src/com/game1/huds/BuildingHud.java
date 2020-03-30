@@ -72,8 +72,8 @@ public class BuildingHud extends Hud {
 
 
 		if(building.getClass() == Barracks.class){
-			buildingtable.addActor(textbutton);
-			buildingtable.addActor(textbutton2);
+			buildingtable.addActor(barracks_footenemy);
+			buildingtable.addActor(barracks_activatefootenemy);
 			buildingtable.addActor(imageButton3);
 			buildingtable.addActor(imageButton4);
 			buildingtable.addActor(imageButton5);
