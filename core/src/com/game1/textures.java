@@ -23,6 +23,7 @@ public class textures {
 	public Texture grey;
 	public Texture white;
 	public Texture beige;
+	public Texture tree_normal;
 
 
 
@@ -56,5 +57,6 @@ public class textures {
 		grey = new Texture(Gdx.files.internal("landtextures/grey.jpg"));
 		white = new Texture(Gdx.files.internal("landtextures/white.jpg"));
 		beige = new Texture(Gdx.files.internal("landtextures/beige.jpg"));
+		tree_normal = new Texture(Gdx.files.internal("landtextures/sprite_0.png"));
 	}
 }

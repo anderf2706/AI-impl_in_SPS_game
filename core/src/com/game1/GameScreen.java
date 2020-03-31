@@ -1,6 +1,5 @@
 package com.game1;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
@@ -34,7 +33,6 @@ import com.game1.buildings.House;
 import com.game1.buildings.Wall;
 import com.game1.huds.Maingamehud;
 import com.game1.players.protagonist;
-import sun.awt.windows.WPrinterJob;
 
 
 public class GameScreen extends ApplicationAdapter implements Screen, InputProcessor {
@@ -95,6 +93,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 	ArrayList<Player> players = new ArrayList<Player>();
 	ArrayList<Building> buildings = new ArrayList<Building>();
+	ArrayList<Nature> nature = new ArrayList<Nature>();
 	ArrayList<Node> allnodes2 = new ArrayList<Node>();
 
 	ShapeRenderer sr;
@@ -234,7 +233,34 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	public void makenodes() throws IOException {
 		for (int i = 0; i < nodewidth; i += 1) {
 			for (int j = 0; j < nodewidth; j += 1) {
+
+				/*
+				float[][] simplexnoises = new float[0][];
+				simplexnoises [0][0] = noisemap[i*4][j*4];
+				simplexnoises [0][1] = noisemap[i*4][j*4 + 1];
+				simplexnoises [0][2] = noisemap[i*4][j*4 + 2];
+				simplexnoises [0][3] = noisemap[i*4][j*4 + 3];
+
+				simplexnoises [1][0] = noisemap[i*4 + 1][j*4];
+				simplexnoises [1][1] = noisemap[i*4 + 1][j*4 + 1];
+				simplexnoises [1][2] = noisemap[i*4 + 1][j*4 + 2];
+				simplexnoises [1][3] = noisemap[i*4 + 1][j*4 + 3];
+
+				simplexnoises [2][0] = noisemap[i*4 + 2][j*4];
+				simplexnoises [2][1] = noisemap[i*4 + 2][j*4 + 1];
+				simplexnoises [2][2] = noisemap[i*4 + 2][j*4 + 2];
+				simplexnoises [2][3] = noisemap[i*4 + 2][j*4 + 3];
+
+				simplexnoises [3][0] = noisemap[i*4 + 3][j*4];
+				simplexnoises [3][1] = noisemap[i*4 + 3][j*4 + 1];
+				simplexnoises [3][2] = noisemap[i*4 + 3][j*4 + 2];
+				simplexnoises [3][3] = noisemap[i*4 + 3][j*4 + 3];
+
+				 */
+
+
 				Node node = new Node(i*32, j*32, this, noisemap[i][j]);
+
 				allnodes.add(node);
 				nodedict.put(node.id, node);
 
@@ -256,7 +282,18 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 			node.makeClosest((node.id - 3) + (nodewidth*3), node.closest, true);
 			node.makeClosest((node.id - 3) - (nodewidth*3), node.closest, true);
 		}
+		Collections.sort(this.nature, new INTComparatorNature());
+		/*
+		if(nature.size() > 1) {
+			Collections.sort(nature, new Comparator<Nature>() {
+				@Override
+				public int compare(Nature n1, Nature n2) {
+					return compare(n2.naturenode.y, n1.naturenode.y);
+				}
+			});
+		}
 
+		 */
 	}
 	
 	
@@ -314,7 +351,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		for (List<Node> list : listOfLists){
 		    for(Node node : list){
 
-                game.batch.draw(node.nodetexture, node.x, node.y, 32,32);
+                game.batch.draw(node.nodetexture, node.x - 16, node.y - 16, 32,32);
 		    }
 
         }
@@ -337,6 +374,12 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		for(Building building : buildings) {
 			building.batch(game.batch);
 		}
+
+		for(Nature nature : nature) {
+			nature.batch(game.batch);
+		}
+
+
 
 		if (team != 0){
 			Vector3 midscreen = new Vector3(500,500,0);
@@ -415,7 +458,9 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	public float[][] generateSimplexNoise(int width, int height){
 		SimplexNoise sn = new SimplexNoise();
 		float[][]simplexnoise=new float[width][height];
-		float frequency=5.0f/(float)width;
+		Random r = new Random();
+		double randomfreq = 2 + r.nextDouble() * (8 - 2);
+		float frequency=(float)randomfreq/(float)width;
 		double random = (Math.random() * (10000) + 1);
 		for(int x=0;x<width; x++){
 			for(int y=0;y<height; y++){
@@ -570,50 +615,49 @@ public void makeCastle() {
 		if(	keycode == Input.Keys.D) {
 			if(D) {
 
-                ArrayList<Node> templist = new ArrayList<Node>();
-                for (Node node : listOfLists.get(listOfLists.size() - 1)){
-                	if(nodedict.get(node.id + 1*nodewidth) == null) {
-                		return false;
-					}
+				try {
 					right = 1;
-					templist.add(nodedict.get(node.id + 1 * nodewidth));
+					ArrayList<Node> templist = new ArrayList<Node>();
+					for (Node node : listOfLists.get(listOfLists.size() - 1)) {
 
+						templist.add(nodedict.get(node.id + 1 * nodewidth));
+
+					}
+					listOfLists.add(templist);
+
+					ArrayList<Node> templist2 = new ArrayList<Node>();
+					for (Node node : listOfLists.get(listOfLists.size() - 1)) {
+						templist2.add(nodedict.get(node.id + 1 * nodewidth));
+					}
+
+					listOfLists.add(templist2);
+
+
+					listOfLists.remove(1);
+					listOfLists.remove(0);
+
+					D = false;
 				}
-                listOfLists.add(templist);
-
-				ArrayList<Node> templist2 = new ArrayList<Node>();
-                for (Node node : listOfLists.get(listOfLists.size() - 1 )){
-                    templist2.add(nodedict.get(node.id + 1*nodewidth));
-                }
-
-                listOfLists.add(templist2);
-
-
-
-				listOfLists.remove(1);
-				listOfLists.remove(0);
-
-				D = false;
+				catch (NullPointerException e){
+					return false;
+				}
 				}
 
 		}
 		if(keycode == Input.Keys.A) {
 			if(A) {
-
+				left = -1;
 
 				ArrayList<Node> templist = new ArrayList<Node>();
 				for (Node node : listOfLists.get(0)){
-					if (nodedict.get(node.id - 1*nodewidth) == null){
-						return false;
-					}
-					templist.add(nodedict.get(node.id - 1*nodewidth));
+					templist.add(nodedict.get(node.id - nodewidth));
 				}
-				left = -1;
+
 				listOfLists.add(0, templist);
 
 				ArrayList<Node> templist2 = new ArrayList<Node>();
 				for (Node node : listOfLists.get(0)){
-					templist2.add(nodedict.get(node.id - 1*nodewidth));
+					templist2.add(nodedict.get(node.id - nodewidth));
 				}
 
 				listOfLists.add(0, templist2);
@@ -630,9 +674,6 @@ public void makeCastle() {
 		if(keycode == Input.Keys.W) {
 			if(W) {
 
-				if (nodedict.get(listOfLists.get(0).get(listOfLists.get(0).size() - 1).id + 1) == null){
-					return false;
-				}
 				up = 1;
 				Node node = nodedict.get(listOfLists.get(0).get(listOfLists.get(0).size() - 1).id + 1);
 				Node node2 = nodedict.get(listOfLists.get(0).get(listOfLists.get(0).size() - 1).id + 2);
@@ -656,9 +697,6 @@ public void makeCastle() {
 		if(keycode == Input.Keys.S) {
 			if(S) {
 
-				if (nodedict.get(listOfLists.get(0).get(0).id - 1) == null){
-					return false;
-				}
 				down = -1;
 				Node node = nodedict.get(listOfLists.get(0).get(0).id - 1);
 				Node node2 = nodedict.get(listOfLists.get(0).get(0).id - 2);

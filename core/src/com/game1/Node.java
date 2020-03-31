@@ -3,10 +3,9 @@ package com.game1;
 import java.io.Serializable;
 import java.util.*;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
+import com.game1.Naturepackage.Tree;
 
 
 public class Node implements Serializable {
@@ -30,6 +29,8 @@ public class Node implements Serializable {
 	public double g;
 	public double h;
 	public double cost;
+
+	Texture[][] textures;
 	
 	GameScreen gamescreen;
 
@@ -77,31 +78,36 @@ public class Node implements Serializable {
 			}
 		}
 
+	public void maketree(){
+		Random rand = new Random();
+
+		int randomNum = rand.nextInt((10 - 1) + 1) + 1;
+		if(randomNum == 1){
+		this.occupied = true;
+		gamescreen.nature.add(new Tree(this, gamescreen, this.x, this.y, 96, 64));
+
+		}
+	}
+
 
 	public void addmeaning() {
-		if(this.simplexnoise > 0.85){
-			this.nodetexture = gamescreen.white;
-		}
-		if (this.simplexnoise <= 0.85 && this.simplexnoise > 0.70){
-			this.nodetexture = gamescreen.grey;
-		}
-		if (this.simplexnoise <= 0.70 && this.simplexnoise > 0.45){
-			this.nodetexture = gamescreen.green;
-		}
-		if (this.simplexnoise <= 0.45 && this.simplexnoise > 0.30){
-			this.nodetexture = gamescreen.beige;
-		}
-		if (this.simplexnoise <= 0.30 && this.simplexnoise >= 0){
-			this.nodetexture = gamescreen.blue;
-			this.occupied = true;
-		}
-
-
-
-
-		//TODO, occupied og color.
-
-
+				if (this.simplexnoise > 0.85) {
+					this.nodetexture = gamescreen.white;
+				}
+				if (this.simplexnoise <= 0.85 && this.simplexnoise > 0.70) {
+					this.nodetexture = gamescreen.grey;
+				}
+				if (this.simplexnoise <= 0.70 && this.simplexnoise > 0.45) {
+					this.nodetexture = gamescreen.green;
+					this.maketree();
+				}
+				if (this.simplexnoise <= 0.45 && this.simplexnoise > 0.30) {
+					this.nodetexture = gamescreen.beige;
+				}
+				if (this.simplexnoise <= 0.30 && this.simplexnoise >= 0) {
+					this.nodetexture = gamescreen.blue;
+					this.occupied = true;
+				}
 
 	}
 }

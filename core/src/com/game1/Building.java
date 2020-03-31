@@ -2,6 +2,8 @@ package com.game1;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -51,10 +53,14 @@ public class Building implements InputProcessor, Screen{
 			}
 		bhud = new BuildingHud(gamescreen.game.batch, gamescreen, this);
 		building = new Texture(Gdx.files.internal("bucket.png"));
-		green = new Texture(Gdx.files.internal("green.jpg"));
+		green = gamescreen.tex.green;
 		
 		
 		this.gamescreen.buildings.add(this);
+
+		if(gamescreen.buildings.size() > 1) {
+			Collections.sort(gamescreen.buildings, new INTComparatorBuilding());
+		}
 
 		
 	}
@@ -74,6 +80,10 @@ public class Building implements InputProcessor, Screen{
 	public void destroyed() throws IOException {
 		gamescreen.makenodes();
 			
+	}
+
+	public Integer gety(){
+		return this.buildingnode.y;
 	}
 
 	public void batch(SpriteBatch batch) {
