@@ -131,6 +131,10 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 	float[][] noisemap;
 
+	float w;
+	float h;
+	float zoom;
+
 
 	public GameScreen(Game1 game) throws IOException {
         listOfLists = new ArrayList<List<Node>>();
@@ -140,20 +144,20 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 
 
-
+		zoom = 1;
         nodewidth = 200;
 
 		mapWidth = 100 * 32;
 		mapHeight = 100*32;
 
 		this.game = game;
-		float w = Gdx.graphics.getWidth();
-		float h = Gdx.graphics.getHeight();
+		w = Gdx.graphics.getWidth();
+		h = Gdx.graphics.getHeight();
 
 
 
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, w, h);
+		camera.setToOrtho(false, w/zoom, h/zoom);
 		camera.update();
 
 		nodes = new ArrayList<Node>();
@@ -732,6 +736,11 @@ public void makeCastle() {
 			makeB = !makeB;
 
 		}
+
+
+
+
+
 		if(keycode == Input.Keys.SPACE){
 			listOfLists = new ArrayList<List<Node>>();
 			for(int i = 0; i < 64; i++)  {
@@ -960,8 +969,24 @@ public void makeCastle() {
 
 	@Override
 	public boolean scrolled(int amount) {
-		// TODO Auto-generated method stub
+		/*
+		if(keycode == Input.Keys.Z && zoom > 0.3){
+			zoom -= 0.1;
+			camera.zoom = zoom;
+
+		 */
+		if(amount == -1 && zoom > 0.3){
+			zoom -= 0.1;
+			camera.zoom = zoom;
+		}
+		if(amount == 1 && zoom < 1){
+			zoom += 0.1;
+			camera.zoom = zoom;
+		}
 		return false;
+
+
+
 	}
 
 }
