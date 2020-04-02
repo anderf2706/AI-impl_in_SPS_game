@@ -10,9 +10,14 @@ public class protagonist extends Player {
 		super(gamescreen, game, x, y, team);
 
 		spritefront = gamescreen.tex.spriteprotfront;
+		spritefront2 = gamescreen.tex.spriteprotfront2;
 		spriteback = gamescreen.tex.spriteprotback;
+		spriteback2 = gamescreen.tex.spriteprotback2;
 		spriteleft = gamescreen.tex.spriteprotleft;
+		spriteleft2 = gamescreen.tex.spriteprotleft2;
 		spriteright = gamescreen.tex.spriteprotright;
+		spriteright2 = gamescreen.tex.spriteprotright2;
+
 
 		the_player.x = x - 15;
 		the_player.y = y - 15;

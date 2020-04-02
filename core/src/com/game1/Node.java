@@ -16,7 +16,7 @@ public class Node implements Serializable {
 	int reuse_index;
 	public int x;
 	public int y;
-	int id;
+	public int id;
 	static int count = 1;
 	Rectangle body;
 	float simplexnoise;
@@ -84,6 +84,11 @@ public class Node implements Serializable {
 		int randomNum = rand.nextInt((10 - 1) + 1) + 1;
 		if(randomNum == 1){
 		this.occupied = true;
+		for (Node node : this.adjecent) {
+			if (node.id == this.id + 1){
+				node.occupied = true;
+			}
+		}
 		gamescreen.nature.add(new Tree(this, gamescreen, this.x, this.y, 96, 64));
 
 		}
@@ -91,6 +96,11 @@ public class Node implements Serializable {
 
 
 	public void addmeaning() {
+		/*
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+
+		 */
 				if (this.simplexnoise > 0.85) {
 					this.nodetexture = gamescreen.white;
 				}
@@ -108,6 +118,13 @@ public class Node implements Serializable {
 					this.nodetexture = gamescreen.blue;
 					this.occupied = true;
 				}
+				/*
+			}
+
+		}
+
+				 */
+
 
 	}
 }

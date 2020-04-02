@@ -18,9 +18,16 @@ public class footenemy extends Player {
 		super(gamescreen, game, x, y, team);
 		this.gamescreen = gamescreen;
 		spritefront = gamescreen.tex.spritefront;
+		spritefront2 = gamescreen.tex.spritefront2;
 		spriteback = gamescreen.tex.spriteback;
+		spriteback2 = gamescreen.tex.spriteback2;
 		spriteleft = gamescreen.tex.spriteleft;
+		spriteleft2 = gamescreen.tex.spriteleft2;
 		spriteright = gamescreen.tex.spriteright;
+		spriteright2 = gamescreen.tex.spriteright2;
+
+
+
 
 		the_player.x = x - 15;
 		the_player.y = y - 15;
@@ -44,6 +51,7 @@ public class footenemy extends Player {
 	public void monitorwalk(){
 		Node menode = gamescreen.me.playerNode;
 		ArrayList<Node> openList = new ArrayList<Node>();
+
 		for (Node node: playerNode.adjecent
 		) {
 
@@ -69,12 +77,52 @@ public class footenemy extends Player {
 
 
 		if (openList.size() > 0){
+			if (this.playerNode.id == openList.get(0).id + 1 || this.playerNode.id == openList.get(0).id + (1+gamescreen.nodewidth)
+					|| this.playerNode.id == openList.get(0).id + (1-gamescreen.nodewidth)){
+				if (spritedir == 40){
+					spritedir = 40;
+				}
+				else{
+					spritedir = 4;
+				}
+
+			}
+			else if (this.playerNode.id == openList.get(0).id - 1 || this.playerNode.id == openList.get(0).id + ((-1) + gamescreen.nodewidth)
+					|| openList.get(0).id == this.playerNode.id + ((-1) - gamescreen.nodewidth)){
+				if (spritedir == 1){
+					spritedir = 10;
+				}
+				else{
+					spritedir = 1;
+				}
+			}
+			else if (this.playerNode.id == openList.get(0).id + gamescreen.nodewidth){
+				if (spritedir == 3){
+					spritedir = 30;
+				}
+				else{
+					spritedir = 3;
+				}
+			}
+			else if(this.playerNode.id == openList.get(0).id - gamescreen.nodewidth){
+				if (spritedir == 2){
+					spritedir = 20;
+				}
+				else{
+					spritedir = 2;
+				}
+			}
+
+
 			this.playerNode.occupied = false;
 			this.playerNode = openList.get(0);
 			this.the_player.x = this.playerNode.x - 16;
 			this.the_player.y = this.playerNode.y - 16;
 			this.playerNode.occupied = true;
 		}
+
+
+		
 	}
 
 	class monitortimer extends TimerTask {
@@ -86,6 +134,7 @@ public class footenemy extends Player {
 	public void monitor(){
 		if (timer == null) {
 			timer = new Timer();
+
 			timer.scheduleAtFixedRate(new monitortimer(), 0, 1000);
 
 		}

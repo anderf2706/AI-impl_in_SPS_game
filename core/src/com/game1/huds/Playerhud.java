@@ -34,7 +34,7 @@ public class Playerhud extends Hud {
 				stage.clear();
 				stage.addActor(background);
 				stage.addActor(buildertable);
-			};
+			}
 		});
 
 		Button playstatbutton = new TextButton("Playstat", super.skin);
@@ -45,7 +45,7 @@ public class Playerhud extends Hud {
 				stage.clear();
 				stage.addActor(background);
 				stage.addActor(playstattable);
-			};
+			}
 		});
 
 
@@ -62,7 +62,7 @@ public class Playerhud extends Hud {
 				stage.clear();
 				stage.addActor(background);
 				stage.addActor(maintable);
-			};
+			}
 		});
 
 
@@ -75,7 +75,7 @@ public class Playerhud extends Hud {
 				gamescreen.makeWall = false;
 				gamescreen.makeCastle = false;
 				gamescreen.makeBarracks = !gamescreen.makeBarracks;
-			};
+			}
 		});
 
 		Button housebutton = new TextButton("House", super.skin);
@@ -87,7 +87,7 @@ public class Playerhud extends Hud {
 				gamescreen.makeWall = false;
 				gamescreen.makeCastle = false;
 				gamescreen.makeHouse = !gamescreen.makeHouse;
-			};
+			}
 		});
 
 		Button wallbutton = new TextButton("Wall", super.skin);
@@ -99,7 +99,7 @@ public class Playerhud extends Hud {
 				gamescreen.makeBarracks = false;
 				gamescreen.makeCastle = false;
 				gamescreen.makeWall = !gamescreen.makeWall;
-			};
+			}
 		});
 
 		Button castlebutton = new TextButton("Castle", super.skin);
@@ -111,7 +111,7 @@ public class Playerhud extends Hud {
 				gamescreen.makeWall = false;
 				gamescreen.makeBarracks = false;
 				gamescreen.makeCastle = !gamescreen.makeCastle;
-			};
+			}
 		});
 
 ////////////////////////////////////////////////////////////////////////////
@@ -127,7 +127,7 @@ public class Playerhud extends Hud {
 				stage.addActor(background);
 				stage.addActor(maintable);
 
-			};
+			}
 		});
 
 		Button playerbutton = new TextButton("player", super.skin);
@@ -136,7 +136,7 @@ public class Playerhud extends Hud {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 
-			};
+			}
 		});
 
 /////////////////////////////////////////////////////////////////////////////

@@ -124,12 +124,13 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 
 
-	int nodewidth;
+	public int nodewidth;
     List<List<Node>> listOfLists;
 
 	public textures tex;
 
 	float[][] noisemap;
+	Texture[][] textureoverworld;
 
 	float w;
 	float h;
@@ -202,6 +203,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
         me = new protagonist(this, game ,(nodewidth*32)/2, (nodewidth*32)/2, 0);
 		chosenNode = allnodes.get(10);
 
+
 	}
 
 
@@ -238,29 +240,6 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		for (int i = 0; i < nodewidth; i += 1) {
 			for (int j = 0; j < nodewidth; j += 1) {
 
-				/*
-				float[][] simplexnoises = new float[0][];
-				simplexnoises [0][0] = noisemap[i*4][j*4];
-				simplexnoises [0][1] = noisemap[i*4][j*4 + 1];
-				simplexnoises [0][2] = noisemap[i*4][j*4 + 2];
-				simplexnoises [0][3] = noisemap[i*4][j*4 + 3];
-
-				simplexnoises [1][0] = noisemap[i*4 + 1][j*4];
-				simplexnoises [1][1] = noisemap[i*4 + 1][j*4 + 1];
-				simplexnoises [1][2] = noisemap[i*4 + 1][j*4 + 2];
-				simplexnoises [1][3] = noisemap[i*4 + 1][j*4 + 3];
-
-				simplexnoises [2][0] = noisemap[i*4 + 2][j*4];
-				simplexnoises [2][1] = noisemap[i*4 + 2][j*4 + 1];
-				simplexnoises [2][2] = noisemap[i*4 + 2][j*4 + 2];
-				simplexnoises [2][3] = noisemap[i*4 + 2][j*4 + 3];
-
-				simplexnoises [3][0] = noisemap[i*4 + 3][j*4];
-				simplexnoises [3][1] = noisemap[i*4 + 3][j*4 + 1];
-				simplexnoises [3][2] = noisemap[i*4 + 3][j*4 + 2];
-				simplexnoises [3][3] = noisemap[i*4 + 3][j*4 + 3];
-
-				 */
 
 
 				Node node = new Node(i*32, j*32, this, noisemap[i][j]);
@@ -354,11 +333,12 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 		for (List<Node> list : listOfLists){
 		    for(Node node : list){
-
-                game.batch.draw(node.nodetexture, node.x - 16, node.y - 16, 32,32);
+					game.batch.draw(node.nodetexture, node.x - 16, node.y - 16, 32, 32);
 		    }
 
+
         }
+
 
         if(chosenNode != null) {
         	game.batch.draw(green, chosenNode.x - 8, chosenNode.y - 8, 16, 16);
@@ -464,6 +444,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		float[][]simplexnoise=new float[width][height];
 		Random r = new Random();
 		double randomfreq = 2 + r.nextDouble() * (8 - 2);
+		System.out.println(randomfreq);
 		float frequency=(float)randomfreq/(float)width;
 		double random = (Math.random() * (10000) + 1);
 		for(int x=0;x<width; x++){
@@ -472,6 +453,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 				simplexnoise[x][y]=(simplexnoise[x][y]+1)/2;   //generate values between 0 and 1
 			}
 		}
+
 
 		return simplexnoise;
 	}
@@ -539,6 +521,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 				}
 				new Barracks(this, chosenNode.x, chosenNode.y, team);
+
 
 	}
 
@@ -613,13 +596,12 @@ public void makeCastle() {
 	public boolean keyDown(int keycode) {
 
 		if (keycode == Input.Keys.ESCAPE){
-			game.dispose();
+			this.dispose();
 		}
 
-		if(	keycode == Input.Keys.D) {
+		if(	keycode == Input.Keys.D && (listOfLists.get(listOfLists.size() - 1).get(36-1).id <= nodewidth*(nodewidth - 1))) {
 			if(D) {
 
-				try {
 					right = 1;
 					ArrayList<Node> templist = new ArrayList<Node>();
 					for (Node node : listOfLists.get(listOfLists.size() - 1)) {
@@ -642,13 +624,12 @@ public void makeCastle() {
 
 					D = false;
 				}
-				catch (NullPointerException e){
 					return false;
-				}
-				}
-
 		}
-		if(keycode == Input.Keys.A) {
+
+
+
+		if(keycode == Input.Keys.A && (listOfLists.get(1).get(0).id >= 0)) {
 			if(A) {
 				left = -1;
 
@@ -673,9 +654,11 @@ public void makeCastle() {
 
 
 				A = false;
+				return false;
 			}
 		}
-		if(keycode == Input.Keys.W) {
+		if(keycode == Input.Keys.W && (listOfLists.get(listOfLists.size() - 1).get(35).id)/
+				(listOfLists.get(listOfLists.size() - 1).get(35).y) <= 35){
 			if(W) {
 
 				up = 1;
@@ -688,17 +671,12 @@ public void makeCastle() {
 					listOfLists.get(i).remove(0);
 				}
 
-
-
-
-
-
-
-
 				W = false;
+				return false;
 			}
 		}
-		if(keycode == Input.Keys.S) {
+		if(keycode == Input.Keys.S && (listOfLists.get(0).get(0).id)/
+				(listOfLists.get(0).get(0).y) >= 1) {
 			if(S) {
 
 				down = -1;
@@ -714,6 +692,7 @@ public void makeCastle() {
 
 
 				S = false;
+				return false;
 			}
 		}
 
@@ -901,15 +880,19 @@ public void makeCastle() {
 			
 		if(makeBarracks && button == Input.Buttons.LEFT) {
 			makeBarracks();
+			makeBarracks = !makeBarracks;
 		}
 		if(makeHouse && button == Input.Buttons.LEFT) {
 			makeHouse();
+			makeHouse = !makeHouse;
 		}
 		if(makeWall && button == Input.Buttons.LEFT) {
 			makeWall();
+			makeWall = !makeWall;
 		}
 		if(makeCastle && button == Input.Buttons.LEFT) {
 			makeCastle();
+			makeCastle = !makeCastle;
 		}
 
 		return false;

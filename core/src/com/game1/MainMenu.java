@@ -51,7 +51,7 @@ public class MainMenu extends ApplicationAdapter implements Screen{
 		font.setColor(Color.BLACK);
 
 
-		font.draw(game.batch, "Title", 900, 800);
+		font.draw(game.batch, "Adventures of Durs", 700, 800);
 		game.batch.end();
 		// TODO Auto-generated method stub
 

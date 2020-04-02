@@ -56,10 +56,13 @@ public class Player implements Screen, InputProcessor{
 	boolean alive = true;
 
 	public Texture spritefront;
+	public Texture spritefront2;
 	public Texture spriteback;
+	public Texture spriteback2;
 	public Texture spriteleft;
+	public Texture spriteleft2;
 	public Texture spriteright;
-
+	public Texture spriteright2;
 	public Texture fightsprite;
 	
 	Vector2 nodeFin;
@@ -88,7 +91,8 @@ public class Player implements Screen, InputProcessor{
 	
 	Timer t;
 
-	int spritedir;
+
+	public int spritedir;
 	
 	int i;
 	boolean isAttacking = false;
@@ -119,7 +123,7 @@ public class Player implements Screen, InputProcessor{
 		the_player = new Rectangle();
 
 
-		
+		spritedir = 40;
 
 		future_the_player = new Rectangle();
 
@@ -165,8 +169,8 @@ public class Player implements Screen, InputProcessor{
 		dush = 0;
 		if(dush < finalpath.size()) {
 			t = new Timer();
+
 			t.schedule(new TimerTask() {
-	
 				@Override
 				public void run() {
 					// TODO Auto-generated method stub
@@ -174,27 +178,48 @@ public class Player implements Screen, InputProcessor{
 					move_t(dush);
 
 			    }
-			}, 0, (long) (5000/speed));
+			}, (long) (5000/speed), (long)(5000/speed));
 			
 		}
 	}
 		
 	public void move_t(int b) {
-		Node nextnode = finalpath.get(b);
-
+		final Node nextnode = finalpath.get(b);
+		t = new Timer();
 		if (nextnode.id == this.playerNode.id + 1 || nextnode.id == this.playerNode.id + (1+gamescreen.nodewidth)
 		|| nextnode.id == this.playerNode.id + (1-gamescreen.nodewidth)){
-			spritedir = 1;
+			if (spritedir == 1){
+				spritedir = 10;
+			}
+			else{
+				spritedir = 1;
+			}
+
 		}
-		if (nextnode.id == this.playerNode.id - 1 || nextnode.id == this.playerNode.id + ((-1) + gamescreen.nodewidth)
+		else if (nextnode.id == this.playerNode.id - 1 || nextnode.id == this.playerNode.id + ((-1) + gamescreen.nodewidth)
 				|| nextnode.id == this.playerNode.id + ((-1) - gamescreen.nodewidth)){
-			spritedir = 0;
+			if (spritedir == 4){
+				spritedir = 40;
+			}
+			else{
+				spritedir = 4;
+			}
 		}
-		if (nextnode.id == this.playerNode.id + gamescreen.nodewidth){
-			spritedir = 2;
+		else if (nextnode.id == this.playerNode.id + gamescreen.nodewidth){
+			if (spritedir == 2){
+				spritedir = 20;
+			}
+			else{
+				spritedir = 2;
+			}
 		}
-		if (nextnode.id == this.playerNode.id - gamescreen.nodewidth){
-			spritedir = 3;
+		else if(nextnode.id == this.playerNode.id - gamescreen.nodewidth){
+			if (spritedir == 3){
+				spritedir = 30;
+			}
+			else{
+				spritedir = 3;
+			}
 		}
 
 
@@ -240,17 +265,38 @@ public class Player implements Screen, InputProcessor{
 
 			if (nextnode.id == this.playerNode.id + 1 || nextnode.id == this.playerNode.id + (1+gamescreen.nodewidth)
 					|| nextnode.id == this.playerNode.id + (1-gamescreen.nodewidth)){
-				spritedir = 1;
+				if (spritedir == 1){
+					spritedir = 10;
+				}
+				else{
+					spritedir = 1;
+				}
+
 			}
-			if (nextnode.id == this.playerNode.id - 1 || nextnode.id == this.playerNode.id + ((-1) + gamescreen.nodewidth)
+			else if (nextnode.id == this.playerNode.id - 1 || nextnode.id == this.playerNode.id + ((-1) + gamescreen.nodewidth)
 					|| nextnode.id == this.playerNode.id + ((-1) - gamescreen.nodewidth)){
-				spritedir = 0;
+				if (spritedir == 4){
+					spritedir = 40;
+				}
+				else{
+					spritedir = 4;
+				}
 			}
-			if (nextnode.id == this.playerNode.id + gamescreen.nodewidth){
-				spritedir = 2;
+			else if (nextnode.id == this.playerNode.id + gamescreen.nodewidth){
+				if (spritedir == 2){
+					spritedir = 20;
+				}
+				else{
+					spritedir = 2;
+				}
 			}
-			if (nextnode.id == this.playerNode.id - gamescreen.nodewidth){
-				spritedir = 3;
+			else if(nextnode.id == this.playerNode.id - gamescreen.nodewidth){
+				if (spritedir == 3){
+					spritedir = 30;
+				}
+				else{
+					spritedir = 3;
+				}
 			}
 
 			this.the_player.x = finalpath.get(1).x - the_player.width / 2;
@@ -355,23 +401,22 @@ public class Player implements Screen, InputProcessor{
 
 			if(playerChosen) {
                 if (button == Input.Buttons.RIGHT) {
+
                 	if (endnode != null) {
 					}
                     endnode = gamescreen.chosenNode;
 					finalnode = gamescreen.chosenNode;
 					isAttacking = false;
 
-                    if (!executed) {
-                        if (t != null) {
-                            t.cancel();
-                        }
-                        following = false;
-                        attacking = false;
+
+					if (executed) {
+						t.cancel();
+					}
+					following = false;
+					attacking = false;
+ 					moving = true;
 
 
-                        moving = true;
-
-                    }
 
 
                     for (Player player : gamescreen.players) {
@@ -424,7 +469,6 @@ public class Player implements Screen, InputProcessor{
 
 									}
 								}
-
 
 
 
@@ -496,26 +540,36 @@ public class Player implements Screen, InputProcessor{
 		if (isAttacking){
 			spritedir = 4;
 		}
-
 		switch (spritedir){
 			case 4:
 				batch.draw(this.spritefront, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
 
 				break;
-			case 0:
-				batch.draw(this.spritefront, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
-
+			case 40:
+				batch.draw(this.spritefront2, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
 				break;
 			case 1:
 				batch.draw(this.spriteback, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
+
+				break;
+			case 10:
+				batch.draw(this.spriteback2, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
 
 				break;
 			case 2:
 				batch.draw(this.spriteright, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
 
 				break;
+			case 20:
+				batch.draw(this.spriteright2, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
+
+				break;
 			case 3:
 				batch.draw(this.spriteleft, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
+
+				break;
+			case 30:
+				batch.draw(this.spriteleft2, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
 
 				break;
 		}
@@ -528,13 +582,7 @@ public class Player implements Screen, InputProcessor{
 			
 		}
 		
-		if(gamescreen.chosenNode != null) {
-			batch.draw(gamescreen.green, gamescreen.chosenNode.x, gamescreen.chosenNode.y, 5, 5);
-		
-		}
-		if(playerNode != null) {
-			batch.draw(gamescreen.green, playerNode.x, playerNode.y, 5, 5);
-		
+
 		/*for(Node node : closedlist) {
 			batch.draw(green, node.x, node.y, 5, 5);
 		}*/
@@ -550,8 +598,7 @@ public class Player implements Screen, InputProcessor{
 			batch.draw(green, playerNode.up.x, playerNode.up.y, 5, 5);
 			batch.draw(green, playerNode.down.x, playerNode.down.y, 5, 5);
 			*/
-		}
-		
+
 		
 		
 	}

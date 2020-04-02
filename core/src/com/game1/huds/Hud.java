@@ -37,7 +37,7 @@ class Hud extends InputAdapter implements Screen{
 	public Hud(SpriteBatch spriteBatch, final GameScreen gamescreen) {
 		stageViewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		stage = new Stage(stageViewport, spriteBatch); //create stage with the stageViewport and the SpriteBatch given in Constructor
-		texture = new Texture(Gdx.files.internal("sprites/man1_fr1.gif"));
+		texture = new Texture(Gdx.files.internal("sprites/man1/man1_fr1.gif"));
 		background = new Texture(Gdx.files.internal("brown rectangle.jfif"));
 		drawablebackground = new TextureRegionDrawable((new TextureRegion(background)));
 		drawable = new TextureRegionDrawable((new TextureRegion(texture)));

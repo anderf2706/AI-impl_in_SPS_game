@@ -65,7 +65,7 @@ public class MainMenuHud extends InputAdapter implements Screen{
 
 				game.setScreen(gamescreen);
 				mainmenu.dispose();
-			};
+			}
 		});
 
 
@@ -74,7 +74,7 @@ public class MainMenuHud extends InputAdapter implements Screen{
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 
-			};
+			}
 		});
 
 		Button textbutton3 = new TextButton("settings", skin);
@@ -83,7 +83,7 @@ public class MainMenuHud extends InputAdapter implements Screen{
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 
-			};
+			}
 		});
 
 		Button textbutton4 = new TextButton("exit", skin);
@@ -91,7 +91,7 @@ public class MainMenuHud extends InputAdapter implements Screen{
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				game.dispose();
-			};
+			}
 		});
 
 		Image background = new Image(drawablebackground);

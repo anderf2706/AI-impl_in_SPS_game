@@ -38,8 +38,8 @@ public class Game1 extends Game {
 		//img = new Texture("badlogic.jpg");
 		font = new BitmapFont();
 		font.setColor(Color.BLACK);
-		font.getData().setScale(5);
-		frontimg = new Texture(Gdx.files.internal("petemcnally_blog_bergs_var_04.jpg"));
+		font.getData().setScale(2);
+		frontimg = new Texture(Gdx.files.internal("libgdx.png"));
 		this.setScreen(new StartScreen(this));
 	}
 

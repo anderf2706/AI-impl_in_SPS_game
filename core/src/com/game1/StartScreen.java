@@ -27,15 +27,15 @@ public class StartScreen extends ApplicationAdapter implements Screen{
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0.5f, 0, 0, 1);
+		Gdx.gl.glClearColor(1f, 1f, 1f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		game.batch.setProjectionMatrix(camera.combined);
 		
 		game.batch.begin();
-		game.batch.draw(game.frontimg, 0, 0);
-		game.font.draw(game.batch, "Durs Game", 1900/2, 1080/2 + 300, 0, 9, 200, 6, false);
-		game.font.draw(game.batch, "Press to continue", 1900/2 - 250, 1080/2 + 100);
+		game.batch.draw(game.frontimg, 860, 700);
+		//game.font.draw(game.batch, "Durs Game", 1900/2, 1080/2 + 300, 0, 9, 200, 6, false);
+		game.font.draw(game.batch, "Press to continue", 1900/2 - 100, 1080/2 -100);
 		game.batch.end();
 		//game.setScreen(new GameScreen(game));
 		
