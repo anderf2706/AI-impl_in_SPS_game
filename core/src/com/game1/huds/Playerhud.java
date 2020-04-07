@@ -74,6 +74,7 @@ public class Playerhud extends Hud {
 				gamescreen.makeHouse = false;
 				gamescreen.makeWall = false;
 				gamescreen.makeCastle = false;
+				gamescreen.makeGate = false;
 				gamescreen.makeBarracks = !gamescreen.makeBarracks;
 			}
 		});
@@ -86,6 +87,8 @@ public class Playerhud extends Hud {
 				gamescreen.makeBarracks = false;
 				gamescreen.makeWall = false;
 				gamescreen.makeCastle = false;
+				gamescreen.makeGate = false;
+
 				gamescreen.makeHouse = !gamescreen.makeHouse;
 			}
 		});
@@ -98,18 +101,35 @@ public class Playerhud extends Hud {
 				gamescreen.makeHouse = false;
 				gamescreen.makeBarracks = false;
 				gamescreen.makeCastle = false;
+				gamescreen.makeGate = false;
+
 				gamescreen.makeWall = !gamescreen.makeWall;
 			}
 		});
 
+		Button gatebutton = new TextButton("Gate", super.skin);
+		gatebutton.setPosition(wallbutton.getX() + wallbutton.getWidth(), 25);
+		gatebutton.addListener( new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				gamescreen.makeHouse = false;
+				gamescreen.makeBarracks = false;
+				gamescreen.makeCastle = false;
+				gamescreen.makeWall = false;
+				gamescreen.makeGate = !gamescreen.makeGate;
+			}
+		});
+
 		Button castlebutton = new TextButton("Castle", super.skin);
-		castlebutton.setPosition(wallbutton.getX() + wallbutton.getWidth(), 25);
+		castlebutton.setPosition(gatebutton.getX() + gatebutton.getWidth(), 25);
 		castlebutton.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				gamescreen.makeHouse = false;
 				gamescreen.makeWall = false;
 				gamescreen.makeBarracks = false;
+				gamescreen.makeGate= false;
+
 				gamescreen.makeCastle = !gamescreen.makeCastle;
 			}
 		});
@@ -154,6 +174,7 @@ public class Playerhud extends Hud {
 		buildertable.addActor(housebutton);
 		buildertable.addActor(wallbutton);
 		buildertable.addActor(castlebutton);
+		buildertable.addActor(gatebutton);
 
 		playstattable.addActor(playerbutton);
 		playstattable.addActor(playstatbackbutton);

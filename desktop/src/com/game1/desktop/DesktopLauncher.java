@@ -10,7 +10,7 @@ public class DesktopLauncher {
 		config.title = "Durs Game";
 		config.width = 1920;
 		config.height = 1080;
-		config.fullscreen = false;
+		config.fullscreen = true;
 		new LwjglApplication(new Game1(), config);
 		
 	}

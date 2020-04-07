@@ -1,6 +1,8 @@
 package com.game1.buildings;
 
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.game1.Building;
 import com.game1.GameScreen;
 import com.game1.Node;
@@ -21,7 +23,7 @@ public class Barracks extends Building {
 	public Barracks(GameScreen gamescreen, int x, int y, int team) {
 		super(gamescreen, x, y, 32*3-2, 32*3-2, team);
 		this.gamescreen = gamescreen;
-
+		building = new Texture(Gdx.files.internal("buildingtextures/house3.png"));
 
 		// TODO Auto-generated constructor stub
 

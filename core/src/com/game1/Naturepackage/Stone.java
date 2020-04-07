@@ -8,6 +8,6 @@ public class Stone extends Nature {
 	public Stone(Node node, GameScreen gamescreen, int x, int y, int height, int width) {
 		super(node, gamescreen, x, y, height, width);
 
-		//texture = gamescreen.tex.
+		texture = gamescreen.tex.normal_stone;
 	}
 }

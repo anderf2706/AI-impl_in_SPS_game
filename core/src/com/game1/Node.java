@@ -5,7 +5,10 @@ import java.util.*;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
+import com.game1.Naturepackage.Smalltree;
+import com.game1.Naturepackage.Stone;
 import com.game1.Naturepackage.Tree;
+import com.game1.biomes.Forest_temp;
 
 
 public class Node implements Serializable {
@@ -20,6 +23,7 @@ public class Node implements Serializable {
 	static int count = 1;
 	Rectangle body;
 	float simplexnoise;
+	float humidity;
 	Node parent;
 	boolean ACNode = false;
 	boolean BN = false;
@@ -31,100 +35,114 @@ public class Node implements Serializable {
 	public double cost;
 
 	Texture[][] textures;
-	
-	GameScreen gamescreen;
+
+	public GameScreen gamescreen;
 
 	Texture nodetexture;
 
+	Biome myBiome;
 
-	public Node(int x, int y, GameScreen gamescreen, float simplexnoise) {
+
+	public Node(int x, int y, GameScreen gamescreen, float simplexnoise, float humidity) {
+
 		this.x = x;
 		this.y = y;
 		this.gamescreen = gamescreen;
 		this.simplexnoise = simplexnoise;
+		this.humidity = humidity;
 		this.id = count++;
-		body = new Rectangle(x - 16, y - 16 ,32,32);
+		body = new Rectangle(x - 16, y - 16, 32, 32);
+
+		if (this.humidity > 0.80) {
+			this.myBiome = gamescreen.rainforest;
+		}
+		if (this.humidity <= 0.80 && this.humidity > 0.5) {
+			this.myBiome = gamescreen.tundra;
+
+		}
+		if (this.humidity <= 0.50 && this.humidity > 0.20) {
+			this.myBiome = gamescreen.forest_temp;
+		}
+		if (this.humidity <= 0.2) {
+			this.myBiome = gamescreen.desert;
+		}
 		addmeaning();
 
 	}
 
-	public void makeClosest(int id, ArrayList<Node> list, boolean center){
-			if (gamescreen.nodedict.containsKey(id) && center) {
-				list.add(gamescreen.nodedict.get(id));
-			}
-			if (gamescreen.nodedict.containsKey(id + 1)) {
-				list.add(gamescreen.nodedict.get(id + 1));
-			}
-			if (gamescreen.nodedict.containsKey(id - 1)) {
-				list.add(gamescreen.nodedict.get(id - 1));
-			}
-			if (gamescreen.nodedict.containsKey(id + gamescreen.nodewidth)) {
-				list.add(gamescreen.nodedict.get(id + gamescreen.nodewidth));
-			}
-			if (gamescreen.nodedict.containsKey(id - gamescreen.nodewidth)) {
-				list.add(gamescreen.nodedict.get(id - gamescreen.nodewidth));
-			}
-			if (gamescreen.nodedict.containsKey(id + (gamescreen.nodewidth + 1))) {
-				list.add(gamescreen.nodedict.get(id + (gamescreen.nodewidth + 1)));
-			}
-			if (gamescreen.nodedict.containsKey(id + (gamescreen.nodewidth - 1))) {
-				list.add(gamescreen.nodedict.get(id + (gamescreen.nodewidth - 1)));
-			}
-			if (gamescreen.nodedict.containsKey(id - (gamescreen.nodewidth + 1))) {
-				list.add(gamescreen.nodedict.get(id - (gamescreen.nodewidth + 1)));
-			}
-			if (gamescreen.nodedict.containsKey(id - (gamescreen.nodewidth - 1))) {
-				list.add(gamescreen.nodedict.get(id - (gamescreen.nodewidth - 1)));
-			}
+	public void makeClosest(int id, ArrayList<Node> list, boolean center) {
+		if (gamescreen.nodedict.containsKey(id) && center) {
+			list.add(gamescreen.nodedict.get(id));
 		}
-
-	public void maketree(){
-		Random rand = new Random();
-
-		int randomNum = rand.nextInt((10 - 1) + 1) + 1;
-		if(randomNum == 1){
-		this.occupied = true;
-		for (Node node : this.adjecent) {
-			if (node.id == this.id + 1){
-				node.occupied = true;
-			}
+		if (gamescreen.nodedict.containsKey(id + 1)) {
+			list.add(gamescreen.nodedict.get(id + 1));
 		}
-		gamescreen.nature.add(new Tree(this, gamescreen, this.x, this.y, 96, 64));
-
+		if (gamescreen.nodedict.containsKey(id - 1)) {
+			list.add(gamescreen.nodedict.get(id - 1));
+		}
+		if (gamescreen.nodedict.containsKey(id + gamescreen.nodewidth)) {
+			list.add(gamescreen.nodedict.get(id + gamescreen.nodewidth));
+		}
+		if (gamescreen.nodedict.containsKey(id - gamescreen.nodewidth)) {
+			list.add(gamescreen.nodedict.get(id - gamescreen.nodewidth));
+		}
+		if (gamescreen.nodedict.containsKey(id + (gamescreen.nodewidth + 1))) {
+			list.add(gamescreen.nodedict.get(id + (gamescreen.nodewidth + 1)));
+		}
+		if (gamescreen.nodedict.containsKey(id + (gamescreen.nodewidth - 1))) {
+			list.add(gamescreen.nodedict.get(id + (gamescreen.nodewidth - 1)));
+		}
+		if (gamescreen.nodedict.containsKey(id - (gamescreen.nodewidth + 1))) {
+			list.add(gamescreen.nodedict.get(id - (gamescreen.nodewidth + 1)));
+		}
+		if (gamescreen.nodedict.containsKey(id - (gamescreen.nodewidth - 1))) {
+			list.add(gamescreen.nodedict.get(id - (gamescreen.nodewidth - 1)));
 		}
 	}
+
+
 
 
 	public void addmeaning() {
-		/*
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 4; j++) {
 
-		 */
-				if (this.simplexnoise > 0.85) {
-					this.nodetexture = gamescreen.white;
-				}
-				if (this.simplexnoise <= 0.85 && this.simplexnoise > 0.70) {
-					this.nodetexture = gamescreen.grey;
-				}
-				if (this.simplexnoise <= 0.70 && this.simplexnoise > 0.45) {
-					this.nodetexture = gamescreen.green;
-					this.maketree();
-				}
-				if (this.simplexnoise <= 0.45 && this.simplexnoise > 0.30) {
-					this.nodetexture = gamescreen.beige;
-				}
-				if (this.simplexnoise <= 0.30 && this.simplexnoise >= 0) {
-					this.nodetexture = gamescreen.blue;
-					this.occupied = true;
-				}
-				/*
+		if (this.simplexnoise > 0.90) {
+			this.nodetexture = myBiome.E;
+			if (!this.occupied) {
+				myBiome.act_E1(this);
+			}
+			return;
+		}
+		if (this.simplexnoise <= 0.90 && this.simplexnoise > 0.75) {
+			this.nodetexture = myBiome.D;
+			myBiome.act_D1(this);
+			return;
+		}
+		if (this.simplexnoise <= 0.75 && this.simplexnoise > 0.35) {
+			this.nodetexture = myBiome.C;
+			if (!this.occupied) {
+				myBiome.act_C1(this);
+			}
+			if (!this.occupied) {
+				myBiome.act_C2(this);
+			}
+			if (!this.occupied) {
+				myBiome.act_C3(this);
+			}
+			if (!this.occupied) {
+				myBiome.act_C4(this);
 			}
 
+			return;
 		}
+		if (this.simplexnoise <= 0.35 && this.simplexnoise > 0.30) {
+			this.nodetexture = myBiome.B;
+			return;
+		}
+		if (this.simplexnoise <= 0.30 && this.simplexnoise >= 0) {
+			this.nodetexture = myBiome.A;
+			this.occupied = true;
 
-				 */
-
-
+		}
 	}
+
 }

@@ -27,10 +27,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 
-import com.game1.buildings.Barracks;
-import com.game1.buildings.Castle;
-import com.game1.buildings.House;
-import com.game1.buildings.Wall;
+import com.game1.biomes.Desert;
+import com.game1.biomes.Forest_temp;
+import com.game1.biomes.Rainforest;
+import com.game1.biomes.Tundra;
+import com.game1.buildings.*;
 import com.game1.huds.Maingamehud;
 import com.game1.players.protagonist;
 
@@ -71,6 +72,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	public boolean makeHouse = false;
 	public boolean makeWall = false;
 	public boolean makeCastle = false;
+	public boolean makeGate = false;
 	boolean menu = false;
 	boolean rotate1 = false;
 	boolean rotate2 = false;
@@ -111,6 +113,12 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	Texture grey;
 	Texture white;
 	Texture beige;
+	Texture water;
+	Texture grass;
+	Texture rock;
+	Texture dirt;
+	Texture snow;
+	Texture sand;
 
 
 
@@ -130,11 +138,18 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	public textures tex;
 
 	float[][] noisemap;
+	float[][] humiditymap;
 	Texture[][] textureoverworld;
 
 	float w;
 	float h;
 	float zoom;
+	int cmerasafe_y;
+
+	public Forest_temp forest_temp;
+	public Desert desert;
+	public Tundra tundra;
+	public Rainforest rainforest;
 
 
 	public GameScreen(Game1 game) throws IOException {
@@ -155,7 +170,10 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		w = Gdx.graphics.getWidth();
 		h = Gdx.graphics.getHeight();
 
-
+		forest_temp = new Forest_temp(this);
+		desert = new Desert(this);
+		tundra = new Tundra(this);
+		rainforest = new Rainforest(this);
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, w/zoom, h/zoom);
@@ -165,7 +183,8 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 		allnodes = new ArrayList<Node>();
 		sr = new ShapeRenderer();
-		noisemap = generateSimplexNoise(nodewidth, nodewidth);
+		noisemap = generateSimplexNoise(nodewidth, nodewidth, 5, 5);
+		humiditymap = generateSimplexNoise(nodewidth, nodewidth, 1.2, 1.2);
 		settextures();
 		makenodes();
 		font = new BitmapFont();
@@ -188,13 +207,14 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		Vector3 mouseInWorld3D = new Vector3();
 		this.mouseInWorld2D = mouseInWorld2D;
 		this.mouseInWorld3D = mouseInWorld3D;
+		cmerasafe_y = nodewidth/2;
 
         camera.translate((nodewidth*32)/2, (nodewidth*32)/2);
         camera.update();
 
 
         for (int i = 0; i < 64; i++) {
-            for (int j = 0; j < 36; j++) {
+            for (int j = 0; j < 37; j++) {
                 listOfLists.get(i).add(j, nodedict.get(((((nodewidth/2 - 2) + i)*nodewidth)+((nodewidth/2 + 2) + j))));
             }
 
@@ -234,6 +254,12 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		grey = tex.grey;
 		white = tex.white;
 		beige = tex.beige;
+		grass = tex.grass;
+		water = tex.water;
+		rock = tex.rock;
+		sand = tex.sand;
+		snow = tex.snow;
+		dirt = tex.dirt;
 	}
 	
 	public void makenodes() throws IOException {
@@ -242,7 +268,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 
 
-				Node node = new Node(i*32, j*32, this, noisemap[i][j]);
+				Node node = new Node(i*32, j*32, this, noisemap[i][j], humiditymap[i][j]);
 
 				allnodes.add(node);
 				nodedict.put(node.id, node);
@@ -266,17 +292,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 			node.makeClosest((node.id - 3) - (nodewidth*3), node.closest, true);
 		}
 		Collections.sort(this.nature, new INTComparatorNature());
-		/*
-		if(nature.size() > 1) {
-			Collections.sort(nature, new Comparator<Nature>() {
-				@Override
-				public int compare(Nature n1, Nature n2) {
-					return compare(n2.naturenode.y, n1.naturenode.y);
-				}
-			});
-		}
 
-		 */
 	}
 	
 	
@@ -342,7 +358,8 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
         if(chosenNode != null) {
         	game.batch.draw(green, chosenNode.x - 8, chosenNode.y - 8, 16, 16);
-			font.draw(game.batch, "" + chosenNode.simplexnoise, chosenNode.x, chosenNode.y);
+			font.draw(game.batch, chosenNode.x + " " + chosenNode.y + " " + chosenNode.simplexnoise, chosenNode.x, chosenNode.y);
+
 
 
 
@@ -439,11 +456,11 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	}
 
 
-	public float[][] generateSimplexNoise(int width, int height){
+	public float[][] generateSimplexNoise(int width, int height, double min, double max){
 		SimplexNoise sn = new SimplexNoise();
 		float[][]simplexnoise=new float[width][height];
 		Random r = new Random();
-		double randomfreq = 2 + r.nextDouble() * (8 - 2);
+		double randomfreq = min + r.nextDouble() * (max - min);
 		System.out.println(randomfreq);
 		float frequency=(float)randomfreq/(float)width;
 		double random = (Math.random() * (10000) + 1);
@@ -583,6 +600,29 @@ public void makeCastle() {
 
 	}
 
+	public void makeGate() {
+		/*
+		for (int i = 0; i < this.buildings.size(); i++) {
+
+			if((Intersector.overlaps(new Rectangle(chosenNode.x - 32, chosenNode.y - 16, 64, 32), buildings.get(i).the_building))){
+
+				return;
+			}
+		}
+
+		 */
+		/*
+		if(chosenNode == null){
+			return;
+		}
+
+		 */
+
+
+		new Gate(this, chosenNode.x, chosenNode.y, team);
+
+	}
+
 
 
 
@@ -596,10 +636,10 @@ public void makeCastle() {
 	public boolean keyDown(int keycode) {
 
 		if (keycode == Input.Keys.ESCAPE){
-			this.dispose();
+			Gdx.app.exit();
 		}
 
-		if(	keycode == Input.Keys.D && (listOfLists.get(listOfLists.size() - 1).get(36-1).id <= nodewidth*(nodewidth - 1))) {
+		if(	keycode == Input.Keys.D && (listOfLists.get(listOfLists.size() - 1).get(37 - 1).id <= nodewidth*(nodewidth - 3))) {
 			if(D) {
 
 					right = 1;
@@ -624,12 +664,12 @@ public void makeCastle() {
 
 					D = false;
 				}
-					return false;
+
 		}
 
 
 
-		if(keycode == Input.Keys.A && (listOfLists.get(1).get(0).id >= 0)) {
+		if(keycode == Input.Keys.A && (listOfLists.get(0).get(0).id >= nodewidth*2)) {
 			if(A) {
 				left = -1;
 
@@ -654,13 +694,12 @@ public void makeCastle() {
 
 
 				A = false;
-				return false;
+
 			}
 		}
-		if(keycode == Input.Keys.W && (listOfLists.get(listOfLists.size() - 1).get(35).id)/
-				(listOfLists.get(listOfLists.size() - 1).get(35).y) <= 35){
+		if(keycode == Input.Keys.W && cmerasafe_y + 37 < nodewidth - 2){
 			if(W) {
-
+				cmerasafe_y += 2;
 				up = 1;
 				Node node = nodedict.get(listOfLists.get(0).get(listOfLists.get(0).size() - 1).id + 1);
 				Node node2 = nodedict.get(listOfLists.get(0).get(listOfLists.get(0).size() - 1).id + 2);
@@ -672,13 +711,12 @@ public void makeCastle() {
 				}
 
 				W = false;
-				return false;
+
 			}
 		}
-		if(keycode == Input.Keys.S && (listOfLists.get(0).get(0).id)/
-				(listOfLists.get(0).get(0).y) >= 1) {
+		if(keycode == Input.Keys.S && cmerasafe_y - 37 > 2) {
 			if(S) {
-
+				cmerasafe_y -= 2;
 				down = -1;
 				Node node = nodedict.get(listOfLists.get(0).get(0).id - 1);
 				Node node2 = nodedict.get(listOfLists.get(0).get(0).id - 2);
@@ -692,7 +730,7 @@ public void makeCastle() {
 
 
 				S = false;
-				return false;
+
 			}
 		}
 
@@ -727,7 +765,7 @@ public void makeCastle() {
 			}
 
 			for (int i = 0; i < 64; i++) {
-				for (int j = 0; j < 36; j++) {
+				for (int j = 0; j < 37; j++) {
 					listOfLists.get(i).add(j, nodedict.get((me.playerNode.id - ((32*nodewidth) + 18)) + ((i*nodewidth)+ j)));
 				}
 
@@ -844,6 +882,7 @@ public void makeCastle() {
 				makeHouse = false;
 				makeWall = false;
 				makeCastle = false;
+				makeGate = false;
 		}
 
 			
@@ -888,11 +927,14 @@ public void makeCastle() {
 		}
 		if(makeWall && button == Input.Buttons.LEFT) {
 			makeWall();
-			makeWall = !makeWall;
 		}
 		if(makeCastle && button == Input.Buttons.LEFT) {
 			makeCastle();
 			makeCastle = !makeCastle;
+		}
+		if (makeGate && button == Input.Buttons.LEFT){
+			makeGate();
+			makeGate = !makeGate;
 		}
 
 		return false;

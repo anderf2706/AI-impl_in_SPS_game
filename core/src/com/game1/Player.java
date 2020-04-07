@@ -167,7 +167,10 @@ public class Player implements Screen, InputProcessor{
 	
 	public void move(final Building building) {
 		dush = 0;
-		if(dush < finalpath.size()) {
+		if(dush < finalpath.size() && !executed) {
+			if(t != null){
+				t.cancel();
+			}
 			t = new Timer();
 
 			t.schedule(new TimerTask() {
@@ -178,14 +181,13 @@ public class Player implements Screen, InputProcessor{
 					move_t(dush);
 
 			    }
-			}, (long) (5000/speed), (long)(5000/speed));
+			}, 0, (long)(5000/speed));
 			
 		}
 	}
 		
 	public void move_t(int b) {
 		final Node nextnode = finalpath.get(b);
-		t = new Timer();
 		if (nextnode.id == this.playerNode.id + 1 || nextnode.id == this.playerNode.id + (1+gamescreen.nodewidth)
 		|| nextnode.id == this.playerNode.id + (1-gamescreen.nodewidth)){
 			if (spritedir == 1){
@@ -656,10 +658,9 @@ public class Player implements Screen, InputProcessor{
 		 	this.playerNode.occupied = false;
 		 	this.playerNode = null;
 
-
-
-
 		 }
+		 //if (this.playerNode)
+
 		 if(!Intersector.overlaps(the_player, playerNode.body)) {
 		 	  playerNode.occupied = false;
 
@@ -681,6 +682,7 @@ public class Player implements Screen, InputProcessor{
 		 if(t != null && (Intersector.overlaps(endnode.body, this.the_player))) {
 				stopmove();
 				moving = false;
+				executed = false;
 
 			}
 

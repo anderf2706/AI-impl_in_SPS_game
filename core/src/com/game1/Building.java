@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
+import com.game1.buildings.Gate;
 import com.game1.huds.BuildingHud;
 
 public class Building implements InputProcessor, Screen{
@@ -21,7 +22,7 @@ public class Building implements InputProcessor, Screen{
 	public Node buildingnode;
 	public Rectangle the_building;
 	GameScreen gamescreen;
-	Texture building;
+	public Texture building;
 	Texture green;
 
 	
@@ -47,12 +48,12 @@ public class Building implements InputProcessor, Screen{
 			for (Node node : gamescreen.allnodes){
 				if(Intersector.overlaps(node.body, the_building)) {
 					this.buildingnode = gamescreen.chosenNode;
-
-					node.occupied = true;
+					if(!(this instanceof Gate)) {
+						node.occupied = true;
+					}
 				}
 			}
 		bhud = new BuildingHud(gamescreen.game.batch, gamescreen, this);
-		building = new Texture(Gdx.files.internal("bucket.png"));
 		green = gamescreen.tex.green;
 		
 		

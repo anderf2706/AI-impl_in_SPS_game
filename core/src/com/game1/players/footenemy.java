@@ -79,7 +79,7 @@ public class footenemy extends Player {
 		if (openList.size() > 0){
 			if (this.playerNode.id == openList.get(0).id + 1 || this.playerNode.id == openList.get(0).id + (1+gamescreen.nodewidth)
 					|| this.playerNode.id == openList.get(0).id + (1-gamescreen.nodewidth)){
-				if (spritedir == 40){
+				if (spritedir == 4){
 					spritedir = 40;
 				}
 				else{
