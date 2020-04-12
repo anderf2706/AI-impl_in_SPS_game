@@ -114,6 +114,16 @@ public class Player implements Screen, InputProcessor{
 
 	Playerhud playerhud;
 
+	boolean natureattacking;
+
+	Nature naturetarget;
+
+	int gold;
+	int wood;
+	int stone;
+	int food;
+	int water;
+
 	public Player(GameScreen gamescreen, Game1 game, int x, int y, int team) {
 		this.gamescreen = gamescreen;
 		this.game = game;
@@ -121,6 +131,8 @@ public class Player implements Screen, InputProcessor{
 
 		
 		the_player = new Rectangle();
+		the_player.x = x;
+		the_player.y = y;
 
 
 		spritedir = 40;
@@ -440,6 +452,14 @@ public class Player implements Screen, InputProcessor{
 
                     }
 
+                    for (Nature nature : gamescreen.nature){
+                    	if (Intersector.overlaps(gamescreen.the_mouse, nature.the_nature)) {
+                    		this.naturetarget = nature;
+                    		natureattacking = true;
+
+                    	}
+					}
+
 
                     if (!following) {
 
@@ -629,6 +649,7 @@ public class Player implements Screen, InputProcessor{
 
 
 
+
 		  	
 		  
 		  
@@ -659,6 +680,11 @@ public class Player implements Screen, InputProcessor{
 		 	this.playerNode = null;
 
 		 }
+		 /////////////////////check_player///////////////////////////////
+
+
+
+
 		 //if (this.playerNode)
 
 		 if(!Intersector.overlaps(the_player, playerNode.body)) {

@@ -9,6 +9,7 @@ import com.game1.Naturepackage.Smalltree;
 import com.game1.Naturepackage.Stone;
 import com.game1.Naturepackage.Tree;
 import com.game1.biomes.Forest_temp;
+import com.game1.biomes.Tundra;
 
 
 public class Node implements Serializable {

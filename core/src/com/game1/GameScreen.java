@@ -144,15 +144,21 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	float w;
 	float h;
 	float zoom;
-	int cmerasafe_y;
+	int cmerasafe_x;
 
 	public Forest_temp forest_temp;
 	public Desert desert;
 	public Tundra tundra;
 	public Rainforest rainforest;
 
+	int games_i;
+	int games_j;
+	boolean changescene = false;
 
-	public GameScreen(Game1 game) throws IOException {
+	public GameScreen(Game1 game, int startposx, int startposy, int games_i, int games_j) throws IOException {
+		game.games[games_i][games_j] = this;
+		this.games_i = games_i;
+		this.games_j = games_j;
         listOfLists = new ArrayList<List<Node>>();
         for(int i = 0; i < 64; i++)  {
             listOfLists.add(new ArrayList<Node>());
@@ -166,6 +172,8 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		mapWidth = 100 * 32;
 		mapHeight = 100*32;
 
+
+
 		this.game = game;
 		w = Gdx.graphics.getWidth();
 		h = Gdx.graphics.getHeight();
@@ -176,15 +184,16 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		rainforest = new Rainforest(this);
 
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, w/zoom, h/zoom);
+		camera.setToOrtho(false, w/(zoom), h/(zoom));
 		camera.update();
 
 		nodes = new ArrayList<Node>();
 
 		allnodes = new ArrayList<Node>();
 		sr = new ShapeRenderer();
-		noisemap = generateSimplexNoise(nodewidth, nodewidth, 5, 5);
-		humiditymap = generateSimplexNoise(nodewidth, nodewidth, 1.2, 1.2);
+		noisemap = generateSimplexNoise(nodewidth, nodewidth, 3, 3);
+
+		humiditymap = generateSimplexNoise(nodewidth, nodewidth, 1, 1);
 		settextures();
 		makenodes();
 		font = new BitmapFont();
@@ -207,21 +216,27 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		Vector3 mouseInWorld3D = new Vector3();
 		this.mouseInWorld2D = mouseInWorld2D;
 		this.mouseInWorld3D = mouseInWorld3D;
-		cmerasafe_y = nodewidth/2;
+
 
         camera.translate((nodewidth*32)/2, (nodewidth*32)/2);
         camera.update();
 
-
-        for (int i = 0; i < 64; i++) {
-            for (int j = 0; j < 37; j++) {
-                listOfLists.get(i).add(j, nodedict.get(((((nodewidth/2 - 2) + i)*nodewidth)+((nodewidth/2 + 2) + j))));
-            }
-
-        }
-
-        me = new protagonist(this, game ,(nodewidth*32)/2, (nodewidth*32)/2, 0);
+        me = new protagonist(this, game ,startposx, startposy, 0);
 		chosenNode = allnodes.get(10);
+
+		for(int i = 0; i < 64; i++)  {
+			listOfLists.add(new ArrayList<Node>());
+		}
+
+		for (int i = 0; i < 64; i++) {
+			for (int j = 0; j < 37; j++) {
+				listOfLists.get(i).add(j, nodedict.get((me.playerNode.id - ((32*nodewidth) + 18)) + ((i*nodewidth)+ j)));
+			}
+
+		}
+		camera.position.x = me.the_player.x;
+		camera.position.y = me.the_player.y;
+		cmerasafe_x = 0;
 
 
 	}
@@ -349,11 +364,15 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 		for (List<Node> list : listOfLists){
 		    for(Node node : list){
+		    	if (node != null) {
 					game.batch.draw(node.nodetexture, node.x - 16, node.y - 16, 32, 32);
+				}
+
 		    }
 
 
         }
+
 
 
         if(chosenNode != null) {
@@ -382,11 +401,8 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 
 
-		if (team != 0){
-			Vector3 midscreen = new Vector3(500,500,0);
-			font.draw(game.batch, "" + this.team, camera.project(midscreen).x, camera.project(midscreen).y);
 
-		}
+
 
 
 		game.batch.end();
@@ -443,6 +459,8 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		}
 
 
+
+
 		// game.batch.setProjectionMatrix(hud.getStage().getCamera().combined); //set the spriteBatch to draw what our stageViewport sees
 
 
@@ -452,6 +470,9 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 			ss.rect(touchdownmouseX, 1080 - touchdownmouseY,-(touchdownmouseX - Gdx.input.getX()),((touchdownmouseY) - Gdx.input.getY()));
 			ss.end();
 		}
+
+
+
 
 	}
 
@@ -525,11 +546,19 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 				for (int i = 0; i < this.buildings.size(); i++) {
 
-					if((Intersector.overlaps(new Rectangle(chosenNode.x - 32, chosenNode.y - 32, 64, 64), buildings.get(i).the_building))){
+					if((Intersector.overlaps(new Rectangle(chosenNode.x - 48, chosenNode.y - 48, 96, 96), buildings.get(i).the_building))){
 
 						return;
 					}
 				}
+				for (int i = 0; i < this.nature.size(); i++) {
+
+					if((Intersector.overlaps(new Rectangle(chosenNode.x - 48, chosenNode.y - 48, 96, 96), nature.get(i).the_nature))){
+
+						return;
+					}
+				}
+
 
 				for (Node node : chosenNode.adjecent) {
 					if(node == null) {
@@ -547,6 +576,13 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		for (int i = 0; i < this.buildings.size(); i++) {
 
 			if((Intersector.overlaps(new Rectangle(chosenNode.x - 16, chosenNode.y - 16, 32, 32), buildings.get(i).the_building))){
+
+				return;
+			}
+		}
+		for (int i = 0; i < this.nature.size(); i++) {
+
+			if((Intersector.overlaps(new Rectangle(chosenNode.x - 32, chosenNode.y - 32, 64, 64), nature.get(i).the_nature))){
 
 				return;
 			}
@@ -571,6 +607,13 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 					return;
 				}
 			}
+			for (int i = 0; i < this.nature.size(); i++) {
+
+				if((Intersector.overlaps(new Rectangle(chosenNode.x - 16, chosenNode.y - 16, 32, 32), nature.get(i).the_nature))){
+
+					return;
+				}
+			}
 
 			if(chosenNode == null) {
 				return;
@@ -590,6 +633,13 @@ public void makeCastle() {
 					return;
 				}
 			}
+	for (int i = 0; i < this.nature.size(); i++) {
+
+		if((Intersector.overlaps(new Rectangle(chosenNode.x - 64, chosenNode.y - 64, 128, 128), nature.get(i).the_nature))){
+
+			return;
+		}
+	}
 
 			if(chosenNode == null && chosenNode.adjecent.contains(null)) {
 				return;
@@ -601,22 +651,20 @@ public void makeCastle() {
 	}
 
 	public void makeGate() {
-		/*
 		for (int i = 0; i < this.buildings.size(); i++) {
 
-			if((Intersector.overlaps(new Rectangle(chosenNode.x - 32, chosenNode.y - 16, 64, 32), buildings.get(i).the_building))){
+			if((Intersector.overlaps(new Rectangle(chosenNode.x - 16, chosenNode.y - 16, 32, 32), buildings.get(i).the_building))){
 
 				return;
 			}
 		}
+		for (int i = 0; i < this.nature.size(); i++) {
 
-		 */
-		/*
-		if(chosenNode == null){
-			return;
+			if((Intersector.overlaps(new Rectangle(chosenNode.x - 16, chosenNode.y - 16, 32, 32), nature.get(i).the_nature))){
+
+				return;
+			}
 		}
-
-		 */
 
 
 		new Gate(this, chosenNode.x, chosenNode.y, team);
@@ -632,106 +680,225 @@ public void makeCastle() {
 
 
 
+
 	@Override
 	public boolean keyDown(int keycode) {
 
 		if (keycode == Input.Keys.ESCAPE){
 			Gdx.app.exit();
 		}
-
-		if(	keycode == Input.Keys.D && (listOfLists.get(listOfLists.size() - 1).get(37 - 1).id <= nodewidth*(nodewidth - 3))) {
-			if(D) {
-
-					right = 1;
-					ArrayList<Node> templist = new ArrayList<Node>();
-					for (Node node : listOfLists.get(listOfLists.size() - 1)) {
-
-						templist.add(nodedict.get(node.id + 1 * nodewidth));
-
+		if (keycode == Input.Keys.ENTER ) {
+			/////////////////////right/////////////////////////////
+			if (me.playerNode.x == 6368) {
+				if (game.games[this.games_i + 1][this.games_j] == null) {
+					try {
+						game.setScreen(new GameScreen(game, 0, this.me.playerNode.y, this.games_i + 1, this.games_j));
+					} catch (IOException e) {
+						e.printStackTrace();
 					}
-					listOfLists.add(templist);
+				}
+				else{
+					game.games[this.games_i + 1][this.games_j].me.playerNode.x = 0;
+					game.games[this.games_i + 1][this.games_j].me.playerNode.y = this.me.playerNode.y;
+					game.setScreen(game.games[this.games_i + 1][this.games_j]);
+
+				}
+			}
+			/////////////////////////////////////////////////////////
+
+			//////////////////////left//////////////////////////
+			if (me.playerNode.x == 0){
+				if (game.games[this.games_i - 1][this.games_j] == null) {
+					try {
+						game.setScreen(new GameScreen(game, 6368, this.me.playerNode.y, this.games_i - 1, this.games_j));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				else{
+					game.games[this.games_i - 1][this.games_j].me.playerNode.x = 6368;
+					game.games[this.games_i - 1][this.games_j].me.playerNode.y = this.me.playerNode.y;
+					game.setScreen(game.games[this.games_i - 1][this.games_j]);
+
+				}
+			}
+			///////////////////////////////////////////////////////
+
+
+			////////////////////////////down////////////////////////////
+			if (me.playerNode.y == 0){
+				if (game.games[this.games_i][this.games_j - 1] == null) {
+					try {
+						game.setScreen(new GameScreen(game, this.me.playerNode.x, 6368, this.games_i, this.games_j - 1));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				else{
+					game.games[this.games_i][this.games_j - 1].me.playerNode.x = this.me.playerNode.x;
+					game.games[this.games_i][this.games_j - 1].me.playerNode.y = 6368;
+					game.setScreen(game.games[this.games_i][this.games_j - 1]);
+
+				}
+			}
+			//////////////////////////////////////////////////////////////
+
+
+			////////////////////////////up////////////////////////////
+			if (me.playerNode.y == 6368){
+				if (game.games[this.games_i][this.games_j + 1] == null) {
+					try {
+						game.setScreen(new GameScreen(game, this.me.playerNode.x, 0, this.games_i, this.games_j + 1));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				else{
+					game.games[this.games_i][this.games_j + 1].me.playerNode.x = this.me.playerNode.x;
+					game.games[this.games_i][this.games_j + 1].me.playerNode.y = 0;
+					game.setScreen(game.games[this.games_i][this.games_j + 1]);
+
+				}
+			}
+			///////////////////////////////////////////////////////////
+
+		}
+
+		//&& listOfLists.get(listOfLists.size() - 1).get(37 - 1).id <= nodewidth*(nodewidth - 1)
+		if(	keycode == Input.Keys.D) {  //6368
+				if (D) {
+					right = 1;
+					cmerasafe_x += 2;
+					System.out.println(cmerasafe_x);
+					ArrayList<Node> templist = new ArrayList<Node>();
+					Node node1;
+					if (cmerasafe_x <= 68) {
+						for (Node node : listOfLists.get(listOfLists.size() - 1)) {
+							node1 = nodedict.get(node.id + nodewidth);
+							templist.add(node1);
+						}
+					} else {
+
+						listOfLists.add(templist);
+
+						ArrayList<Node> templist2 = new ArrayList<Node>();
+						Node node2;
+						if (cmerasafe_x <= 68) {
+							for (Node node : listOfLists.get(listOfLists.size() - 1)) {
+								node2 = nodedict.get(node.id + nodewidth);
+								templist2.add(node2);
+							}
+						} else {
+							for (int i = 0; i < 37; i++) {
+								node2 = null;
+								templist2.add(node2);
+							}
+
+						}
+
+						listOfLists.add(templist2);
+
+
+						listOfLists.remove(1);
+						listOfLists.remove(0);
+
+						D = false;
+					}
+				}
+
+
+
+		}
+
+
+		// && listOfLists.get(0).get(0).id >= nodewidth
+		if(keycode == Input.Keys.A) { // 32
+			if(A) {
+					left = -1;
+					cmerasafe_x -= 2;
+					ArrayList<Node> templist = new ArrayList<Node>();
+					Node node1;
+					if(cmerasafe_x >= -68) {
+						for (Node node : listOfLists.get(0)) {
+							node1 = nodedict.get(node.id - nodewidth);
+							templist.add(node1);
+
+						}
+					}
+					else{
+						for (int i = 0; i < 37; i++) {
+							node1 = null;
+							templist.add(node1);
+						}
+					}
+
+					listOfLists.add(0, templist);
 
 					ArrayList<Node> templist2 = new ArrayList<Node>();
-					for (Node node : listOfLists.get(listOfLists.size() - 1)) {
-						templist2.add(nodedict.get(node.id + 1 * nodewidth));
+					Node node2;
+				if(cmerasafe_x >= -68) {
+					for (Node node : listOfLists.get(0)) {
+						node2 = nodedict.get(node.id - nodewidth);
+						templist2.add(node2);
+
+					}
+				}
+				else{
+					for (int i = 0; i < 37; i++) {
+						node2 = null;
+						templist2.add(node2);
+					}
+				}
+
+					listOfLists.add(0, templist2);
+
+
+					listOfLists.remove(listOfLists.size() - 2);
+					listOfLists.remove(listOfLists.size() - 1);
+
+
+					A = false;
+				}
+
+
+		}
+		// && cmerasafe_y + 34 < nodewidth
+		if(keycode == Input.Keys.W){//6368
+			if(W) {
+
+					up = 1;
+					Node node = nodedict.get(listOfLists.get(0).get(listOfLists.get(0).size() - 1).id + 1);
+					Node node2 = nodedict.get(listOfLists.get(0).get(listOfLists.get(0).size() - 1).id + 2);
+					for (int i = 0; i < 64; i++) {
+						listOfLists.get(i).add(listOfLists.get(i).size(), nodedict.get(node.id + (i * nodewidth)));
+						listOfLists.get(i).add(listOfLists.get(i).size(), nodedict.get(node2.id + (i * nodewidth)));
+						listOfLists.get(i).remove(1);
+						listOfLists.get(i).remove(0);
 					}
 
-					listOfLists.add(templist2);
-
-
-					listOfLists.remove(1);
-					listOfLists.remove(0);
-
-					D = false;
+					W = false;
 				}
 
 		}
-
-
-
-		if(keycode == Input.Keys.A && (listOfLists.get(0).get(0).id >= nodewidth*2)) {
-			if(A) {
-				left = -1;
-
-				ArrayList<Node> templist = new ArrayList<Node>();
-				for (Node node : listOfLists.get(0)){
-					templist.add(nodedict.get(node.id - nodewidth));
-				}
-
-				listOfLists.add(0, templist);
-
-				ArrayList<Node> templist2 = new ArrayList<Node>();
-				for (Node node : listOfLists.get(0)){
-					templist2.add(nodedict.get(node.id - nodewidth));
-				}
-
-				listOfLists.add(0, templist2);
-
-
-
-				listOfLists.remove(listOfLists.size() - 2);
-				listOfLists.remove(listOfLists.size() - 1);
-
-
-				A = false;
-
-			}
-		}
-		if(keycode == Input.Keys.W && cmerasafe_y + 37 < nodewidth - 2){
-			if(W) {
-				cmerasafe_y += 2;
-				up = 1;
-				Node node = nodedict.get(listOfLists.get(0).get(listOfLists.get(0).size() - 1).id + 1);
-				Node node2 = nodedict.get(listOfLists.get(0).get(listOfLists.get(0).size() - 1).id + 2);
-				for (int i = 0; i < 64; i++) {
-					listOfLists.get(i).add(listOfLists.get(i).size(), nodedict.get(node.id + (i * nodewidth)));
-					listOfLists.get(i).add(listOfLists.get(i).size(), nodedict.get(node2.id + (i * nodewidth)));
-					listOfLists.get(i).remove(1);
-					listOfLists.get(i).remove(0);
-				}
-
-				W = false;
-
-			}
-		}
-		if(keycode == Input.Keys.S && cmerasafe_y - 37 > 2) {
+		// && cmerasafe_y - 1  > 1
+		if(keycode == Input.Keys.S) { //32
 			if(S) {
-				cmerasafe_y -= 2;
-				down = -1;
-				Node node = nodedict.get(listOfLists.get(0).get(0).id - 1);
-				Node node2 = nodedict.get(listOfLists.get(0).get(0).id - 2);
-				for (int i = 0; i < 64; i++) {
-					listOfLists.get(i).add(0, nodedict.get(node.id + (i * nodewidth)));
-					listOfLists.get(i).add(0, nodedict.get(node2.id + (i * nodewidth)));
-					listOfLists.get(i).remove(listOfLists.get(i).size() - 1);
-					listOfLists.get(i).remove(listOfLists.get(i).size() - 1);
+
+					down = -1;
+					Node node = nodedict.get(listOfLists.get(0).get(0).id - 1);
+					Node node2 = nodedict.get(listOfLists.get(0).get(0).id - 2);
+					for (int i = 0; i < 64; i++) {
+						listOfLists.get(i).add(0, nodedict.get(node.id + (i * nodewidth)));
+						listOfLists.get(i).add(0, nodedict.get(node2.id + (i * nodewidth)));
+						listOfLists.get(i).remove(listOfLists.get(i).size() - 1);
+						listOfLists.get(i).remove(listOfLists.get(i).size() - 1);
+					}
+
+
+					S = false;
 				}
 
 
-
-				S = false;
-
-			}
 		}
 
 

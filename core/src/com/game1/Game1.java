@@ -13,27 +13,14 @@ public class Game1 extends Game {
 	Texture img;
 	BitmapFont font;
 	Texture frontimg;
+	GameScreen[][]games;
 	
 	float x = 0;
 	float y = 0;
 	
 	@Override
 	public void create () {
-		/*WarpClient.initialize("ae065f75995631d6c9007ec23407e3b16c6effae11bf9b13c4aba099cde39717",
-				"71755b14cd2610f6cbefc97e0ed5112d4c68829b4a390ede7138046c519e095a");
-		
-		try {
-			WarpClient myGame = WarpClient.getInstance();
-			myGame.addConnectionRequestListener(new ConListen()); 
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} */
-		
-		
-		
-		
+		games = new GameScreen[10][10];
 		batch = new SpriteBatch();
 		//img = new Texture("badlogic.jpg");
 		font = new BitmapFont();

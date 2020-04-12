@@ -94,7 +94,6 @@ public class Building implements InputProcessor, Screen{
 		if(buildingChosen) {
 			batch.draw(green, the_building.x, the_building.y + 75, 50, 10);
 		}
-		batch.draw(green, buildingnode.x, buildingnode.y , 10, 10);
 
 
 

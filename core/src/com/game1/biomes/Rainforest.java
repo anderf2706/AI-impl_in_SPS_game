@@ -107,7 +107,49 @@ public class Rainforest extends Biome {
 
 
 	/////////////////Level D//////////////////////////////////////////////////////
+	public void act_D1(Node node){
+		Random rand = new Random();
 
+		int randomNum = rand.nextInt((10 - 1) + 1) + 1;
+		if(randomNum == 1){
+			node.occupied = true;
+			for (Node nodes : node.adjecent) {
+				if (nodes.id == node.id + 1){
+					nodes.occupied = true;
+				}
+				if (nodes.id == node.id + 1 + gamescreen.nodewidth){
+					nodes.occupied = true;
+				}
+				if (nodes.id == node.id + 1 + 2*gamescreen.nodewidth){
+					nodes.occupied = true;
+				}
+			}
+			new Tree3(node, node.gamescreen, node.x, node.y - 16, 96, 64);
+
+		}
+	}
+
+	public void act_D2(Node node){
+		Random rand = new Random();
+
+		int randomNum = rand.nextInt((10 - 1) + 1) + 1;
+		if(randomNum == 1){
+			node.occupied = true;
+			for (Node nodes : node.adjecent) {
+				if (nodes.id == node.id + 1){
+					nodes.occupied = true;
+				}
+				if (nodes.id == node.id + 1 + gamescreen.nodewidth){
+					nodes.occupied = true;
+				}
+				if (nodes.id == node.id + 1 + 2*gamescreen.nodewidth){
+					nodes.occupied = true;
+				}
+			}
+			new Tree4(node, node.gamescreen, node.x, node.y - 16, 96, 64);
+
+		}
+	}
 
 	//////////////////////////////////////////////////////////////////////////////////
 
@@ -131,7 +173,7 @@ public class Rainforest extends Biome {
 					nodes.occupied = true;
 				}
 			}
-			new Jungletree(node, node.gamescreen, node.x, node.y - 16, 250, 128);
+			new Jungletree(node, node.gamescreen, node.x, node.y - 16, 164, 128);
 
 		}
 	}
