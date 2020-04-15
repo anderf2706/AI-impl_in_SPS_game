@@ -58,7 +58,7 @@ public class MainMenuHud extends InputAdapter implements Screen{
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				try {
-					gamescreen = new GameScreen(game, 32, 32, 5,5);
+					gamescreen = new GameScreen(game, 100*32, 32*100, 5,5);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

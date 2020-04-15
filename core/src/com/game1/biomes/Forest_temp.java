@@ -17,7 +17,7 @@ public class Forest_temp extends Biome {
 	public Forest_temp(GameScreen gamescreen){
 		super(gamescreen);
 		E = new Texture(Gdx.files.internal("landtextures/tile_dirt.png"));
-		D = new Texture(Gdx.files.internal("landtextures/tile_grass.png"));
+		D = new Texture(Gdx.files.internal("landtextures/grass_darker.png"));
 		C = new Texture(Gdx.files.internal("landtextures/tile_grass.png"));
 		B = new Texture(Gdx.files.internal("landtextures/sand.jpg"));
 		A = new Texture(Gdx.files.internal("landtextures/water.jpg"));
@@ -61,7 +61,7 @@ public class Forest_temp extends Biome {
 	public void act_D1(Node node){
 		Random rand = new Random();
 
-		int randomNum = rand.nextInt((15 - 1) + 1) + 1;
+		int randomNum = rand.nextInt((30 - 1) + 1) + 1;
 		if(randomNum == 1){
 			node.occupied = true;
 			/*
@@ -81,5 +81,24 @@ public class Forest_temp extends Biome {
 
 	//////////////////////////////////////////////////////////////////////////////////
 
+	public void act_E1(Node node){
+		Random rand = new Random();
 
+		int randomNum = rand.nextInt((15 - 1) + 1) + 1;
+		if(randomNum == 1){
+			node.occupied = true;
+			/*
+			for (Node node : this.adjecent) {
+
+				if (node.id == this.id + 1){
+					node.occupied = true;
+				}
+
+			}
+
+			 */
+			new Stone(node, node.gamescreen, node.x, node.y - 16, 64, 64);
+
+		}
+	}
 }

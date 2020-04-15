@@ -646,6 +646,11 @@ public class Player implements Screen, InputProcessor{
 		  if (!(moving || following) && endnode != null){
 
 		  }
+		  if (team == 10){
+		  	for (Node node : playerNode.adjecent){
+			}
+		  }
+
 
 
 

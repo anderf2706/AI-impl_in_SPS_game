@@ -173,7 +173,7 @@ public class Rainforest extends Biome {
 					nodes.occupied = true;
 				}
 			}
-			new Jungletree(node, node.gamescreen, node.x, node.y - 16, 164, 128);
+			new Tree3(node, node.gamescreen, node.x, node.y - 16, 164, 128);
 
 		}
 	}

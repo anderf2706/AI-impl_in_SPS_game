@@ -36,6 +36,7 @@ import com.game1.huds.Maingamehud;
 import com.game1.players.protagonist;
 
 
+
 public class GameScreen extends ApplicationAdapter implements Screen, InputProcessor {
 
 	Rectangle the_mouse;
@@ -155,6 +156,9 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	int games_j;
 	boolean changescene = false;
 
+	int cmerasafe_x_max;
+	int cmerasafe_x_min;
+
 	public GameScreen(Game1 game, int startposx, int startposy, int games_i, int games_j) throws IOException {
 		game.games[games_i][games_j] = this;
 		this.games_i = games_i;
@@ -169,8 +173,8 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		zoom = 1;
         nodewidth = 200;
 
-		mapWidth = 100 * 32;
-		mapHeight = 100*32;
+		mapWidth = 200 * 32;
+		mapHeight = 200*32;
 
 
 
@@ -191,7 +195,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 		allnodes = new ArrayList<Node>();
 		sr = new ShapeRenderer();
-		noisemap = generateSimplexNoise(nodewidth, nodewidth, 3, 3);
+		noisemap = generateSimplexNoise(nodewidth, nodewidth, 2, 2);
 
 		humiditymap = generateSimplexNoise(nodewidth, nodewidth, 1, 1);
 		settextures();
@@ -224,21 +228,42 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
         me = new protagonist(this, game ,startposx, startposy, 0);
 		chosenNode = allnodes.get(10);
 
-		for(int i = 0; i < 64; i++)  {
-			listOfLists.add(new ArrayList<Node>());
-		}
-
 		for (int i = 0; i < 64; i++) {
 			for (int j = 0; j < 37; j++) {
 				listOfLists.get(i).add(j, nodedict.get((me.playerNode.id - ((32*nodewidth) + 18)) + ((i*nodewidth)+ j)));
+				System.out.println(listOfLists.get(i).get(j));
+
 			}
 
 		}
 		camera.position.x = me.the_player.x;
 		camera.position.y = me.the_player.y;
-		cmerasafe_x = 0;
+		this.fixborder();
 
 
+	}
+
+	public void fixborder(){
+		if (listOfLists.get(0).get(0) != null) {
+			cmerasafe_x = listOfLists.get(0).get(16).x;
+			cmerasafe_x_max = 200 * 32 - 64 * 32;
+			cmerasafe_x_min = 0;
+		}
+		else if(listOfLists.get(0).get(36) != null){
+			cmerasafe_x = listOfLists.get(0).get(36).x;
+			cmerasafe_x_max = 200 * 32 - 64 * 32;
+			cmerasafe_x_min = 0;
+		}
+		else if(listOfLists.get(listOfLists.size()-1).get(0) != null){
+			cmerasafe_x = listOfLists.get(listOfLists.size()-1).get(0).x;
+			cmerasafe_x_max = 200*32;
+			cmerasafe_x_min = 32*64;
+		}
+		else{
+			cmerasafe_x = listOfLists.get(listOfLists.size()-1).get(36).x;
+			cmerasafe_x_max = 200*32;
+			cmerasafe_x_min = 32*64;
+		}
 	}
 
 
@@ -765,45 +790,55 @@ public void makeCastle() {
 		}
 
 		//&& listOfLists.get(listOfLists.size() - 1).get(37 - 1).id <= nodewidth*(nodewidth - 1)
-		if(	keycode == Input.Keys.D) {  //6368
+		if(	keycode == Input.Keys.D) {
 				if (D) {
 					right = 1;
-					cmerasafe_x += 2;
-					System.out.println(cmerasafe_x);
+					cmerasafe_x += 64;
+
 					ArrayList<Node> templist = new ArrayList<Node>();
 					Node node1;
-					if (cmerasafe_x <= 68) {
+					System.out.println(cmerasafe_x);
+					if (cmerasafe_x <= cmerasafe_x_max) {
 						for (Node node : listOfLists.get(listOfLists.size() - 1)) {
 							node1 = nodedict.get(node.id + nodewidth);
 							templist.add(node1);
 						}
-					} else {
 
-						listOfLists.add(templist);
+					}
+					else {
+						for (int i = 0; i < 37; i++) {
+							node1 = null;
+							templist.add(node1);
+						}
+					}
 
-						ArrayList<Node> templist2 = new ArrayList<Node>();
-						Node node2;
-						if (cmerasafe_x <= 68) {
-							for (Node node : listOfLists.get(listOfLists.size() - 1)) {
-								node2 = nodedict.get(node.id + nodewidth);
-								templist2.add(node2);
-							}
-						} else {
-							for (int i = 0; i < 37; i++) {
-								node2 = null;
-								templist2.add(node2);
-							}
+					listOfLists.add(listOfLists.size(), templist);
 
+					ArrayList<Node> templist2 = new ArrayList<Node>();
+					Node node2;
+					System.out.println(cmerasafe_x);
+					if (cmerasafe_x <= cmerasafe_x_max) {
+						for (Node node : listOfLists.get(listOfLists.size() - 1)) {
+							node2 = nodedict.get(node.id + nodewidth);
+							templist2.add(node2);
+						}
+					}
+					else {
+						for (int i = 0; i < 37; i++) {
+							node2 = null;
+							templist2.add(node2);
 						}
 
-						listOfLists.add(templist2);
-
-
-						listOfLists.remove(1);
-						listOfLists.remove(0);
-
-						D = false;
 					}
+
+					listOfLists.add(templist2);
+
+
+					listOfLists.remove(1);
+					listOfLists.remove(0);
+
+					D = false;
+
 				}
 
 
@@ -815,10 +850,10 @@ public void makeCastle() {
 		if(keycode == Input.Keys.A) { // 32
 			if(A) {
 					left = -1;
-					cmerasafe_x -= 2;
+					cmerasafe_x -= 64;
 					ArrayList<Node> templist = new ArrayList<Node>();
 					Node node1;
-					if(cmerasafe_x >= -68) {
+					if(cmerasafe_x >= cmerasafe_x_min) {
 						for (Node node : listOfLists.get(0)) {
 							node1 = nodedict.get(node.id - nodewidth);
 							templist.add(node1);
@@ -836,19 +871,19 @@ public void makeCastle() {
 
 					ArrayList<Node> templist2 = new ArrayList<Node>();
 					Node node2;
-				if(cmerasafe_x >= -68) {
-					for (Node node : listOfLists.get(0)) {
-						node2 = nodedict.get(node.id - nodewidth);
-						templist2.add(node2);
+					if(cmerasafe_x >= cmerasafe_x_min) {
+						for (Node node : listOfLists.get(0)) {
+							node2 = nodedict.get(node.id - nodewidth);
+							templist2.add(node2);
 
+						}
 					}
-				}
-				else{
-					for (int i = 0; i < 37; i++) {
-						node2 = null;
-						templist2.add(node2);
+					else{
+						for (int i = 0; i < 37; i++) {
+							node2 = null;
+							templist2.add(node2);
+						}
 					}
-				}
 
 					listOfLists.add(0, templist2);
 
@@ -867,13 +902,21 @@ public void makeCastle() {
 			if(W) {
 
 					up = 1;
-					Node node = nodedict.get(listOfLists.get(0).get(listOfLists.get(0).size() - 1).id + 1);
-					Node node2 = nodedict.get(listOfLists.get(0).get(listOfLists.get(0).size() - 1).id + 2);
-					for (int i = 0; i < 64; i++) {
-						listOfLists.get(i).add(listOfLists.get(i).size(), nodedict.get(node.id + (i * nodewidth)));
-						listOfLists.get(i).add(listOfLists.get(i).size(), nodedict.get(node2.id + (i * nodewidth)));
-						listOfLists.get(i).remove(1);
-						listOfLists.get(i).remove(0);
+					Node node;
+					Node node2;
+
+					try{
+						node = nodedict.get(listOfLists.get(0).get(listOfLists.get(0).size() - 1).id + 1);
+						node2 = nodedict.get(listOfLists.get(0).get(listOfLists.get(0).size() - 1).id + 2);
+						for (int i = 0; i < 64; i++) {
+							listOfLists.get(i).add(listOfLists.get(i).size(), nodedict.get(node.id + (i * nodewidth)));
+							listOfLists.get(i).add(listOfLists.get(i).size(), nodedict.get(node2.id + (i * nodewidth)));
+							listOfLists.get(i).remove(1);
+							listOfLists.get(i).remove(0);
+						}
+					}
+					catch(NullPointerException e){
+						up = 0;
 					}
 
 					W = false;
@@ -884,17 +927,22 @@ public void makeCastle() {
 		if(keycode == Input.Keys.S) { //32
 			if(S) {
 
+					Node node;
+					Node node2;
 					down = -1;
-					Node node = nodedict.get(listOfLists.get(0).get(0).id - 1);
-					Node node2 = nodedict.get(listOfLists.get(0).get(0).id - 2);
-					for (int i = 0; i < 64; i++) {
-						listOfLists.get(i).add(0, nodedict.get(node.id + (i * nodewidth)));
-						listOfLists.get(i).add(0, nodedict.get(node2.id + (i * nodewidth)));
-						listOfLists.get(i).remove(listOfLists.get(i).size() - 1);
-						listOfLists.get(i).remove(listOfLists.get(i).size() - 1);
+					try{
+						node = nodedict.get(listOfLists.get(0).get(0).id - 1);
+						node2 = nodedict.get(listOfLists.get(0).get(0).id - 2);
+						for (int i = 0; i < 64; i++) {
+							listOfLists.get(i).add(0, nodedict.get(node.id + (i * nodewidth)));
+							listOfLists.get(i).add(0, nodedict.get(node2.id + (i * nodewidth)));
+							listOfLists.get(i).remove(listOfLists.get(i).size() - 1);
+							listOfLists.get(i).remove(listOfLists.get(i).size() - 1);
+						}
 					}
-
-
+					catch(NullPointerException e){
+						down = 0;
+					}
 					S = false;
 				}
 
@@ -941,6 +989,7 @@ public void makeCastle() {
 
 			camera.position.x = me.the_player.x;
 			camera.position.y = me.the_player.y;
+			fixborder();
 
 
 		}

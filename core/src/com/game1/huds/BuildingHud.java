@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.game1.*;
 import com.game1.buildings.Barracks;
 import com.game1.buildings.Wall;
+import com.game1.players.AI;
 import com.game1.players.footenemy;
 
 public class BuildingHud extends Hud {

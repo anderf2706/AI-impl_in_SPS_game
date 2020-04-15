@@ -124,7 +124,7 @@ public class textures {
 		snowbush = new Texture(Gdx.files.internal("landtextures/snowbush.png"));
 		snowtree = new Texture(Gdx.files.internal("landtextures/snow_tree.png"));
 
-		jungle_tree = new Texture(Gdx.files.internal("landtextures/jungle_tree.jpg"));
+		//jungle_tree = new Texture(Gdx.files.internal("landtextures/jungle_tree.jpg"));
 		palm1 = new Texture(Gdx.files.internal("landtextures/palm1.png"));
 		palm2 = new Texture(Gdx.files.internal("landtextures/palm2.png"));
 		tree3 = new Texture(Gdx.files.internal("landtextures/tree3.png"));

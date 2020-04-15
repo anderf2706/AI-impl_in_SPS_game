@@ -6,8 +6,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.game1.Building;
 import com.game1.GameScreen;
 import com.game1.Node;
-import com.game1.Player;
-import com.game1.huds.BuildingHud;
 import com.game1.players.*;
 
 import java.util.Timer;
