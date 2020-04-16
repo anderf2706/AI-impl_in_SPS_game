@@ -2,12 +2,13 @@ package com.game1.players;
 
 import com.game1.Game1;
 import com.game1.GameScreen;
+import com.game1.Node;
 import com.game1.Player;
 
 public class protagonist extends Player {
 
-	public protagonist(GameScreen gamescreen, Game1 game, int x, int y, int team) {
-		super(gamescreen, game, x, y, team);
+	public protagonist(Node node, GameScreen gamescreen, Game1 game, int x, int y) {
+		super(node, gamescreen, game, x, y, 0);
 
 		spritefront = gamescreen.tex.spriteprotfront;
 		spritefront2 = gamescreen.tex.spriteprotfront2;

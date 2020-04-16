@@ -13,5 +13,7 @@ public class Tree3 extends Nature {
 		super(node, gamescreen, x, y, height, width);
 
 		texture = gamescreen.tex.tree3;
+		health = 500;
+		material = gamescreen.wood;
 	}
 }

@@ -67,6 +67,8 @@ public class Player implements Screen, InputProcessor{
 	
 	Vector2 nodeFin;
 
+	int harvestspeed;
+
 	boolean executed = false;
 	boolean colliding = false;
 	boolean attacking = false;
@@ -118,13 +120,15 @@ public class Player implements Screen, InputProcessor{
 
 	Nature naturetarget;
 
+	Hashtable<Item, Integer>Inventory = new Hashtable<Item, Integer>();
+
 	int gold;
-	int wood;
+
 	int stone;
 	int food;
 	int water;
 
-	public Player(GameScreen gamescreen, Game1 game, int x, int y, int team) {
+	public Player(Node node, GameScreen gamescreen, Game1 game, int x, int y, int team) {
 		this.gamescreen = gamescreen;
 		this.game = game;
 		this.team = team;
@@ -133,6 +137,8 @@ public class Player implements Screen, InputProcessor{
 		the_player = new Rectangle();
 		the_player.x = x;
 		the_player.y = y;
+
+		harvestspeed = 10;
 
 
 		spritedir = 40;
@@ -151,13 +157,17 @@ public class Player implements Screen, InputProcessor{
 		}
 
 
-
-		for (Node node : gamescreen.allnodes){
-			if(Intersector.overlaps(node.body, the_player)) {
-				this.playerNode = node;
-				node.occupied = true;
-				break;
+		if (team == 0) {
+			for (Node playernode : gamescreen.allnodes) {
+				if (Intersector.overlaps(playernode.body, the_player)) {
+					this.playerNode = playernode;
+					playernode.occupied = true;
+					break;
+				}
 			}
+		}
+		else{
+			playerNode = node;
 		}
 
 		
@@ -175,6 +185,51 @@ public class Player implements Screen, InputProcessor{
 
 		}
 	}
+
+	public void harvest(final Nature naturetarget){
+		System.out.println(naturetarget.health);
+		if(t != null){
+			t.cancel();
+		}
+		t = new Timer();
+
+		t.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				if (naturetarget.health > 0 ) {
+					System.out.println("har");
+					harvest_t(naturetarget);
+				}
+				else{
+					naturetarget.naturenode.occupied = false;
+					naturetarget.naturenode = null;
+					naturetarget.the_nature = null;
+					gamescreen.nature.remove(naturetarget);
+					naturetarget.dispose();
+
+
+				}
+
+
+			}
+		}, 0, 5000/harvestspeed);
+	}
+
+	public void harvest_t(Nature naturetarget){
+		if (!this.Inventory.containsKey(naturetarget.material)){
+			this.Inventory.put(naturetarget.material, 1);
+		}
+		else {
+			int mat_num = Inventory.get(naturetarget.material);
+			this.Inventory.put(naturetarget.material, mat_num + 1);
+		}
+
+		naturetarget.health -= 10;
+		System.out.println(naturetarget.health);
+	}
+
+
 	
 	
 	public void move(final Building building) {
@@ -189,8 +244,13 @@ public class Player implements Screen, InputProcessor{
 				@Override
 				public void run() {
 					// TODO Auto-generated method stub
-
-					move_t(dush);
+					if (dush < finalpath.size()) {
+						move_t(dush);
+					}
+					else{
+						t.cancel();
+						return;
+					}
 
 			    }
 			}, 0, (long)(5000/speed));
@@ -450,13 +510,15 @@ public class Player implements Screen, InputProcessor{
 
                         }
 
+
                     }
+
 
                     for (Nature nature : gamescreen.nature){
                     	if (Intersector.overlaps(gamescreen.the_mouse, nature.the_nature)) {
                     		this.naturetarget = nature;
                     		natureattacking = true;
-
+                    		endnode = gamescreen.findavailablenode(naturetarget.naturenode);
                     	}
 					}
 
@@ -641,15 +703,12 @@ public class Player implements Screen, InputProcessor{
 		if (team == 0) {
 			UI(delta);
 		}
-		  check_player();
-		  collision();
-		  if (!(moving || following) && endnode != null){
+		if (gamescreen.renderboolean) {
+			check_player();
+			collision();
 
-		  }
-		  if (team == 10){
-		  	for (Node node : playerNode.adjecent){
-			}
-		  }
+		}
+
 
 
 
@@ -683,16 +742,25 @@ public class Player implements Screen, InputProcessor{
 		 if (this.health <= 0){
 		 	this.playerNode.occupied = false;
 		 	this.playerNode = null;
+		 	gamescreen.players.remove(this);
+		 	return;
 
 		 }
+
+
 		 /////////////////////check_player///////////////////////////////
 
-
+		if (natureattacking){
+			if (playerNode.adjecent.contains(naturetarget.naturenode)){
+				harvest(naturetarget);
+				natureattacking = false;
+			}
+		}
 
 
 		 //if (this.playerNode)
 
-		 if(!Intersector.overlaps(the_player, playerNode.body)) {
+		 if(!Intersector.overlaps(the_player, this.playerNode.body)) {
 		 	  playerNode.occupied = false;
 
 				 for (Node node : gamescreen.allnodes) {

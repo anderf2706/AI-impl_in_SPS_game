@@ -16,6 +16,8 @@ public class Nature implements InputProcessor, Screen {
 	public Rectangle the_nature;
 	GameScreen gamescreen;
 	public Texture texture;
+	public int health;
+	public Item material;
 
 	public Nature(Node node, GameScreen gamescreen,int x, int y, int height, int width){
 		this.gamescreen = gamescreen;
@@ -87,6 +89,7 @@ public class Nature implements InputProcessor, Screen {
 
 	@Override
 	public void render(float delta) {
+
 
 	}
 

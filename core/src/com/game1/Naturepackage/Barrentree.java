@@ -13,5 +13,7 @@ public class Barrentree extends Nature {
 		super(node, gamescreen, x, y, height, width);
 
 		texture = gamescreen.tex.barrentree;
+		health = 500;
+		material = gamescreen.wood;
 	}
 }

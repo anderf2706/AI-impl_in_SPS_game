@@ -67,7 +67,7 @@ public class Node implements Serializable {
 		if (this.humidity <= 0.2) {
 			this.myBiome = gamescreen.desert;
 		}
-		addmeaning();
+
 
 	}
 
@@ -111,11 +111,20 @@ public class Node implements Serializable {
 			if (!this.occupied) {
 				myBiome.act_E1(this);
 			}
+			if (!this.occupied) {
+				myBiome.act_E2(this);
+			}
 			return;
 		}
 		if (this.simplexnoise <= 0.90 && this.simplexnoise > 0.75) {
 			this.nodetexture = myBiome.D;
-			myBiome.act_D1(this);
+			if (!this.occupied) {
+				myBiome.act_D1(this);
+			}
+			if (!this.occupied) {
+				myBiome.act_D2(this);
+			}
+
 			return;
 		}
 		if (this.simplexnoise <= 0.75 && this.simplexnoise > 0.35) {

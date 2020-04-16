@@ -11,10 +11,12 @@ public class AI extends Player {
 
 	public GameScreen gamescreen;
 	Random rand;
+	int speed;
 
-	public AI(GameScreen gamescreen, Game1 game, int x, int y, int team) {
-		super(gamescreen, game, x, y, team);
+	public AI(Node node, GameScreen gamescreen, Game1 game, int x, int y, int team, int speed) {
+		super(node, gamescreen, game, x, y, team);
 		this.gamescreen = gamescreen;
+		this.speed = speed;
 		rand = new Random();
 		if (team==1){
 			monitor();
@@ -77,18 +79,19 @@ public class AI extends Player {
 		if (timer == null) {
 			timer = new Timer();
 
-			timer.scheduleAtFixedRate(new monitortimer(), 0, 1000);
+			timer.scheduleAtFixedRate(new monitortimer(), 0, 5000/speed);
 
 		}
 
 	}
 
 	public void walkaroundwalk(){
+		Node startnode = this.playerNode;
 		ArrayList<Node> openList = new ArrayList<Node>();
-		int count = 0;
-		for (Node node: playerNode.adjecent
-		) {
-			if (!node.occupied) {
+		int count = -1;
+		for (Node node: startnode.adjecent) {
+			float distancetostart = Math.max(Math.abs(node.x - startnode.x), Math.abs(node.y - startnode.y));
+			if (!node.occupied && distancetostart < 150) {
 				count += 1;
 				openList.add(node);
 			}
@@ -117,8 +120,9 @@ public class AI extends Player {
 	public void walkaround(){
 		if (timer == null) {
 			timer = new Timer();
+			int randomtimer = rand.nextInt((4000 - 1000) + 1) + 1000;
 
-			timer.scheduleAtFixedRate(new walkaroundtimer(), 0, 4000);
+			timer.scheduleAtFixedRate(new walkaroundtimer(), 0, randomtimer);
 
 		}
 

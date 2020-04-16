@@ -1,11 +1,13 @@
 package com.game1.players.animals;
 
-import com.game1.*;
+import com.game1.Game1;
+import com.game1.GameScreen;
+import com.game1.Node;
 import com.game1.players.AI;
 
-public class cow extends AI {
-	public cow(Node node, GameScreen gamescreen, Game1 game, int x, int y) {
-		super(node, gamescreen, game, x, y, 10, 10);
+public class sheep extends AI {
+	public sheep(Node node, GameScreen gamescreen, Game1 game, int x, int y, int team, int speed) {
+		super(node, gamescreen, game, x, y, team, speed);
 		this.gamescreen = gamescreen;
 
 		spritefront = gamescreen.tex.spritecowfront;
@@ -27,6 +29,4 @@ public class cow extends AI {
 		defense = 1;
 		this.timerlong = 1000;
 	}
-
-
 }

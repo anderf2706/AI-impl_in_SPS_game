@@ -13,5 +13,7 @@ public class Palm1 extends Nature {
 		super(node, gamescreen, x, y, height, width);
 
 		texture = gamescreen.tex.palm1;
+		health = 500;
+		material = gamescreen.wood;
 	}
 }

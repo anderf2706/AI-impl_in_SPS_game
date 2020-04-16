@@ -27,8 +27,8 @@ public class BuildingHud extends Hud {
 			public void clicked(InputEvent event, float x, float y) {
 				Node node = gamescreen.findavailablenode(building.buildingnode);
 
-				new footenemy(gamescreen, gamescreen.game, node.x
-						, node.y, gamescreen.team);
+				new footenemy(node, gamescreen, gamescreen.game, node.x
+						, node.y);
 
 
 

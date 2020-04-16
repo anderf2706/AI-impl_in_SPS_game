@@ -2,12 +2,13 @@ package com.game1.players;
 
 import com.game1.Game1;
 import com.game1.GameScreen;
+import com.game1.Node;
 
 public class footenemy extends AI{
 
 
-	public footenemy(GameScreen gamescreen, Game1 game, int x, int y, int team) {
-		super(gamescreen, game, x, y, team);
+	public footenemy(Node node, GameScreen gamescreen, Game1 game, int x, int y) {
+		super(node, gamescreen, game, x, y, 1, 5);
 		spritefront = gamescreen.tex.spritefront;
 		spritefront2 = gamescreen.tex.spritefront2;
 		spriteback = gamescreen.tex.spriteback;
@@ -24,7 +25,6 @@ public class footenemy extends AI{
 		health = 100;
 		attack = 10;
 		defense = 1;
-		this.speed = 5;
 		this.timerlong = 1000;
 	}
 }

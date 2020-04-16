@@ -47,8 +47,8 @@ public class Barracks extends Building {
 		public void run() {
 			Node node = gamescreen.findavailablenode(buildingnode);
 
-			new footenemy(gamescreen, gamescreen.game, node.x
-					, node.y, 1);
+			new footenemy(node, gamescreen, gamescreen.game, node.x
+					, node.y);
 
 		}
 	}

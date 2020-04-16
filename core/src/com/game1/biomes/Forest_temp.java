@@ -8,6 +8,7 @@ import com.game1.Naturepackage.Smalltree;
 import com.game1.Naturepackage.Stone;
 import com.game1.Naturepackage.Tree;
 import com.game1.Node;
+import com.game1.players.animals.cow;
 
 import java.util.Random;
 
@@ -53,15 +54,11 @@ public class Forest_temp extends Biome {
 
 		}
 	}
-	////////////////////////////////////////////////////////////////////////////
 
-
-	/////////////////Level D//////////////////////////////////////////////////////
-
-	public void act_D1(Node node){
+	public void act_C3(Node node){
 		Random rand = new Random();
 
-		int randomNum = rand.nextInt((30 - 1) + 1) + 1;
+		int randomNum = rand.nextInt((15 - 1) + 1) + 1;
 		if(randomNum == 1){
 			node.occupied = true;
 			/*
@@ -79,12 +76,18 @@ public class Forest_temp extends Biome {
 		}
 	}
 
-	//////////////////////////////////////////////////////////////////////////////////
 
-	public void act_E1(Node node){
+
+
+	////////////////////////////////////////////////////////////////////////////
+
+
+	/////////////////Level D//////////////////////////////////////////////////////
+
+		/*public void act_D1(Node node){
 		Random rand = new Random();
 
-		int randomNum = rand.nextInt((15 - 1) + 1) + 1;
+		int randomNum = rand.nextInt((30 - 1) + 1) + 1;
 		if(randomNum == 1){
 			node.occupied = true;
 			/*
@@ -96,9 +99,43 @@ public class Forest_temp extends Biome {
 
 			}
 
-			 */
-			new Stone(node, node.gamescreen, node.x, node.y - 16, 64, 64);
+
+			new Stone(node, node.gamescreen, node.x, node.y - 16, 32, 32);
 
 		}
 	}
+
+		 */
+
+
+
+	public void act_D2(Node node){
+		Random rand = new Random();
+
+		int randomNum = rand.nextInt((500 - 1) + 1) + 1;
+		if(randomNum == 1 && node.adjecent.size() > 7){
+
+			new cow(node, node.gamescreen, node.gamescreen.game ,node.x, node.y - 16);
+			new cow(node.adjecent.get(0), node.adjecent.get(0).gamescreen,node.adjecent.get(0).gamescreen.game ,node.adjecent.get(0).x, node.adjecent.get(0).y - 16);
+			new cow(node.adjecent.get(2), node.adjecent.get(2).gamescreen, node.adjecent.get(2).gamescreen.game ,node.adjecent.get(2).x, node.adjecent.get(2).y - 16);
+			new cow(node.adjecent.get(4), node.adjecent.get(4).gamescreen, node.adjecent.get(4).gamescreen.game ,node.adjecent.get(4).x, node.adjecent.get(4).y - 16);
+
+		}
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////
+
+
+	public void act_E2(Node node){
+		Random rand = new Random();
+
+		int randomNum = rand.nextInt((20 - 1) + 1) + 1;
+		if(randomNum == 1){
+			node.occupied = true;
+			new Smalltree(node, node.gamescreen, node.x, node.y - 16, 32, 32);
+
+		}
+	}
+
+
 }

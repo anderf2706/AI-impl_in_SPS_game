@@ -28,6 +28,17 @@ public class textures {
 	public Texture spriteprotright;
 	public Texture spriteprotright2;
 
+	public Texture spritecowfront;
+	public Texture spritecowfront2;
+	public Texture spritecowback;
+	public Texture spritecowback2;
+	public Texture spritecowleft;
+	public Texture spritecowleft2;
+	public Texture spritecowright;
+	public Texture spritecowright2;
+
+
+
 	public Texture green;
 	public Texture blue;
 	public Texture grey;
@@ -98,6 +109,22 @@ public class textures {
 		spriteprotleft2 = new Texture(Gdx.files.internal("sprites/man1/man1_lf2.gif"));
 		spriteprotright = new Texture(Gdx.files.internal("sprites/man1/man1_rt1.gif"));
 		spriteprotright2 = new Texture(Gdx.files.internal("sprites/man1/man1_rt2.gif"));
+
+		spritecowfront = new Texture(Gdx.files.internal("sprites/cow/cowfront1.png"));
+		spritecowfront2 = new Texture(Gdx.files.internal("sprites/cow/cowfront1.png"));
+		spritecowback = new Texture(Gdx.files.internal("sprites/cow/cowback1.png"));
+		spritecowback2 = new Texture(Gdx.files.internal("sprites/cow/cowback2.png"));
+		spritecowleft = new Texture(Gdx.files.internal("sprites/cow/cowleft1.png"));
+		spritecowleft2 = new Texture(Gdx.files.internal("sprites/cow/cowleft2.png"));
+		spritecowright = new Texture(Gdx.files.internal("sprites/cow/cowright1.png"));
+		spritecowright2 = new Texture(Gdx.files.internal("sprites/cow/cowright2.png"));
+
+
+
+
+
+
+
 
 
 

@@ -33,6 +33,7 @@ public class MainMenuHud extends InputAdapter implements Screen{
      Table table;
      MainMenu mainmenu;
 	 Skin skin;
+	 int nodewidth;
 
 
 	public MainMenuHud(SpriteBatch spriteBatch, final Game1 game, final MainMenu mainmenu) {
@@ -46,6 +47,8 @@ public class MainMenuHud extends InputAdapter implements Screen{
 	    //this.gamescreen = new GameScreen(game);
 	   // this.MPSS = new MultiplayerStartScreen(game);
 	    this.mainmenu = mainmenu;
+	    nodewidth = 200;
+
 	    
 
 	    table = new Table();
@@ -58,7 +61,7 @@ public class MainMenuHud extends InputAdapter implements Screen{
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				try {
-					gamescreen = new GameScreen(game, 100*32, 32*100, 5,5);
+					gamescreen = new GameScreen(game, nodewidth, nodewidth/2*32, nodewidth/2 *32, 5,5);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

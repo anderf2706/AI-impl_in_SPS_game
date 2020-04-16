@@ -13,5 +13,7 @@ public class Jungletree extends Nature {
 		super(node, gamescreen, x, y, height, width);
 
 		texture = gamescreen.tex.jungle_tree;
+		health = 500;
+		material = gamescreen.wood;
 	}
 }

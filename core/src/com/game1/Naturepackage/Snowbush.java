@@ -13,5 +13,7 @@ public class Snowbush extends Nature {
 		super(node, gamescreen, x, y, height, width);
 
 		texture = gamescreen.tex.snowbush;
+		health = 200;
+		material = gamescreen.wood;
 	}
 }

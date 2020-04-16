@@ -13,5 +13,7 @@ public class Smalltree extends Nature {
 		super(node, gamescreen, x, y, height, width);
 
 		texture = gamescreen.tex.tree_small;
+		health = 200;
+		material = gamescreen.wood;
 	}
 }

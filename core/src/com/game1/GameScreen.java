@@ -33,6 +33,8 @@ import com.game1.biomes.Rainforest;
 import com.game1.biomes.Tundra;
 import com.game1.buildings.*;
 import com.game1.huds.Maingamehud;
+import com.game1.players.animals.cow;
+import com.game1.players.footenemy;
 import com.game1.players.protagonist;
 
 
@@ -59,10 +61,14 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	boolean W = true;
 	boolean S = true;
 	boolean D = true;
+	public boolean renderboolean = true;
 
 
 	float touchdownmouseX;
 	float touchdownmouseY;
+
+	public ArrayList<ArrayList<Node>> AIList = new ArrayList<ArrayList<Node>>();
+	public ArrayList<Node> cows = new ArrayList<Node>();
 
 	Maingamehud MGhud;
 
@@ -131,7 +137,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	ArrayList<Node> nodes;
 	Map<Integer, Node> nodedict = new HashMap<Integer, Node>();
 
-
+	public Item wood;
 
 	public int nodewidth;
     List<List<Node>> listOfLists;
@@ -159,7 +165,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	int cmerasafe_x_max;
 	int cmerasafe_x_min;
 
-	public GameScreen(Game1 game, int startposx, int startposy, int games_i, int games_j) throws IOException {
+	public GameScreen(Game1 game, int nodewidth, int startposx, int startposy, int games_i, int games_j) throws IOException {
 		game.games[games_i][games_j] = this;
 		this.games_i = games_i;
 		this.games_j = games_j;
@@ -167,14 +173,14 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
         for(int i = 0; i < 64; i++)  {
             listOfLists.add(new ArrayList<Node>());
         }
+		settextures();
 
+        this.nodewidth = nodewidth;
 
+        makeItems();
 
-		zoom = 1;
-        nodewidth = 200;
-
-		mapWidth = 200 * 32;
-		mapHeight = 200*32;
+		mapWidth = nodewidth * 32;
+		mapHeight = nodewidth *32;
 
 
 
@@ -186,7 +192,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		desert = new Desert(this);
 		tundra = new Tundra(this);
 		rainforest = new Rainforest(this);
-
+		zoom = (float) 1.5;
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, w/(zoom), h/(zoom));
 		camera.update();
@@ -195,10 +201,9 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 		allnodes = new ArrayList<Node>();
 		sr = new ShapeRenderer();
-		noisemap = generateSimplexNoise(nodewidth, nodewidth, 2, 2);
+		noisemap = generateSimplexNoise((float) 0.5, nodewidth, nodewidth, 2, 4);
 
-		humiditymap = generateSimplexNoise(nodewidth, nodewidth, 1, 1);
-		settextures();
+		humiditymap = generateSimplexNoise((float) 0.4, nodewidth, nodewidth, 0.2, 0.4);
 		makenodes();
 		font = new BitmapFont();
 
@@ -225,13 +230,13 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
         camera.translate((nodewidth*32)/2, (nodewidth*32)/2);
         camera.update();
 
-        me = new protagonist(this, game ,startposx, startposy, 0);
+        me = new protagonist(null, this, game ,startposx, startposy);
 		chosenNode = allnodes.get(10);
 
 		for (int i = 0; i < 64; i++) {
 			for (int j = 0; j < 37; j++) {
 				listOfLists.get(i).add(j, nodedict.get((me.playerNode.id - ((32*nodewidth) + 18)) + ((i*nodewidth)+ j)));
-				System.out.println(listOfLists.get(i).get(j));
+
 
 			}
 
@@ -239,9 +244,13 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		camera.position.x = me.the_player.x;
 		camera.position.y = me.the_player.y;
 		this.fixborder();
-
-
 	}
+
+	public void makeItems(){
+		wood = new Item(this, this.tex.barrel);
+	}
+
+
 
 	public void fixborder(){
 		if (listOfLists.get(0).get(0) != null) {
@@ -330,8 +339,12 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 			node.makeClosest((node.id + 3) - (nodewidth*3), node.closest, true);
 			node.makeClosest((node.id - 3) + (nodewidth*3), node.closest, true);
 			node.makeClosest((node.id - 3) - (nodewidth*3), node.closest, true);
+
+			node.addmeaning();
 		}
 		Collections.sort(this.nature, new INTComparatorNature());
+
+
 
 	}
 	
@@ -455,6 +468,11 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 			}
 
 		}
+
+		for (Nature nature : this.nature){
+			nature.render(delta);
+		}
+
 		if (!nothud){
 			MGhud.getStage().act(delta); //act the Hud
 			MGhud.getStage().draw(); //draw the Hud
@@ -502,7 +520,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	}
 
 
-	public float[][] generateSimplexNoise(int width, int height, double min, double max){
+	public float[][] generateSimplexNoise(float hairyfactor, int width, int height, double min, double max){
 		SimplexNoise sn = new SimplexNoise();
 		float[][]simplexnoise=new float[width][height];
 		Random r = new Random();
@@ -512,7 +530,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		double random = (Math.random() * (10000) + 1);
 		for(int x=0;x<width; x++){
 			for(int y=0;y<height; y++){
-				simplexnoise[x][y]=(float) sn.noise((x+random)*frequency,(y+random)*frequency);
+				simplexnoise[x][y]=(float) sn.noise( hairyfactor, (x+random)*frequency,(y+random)*frequency);
 				simplexnoise[x][y]=(simplexnoise[x][y]+1)/2;   //generate values between 0 and 1
 			}
 		}
@@ -557,7 +575,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 	public void makeP() {
 		try {
-			new protagonist(this, game, findavailablenode(chosenNode).x, findavailablenode(chosenNode).y, team);
+			new protagonist(null, this, game, findavailablenode(chosenNode).x, findavailablenode(chosenNode).y);
 
 		}
 		catch(Exception e) {
@@ -717,7 +735,7 @@ public void makeCastle() {
 			if (me.playerNode.x == 6368) {
 				if (game.games[this.games_i + 1][this.games_j] == null) {
 					try {
-						game.setScreen(new GameScreen(game, 0, this.me.playerNode.y, this.games_i + 1, this.games_j));
+						game.setScreen(new GameScreen(game, nodewidth, 0, this.me.playerNode.y, this.games_i + 1, this.games_j));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -735,7 +753,7 @@ public void makeCastle() {
 			if (me.playerNode.x == 0){
 				if (game.games[this.games_i - 1][this.games_j] == null) {
 					try {
-						game.setScreen(new GameScreen(game, 6368, this.me.playerNode.y, this.games_i - 1, this.games_j));
+						game.setScreen(new GameScreen(game, nodewidth, 6368, this.me.playerNode.y, this.games_i - 1, this.games_j));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -754,7 +772,7 @@ public void makeCastle() {
 			if (me.playerNode.y == 0){
 				if (game.games[this.games_i][this.games_j - 1] == null) {
 					try {
-						game.setScreen(new GameScreen(game, this.me.playerNode.x, 6368, this.games_i, this.games_j - 1));
+						game.setScreen(new GameScreen(game, nodewidth, this.me.playerNode.x, 6368, this.games_i, this.games_j - 1));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -773,7 +791,7 @@ public void makeCastle() {
 			if (me.playerNode.y == 6368){
 				if (game.games[this.games_i][this.games_j + 1] == null) {
 					try {
-						game.setScreen(new GameScreen(game, this.me.playerNode.x, 0, this.games_i, this.games_j + 1));
+						game.setScreen(new GameScreen(game, nodewidth, this.me.playerNode.x, 0, this.games_i, this.games_j + 1));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -792,6 +810,7 @@ public void makeCastle() {
 		//&& listOfLists.get(listOfLists.size() - 1).get(37 - 1).id <= nodewidth*(nodewidth - 1)
 		if(	keycode == Input.Keys.D) {
 				if (D) {
+					renderboolean = true;
 					right = 1;
 					cmerasafe_x += 64;
 
@@ -948,7 +967,6 @@ public void makeCastle() {
 
 
 		}
-
 
 
 
@@ -1219,6 +1237,7 @@ public void makeCastle() {
 		if(amount == -1 && zoom > 0.3){
 			zoom -= 0.1;
 			camera.zoom = zoom;
+			System.out.println(zoom);
 		}
 		if(amount == 1 && zoom < 1){
 			zoom += 0.1;
