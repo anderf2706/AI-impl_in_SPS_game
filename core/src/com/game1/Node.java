@@ -5,11 +5,6 @@ import java.util.*;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
-import com.game1.Naturepackage.Smalltree;
-import com.game1.Naturepackage.Stone;
-import com.game1.Naturepackage.Tree;
-import com.game1.biomes.Forest_temp;
-import com.game1.biomes.Tundra;
 
 
 public class Node implements Serializable {
@@ -43,6 +38,8 @@ public class Node implements Serializable {
 
 	Biome myBiome;
 
+	public Nature mynature;
+
 
 	public Node(int x, int y, GameScreen gamescreen, float simplexnoise, float humidity) {
 
@@ -57,12 +54,15 @@ public class Node implements Serializable {
 		if (this.humidity > 0.80) {
 			this.myBiome = gamescreen.rainforest;
 		}
-		if (this.humidity <= 0.80 && this.humidity > 0.5) {
+		if (this.humidity <= 0.80 && this.humidity > 0.6) {
 			this.myBiome = gamescreen.tundra;
 
 		}
-		if (this.humidity <= 0.50 && this.humidity > 0.20) {
+		if (this.humidity <= 0.60 && this.humidity > 0.40) {
 			this.myBiome = gamescreen.forest_temp;
+		}
+		if (this.humidity <= 0.4) {
+			this.myBiome = gamescreen.desert;
 		}
 		if (this.humidity <= 0.2) {
 			this.myBiome = gamescreen.desert;
@@ -106,7 +106,7 @@ public class Node implements Serializable {
 
 	public void addmeaning() {
 
-		if (this.simplexnoise > 0.90) {
+		if (this.simplexnoise > 0.8) {
 			this.nodetexture = myBiome.E;
 			if (!this.occupied) {
 				myBiome.act_E1(this);
@@ -116,19 +116,9 @@ public class Node implements Serializable {
 			}
 			return;
 		}
-		if (this.simplexnoise <= 0.90 && this.simplexnoise > 0.75) {
-			this.nodetexture = myBiome.D;
-			if (!this.occupied) {
-				myBiome.act_D1(this);
-			}
-			if (!this.occupied) {
-				myBiome.act_D2(this);
-			}
 
-			return;
-		}
-		if (this.simplexnoise <= 0.75 && this.simplexnoise > 0.35) {
-			this.nodetexture = myBiome.C;
+		if (this.simplexnoise <= 0.8 && this.simplexnoise > 0.20) {
+			this.nodetexture = myBiome.E;
 			if (!this.occupied) {
 				myBiome.act_C1(this);
 			}
@@ -141,18 +131,25 @@ public class Node implements Serializable {
 			if (!this.occupied) {
 				myBiome.act_C4(this);
 			}
+			if (!this.occupied) {
+				myBiome.act_C5(this);
+			}
+			if (!this.occupied) {
+				myBiome.act_C6(this);
+			}
+			if (!this.occupied) {
+				myBiome.act_C7(this);
+			}
 
 			return;
 		}
-		if (this.simplexnoise <= 0.35 && this.simplexnoise > 0.30) {
-			this.nodetexture = myBiome.B;
-			return;
-		}
-		if (this.simplexnoise <= 0.30 && this.simplexnoise >= 0) {
+		if (this.simplexnoise <= 0.20 && this.simplexnoise >= 0) {
 			this.nodetexture = myBiome.A;
 			this.occupied = true;
 
 		}
+
+
 	}
 
 }

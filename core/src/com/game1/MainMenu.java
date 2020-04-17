@@ -17,14 +17,14 @@ public class MainMenu extends ApplicationAdapter implements Screen{
 	MainMenuHud hud;
 
 	
-	public MainMenu(final Game1 game) {
+	public MainMenu(final Game1 game, int nodewidth) {
 		this.game = game;
 
 		
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1900, 1080);
 		
-		hud = new MainMenuHud(game.batch, game, this);
+		hud = new MainMenuHud(game.batch, game, this, nodewidth);
 
 		
 	}

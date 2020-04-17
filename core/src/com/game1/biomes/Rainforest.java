@@ -14,7 +14,7 @@ public class Rainforest extends Biome {
 
 	public Rainforest(GameScreen gamescreen){
 		super(gamescreen);
-		E = new Texture(Gdx.files.internal("landtextures/tile_dirt.png"));
+		E = new Texture(Gdx.files.internal("Tropical/bg.png"));
 		D = new Texture(Gdx.files.internal("landtextures/rainforestgrass.jpg"));
 		C = new Texture(Gdx.files.internal("landtextures/rainforestgrass.jpg"));
 		B = new Texture(Gdx.files.internal("landtextures/sand.jpg"));
@@ -22,160 +22,199 @@ public class Rainforest extends Biome {
 
 
 	}
-
 	/////////////////Level C////////////////////////////////
-
 	public void act_C1(Node node){
 		Random rand = new Random();
 
-		int randomNum = rand.nextInt((10 - 1) + 1) + 1;
+		int randomNum = rand.nextInt((200 - 1) + 1) + 1;
 		if(randomNum == 1){
 			node.occupied = true;
-			for (Node nodes : node.adjecent) {
-				if (nodes.id == node.id + 1){
-					nodes.occupied = true;
-				}
-				if (nodes.id == node.id + 1 + gamescreen.nodewidth){
-					nodes.occupied = true;
-				}
-				if (nodes.id == node.id + 1 + 2*gamescreen.nodewidth){
-					nodes.occupied = true;
-				}
+			for (Node nodes : node.adjecent){
+				nodes.occupied = true;
 			}
-			new Tree3(node, node.gamescreen, node.x, node.y - 16, 96, 64);
+			int randomtextureNum = rand.nextInt((6- 1) + 1) + 1;
+			Texture texture = gamescreen.tex.tropicalstone1;
+			switch (randomtextureNum){
+				case 1:
+					texture = gamescreen.tex.tropicalstone1;
+					break;
+				case 2:
+					texture = gamescreen.tex.tropicalstone2;
+					break;
+				case 3:
+					texture = gamescreen.tex.tropicalstone3;
+					break;
+				case 4:
+					texture = gamescreen.tex.tropicalstone4;
+					break;
+				case 5:
+					texture = gamescreen.tex.tropicalstone5;
+					break;
+				case 6:
+					texture = gamescreen.tex.tropicalstone6;
+					break;
+
+			}
+			new Stone(node, node.gamescreen, node.x, node.y - 16, 96, 96, texture);
 
 		}
 	}
 
-	public void act_C2(Node node){
+	public void act_C2(Node node) {
 		Random rand = new Random();
-
-		int randomNum = rand.nextInt((10 - 1) + 1) + 1;
-		if(randomNum == 1){
+		int randomNum = rand.nextInt((200 - 1) + 1) + 1;
+		if (randomNum == 1) {
 			node.occupied = true;
+			Texture texture = gamescreen.tex.tropicallake;
 			for (Node nodes : node.adjecent) {
-				if (nodes.id == node.id + 1){
-					nodes.occupied = true;
-				}
-				if (nodes.id == node.id + 1 + gamescreen.nodewidth){
-					nodes.occupied = true;
-				}
-				if (nodes.id == node.id + 1 + 2*gamescreen.nodewidth){
+				if ((node.y <= nodes.y)) {
 					nodes.occupied = true;
 				}
 			}
-			new Tree4(node, node.gamescreen, node.x, node.y - 16, 96, 64);
+
+			new Lake(node, node.gamescreen, node.x, node.y - 16, 64, 96, texture);
 
 		}
 	}
-	/*
+
+
+
 	public void act_C3(Node node){
 		Random rand = new Random();
 
-		int randomNum = rand.nextInt((30 - 1) + 1) + 1;
+		int randomNum = rand.nextInt((20 - 1) + 1) + 1;
 		if(randomNum == 1){
 			node.occupied = true;
-			for (Node nodes : node.adjecent) {
-				if (nodes.id == node.id + 1){
-					nodes.occupied = true;
-				}
+
+			int randomtextureNum = rand.nextInt((12 - 1) + 1) + 1;
+			Texture texture = gamescreen.tex.tropicaltree1;
+			switch (randomtextureNum){
+				case 1:
+					texture = gamescreen.tex.tropicaltree1;
+					break;
+				case 2:
+					texture = gamescreen.tex.tropicaltree2;
+					break;
+				case 3:
+					texture = gamescreen.tex.tropicaltree3;
+					break;
+				case 4:
+					texture = gamescreen.tex.tropicaltree4;
+					break;
+				case 5:
+					texture = gamescreen.tex.tropicaltree5;
+					break;
+				case 6:
+					texture = gamescreen.tex.tropicaltree6;
+					break;
+				case 7:
+					texture = gamescreen.tex.tropicaltree7;
+					break;
+				case 8:
+					texture = gamescreen.tex.tropicaltree8;
+					break;
+				case 9:
+					texture = gamescreen.tex.tropicaltree9;
+					break;
+				case 10:
+					texture = gamescreen.tex.tropicaltree10;
+					break;
+				case 11:
+					texture = gamescreen.tex.tropicaltree11;
+					break;
+				case 12:
+					texture = gamescreen.tex.tropicaltree12;
+					break;
+				case 13:
+					texture = gamescreen.tex.tropicaltree13;
+					break;
+
 			}
-			new Palm1(node, node.gamescreen, node.x, node.y - 16, 162, 64);
+			new Tree(node, node.gamescreen, node.x, node.y - 16, 96, 64, texture);
 
 		}
 	}
 
-	public void act_C4(Node node){
+
+	public void act_C4(Node node) {
 		Random rand = new Random();
 
-		int randomNum = rand.nextInt((30 - 1) + 1) + 1;
-		if(randomNum == 1){
+		int randomNum = rand.nextInt((15 - 1) + 1) + 1;
+		if (randomNum == 1) {
 			node.occupied = true;
-			for (Node nodes : node.adjecent) {
-				if (nodes.id == node.id + 1){
-					nodes.occupied = true;
-				}
+			int randomtextureNum = rand.nextInt((9- 1) + 1) + 1;
+			Texture texture = gamescreen.tex.grasslandgreenery1;
+			switch (randomtextureNum){
+				case 1:
+					texture = gamescreen.tex.grasslandgreenery1;
+					break;
+				case 2:
+					texture = gamescreen.tex.grasslandgreenery2;
+					break;
+				case 3:
+					texture = gamescreen.tex.grasslandgreenery3;
+					break;
+				case 4:
+					texture = gamescreen.tex.grasslandgreenery4;
+					break;
+				case 5:
+					texture = gamescreen.tex.grasslandgreenery5;
+					break;
+				case 6:
+					texture = gamescreen.tex.grasslandgreenery6;
+					break;
+				case 7:
+					texture = gamescreen.tex.grasslandgreenery7;
+					break;
+				case 8:
+					texture = gamescreen.tex.grasslandgreenery8;
+					break;
+				case 9:
+					texture = gamescreen.tex.grasslandgreenery9;
+					break;
+				case 10:
+					texture = gamescreen.tex.grasslandgreenery10;
+					break;
+
 			}
-			new Palm2(node, node.gamescreen, node.x, node.y - 16, 128, 64);
+
+			new Greenery(node, node.gamescreen, node.x, node.y - 16, 32, 32, texture);
 
 		}
 	}
 
-	 */
+	public void act_C5(Node node){
+		Random rand = new Random();
 
+		int randomNum = rand.nextInt((50 - 1) + 1) + 1;
+		if(randomNum == 1){
+			node.occupied = true;
+			int randomtextureNum = rand.nextInt((5- 1) + 1) + 1;
+			Texture texture = gamescreen.tex.tropicalstone7;
+			switch (randomtextureNum){
+				case 1:
+					texture = gamescreen.tex.tropicalstone7;
+					break;
+				case 2:
+					texture = gamescreen.tex.tropicalstone8;
+					break;
+				case 3:
+					texture = gamescreen.tex.tropicalstone9;
+					break;
+				case 4:
+					texture = gamescreen.tex.tropicalstone10;
+					break;
+				case 5:
+					texture = gamescreen.tex.tropicalstone11;
+					break;
+			}
+			new Stone(node, node.gamescreen, node.x, node.y - 16, 32, 32, texture);
+
+		}
+	}
 	////////////////////////////////////////////////////////////////////////////
 
 
-	/////////////////Level D//////////////////////////////////////////////////////
-	public void act_D1(Node node){
-		Random rand = new Random();
-
-		int randomNum = rand.nextInt((10 - 1) + 1) + 1;
-		if(randomNum == 1){
-			node.occupied = true;
-			for (Node nodes : node.adjecent) {
-				if (nodes.id == node.id + 1){
-					nodes.occupied = true;
-				}
-				if (nodes.id == node.id + 1 + gamescreen.nodewidth){
-					nodes.occupied = true;
-				}
-				if (nodes.id == node.id + 1 + 2*gamescreen.nodewidth){
-					nodes.occupied = true;
-				}
-			}
-			new Tree3(node, node.gamescreen, node.x, node.y - 16, 96, 64);
-
-		}
-	}
-
-	public void act_D2(Node node){
-		Random rand = new Random();
-
-		int randomNum = rand.nextInt((10 - 1) + 1) + 1;
-		if(randomNum == 1){
-			node.occupied = true;
-			for (Node nodes : node.adjecent) {
-				if (nodes.id == node.id + 1){
-					nodes.occupied = true;
-				}
-				if (nodes.id == node.id + 1 + gamescreen.nodewidth){
-					nodes.occupied = true;
-				}
-				if (nodes.id == node.id + 1 + 2*gamescreen.nodewidth){
-					nodes.occupied = true;
-				}
-			}
-			new Tree4(node, node.gamescreen, node.x, node.y - 16, 96, 64);
-
-		}
-	}
-
-	//////////////////////////////////////////////////////////////////////////////////
-
-	public void act_E1(Node node){
-		Random rand = new Random();
-
-		int randomNum = rand.nextInt((10 - 1) + 1) + 1;
-		if(randomNum == 1){
-			node.occupied = true;
-			for (Node nodes : node.adjecent) {
-				if (nodes.id == node.id + 1){
-					nodes.occupied = true;
-				}
-				if (nodes.id == node.id + 1 + gamescreen.nodewidth){
-					nodes.occupied = true;
-				}
-				if (nodes.id == node.id + 1 + 2*gamescreen.nodewidth){
-					nodes.occupied = true;
-				}
-				if (nodes.id == node.id + 1 + 3*gamescreen.nodewidth){
-					nodes.occupied = true;
-				}
-			}
-			new Tree3(node, node.gamescreen, node.x, node.y - 16, 164, 128);
-
-		}
-	}
+	/////////////////Level E//////////////////////////////////////////////////////
 
 }

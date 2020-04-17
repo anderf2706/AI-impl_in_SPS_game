@@ -36,7 +36,8 @@ public class MainMenuHud extends InputAdapter implements Screen{
 	 int nodewidth;
 
 
-	public MainMenuHud(SpriteBatch spriteBatch, final Game1 game, final MainMenu mainmenu) {
+
+	public MainMenuHud(SpriteBatch spriteBatch, final Game1 game, final MainMenu mainmenu, final int nodewidth) {
 		stageViewport = new FitViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 	    stage = new Stage(stageViewport, spriteBatch); //create stage with the stageViewport and the SpriteBatch given in Constructor
 		//TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("star-solider-ui.atlas"));
@@ -44,10 +45,9 @@ public class MainMenuHud extends InputAdapter implements Screen{
 	    background = new Texture(Gdx.files.internal("Title_Image.png"));
 	    drawablebackground = new TextureRegionDrawable((new TextureRegion(background)));
 	    this.game = game;
-	    //this.gamescreen = new GameScreen(game);
-	   // this.MPSS = new MultiplayerStartScreen(game);
 	    this.mainmenu = mainmenu;
-	    nodewidth = 200;
+	    this.nodewidth = nodewidth;
+
 
 	    
 

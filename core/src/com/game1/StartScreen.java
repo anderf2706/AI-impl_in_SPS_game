@@ -10,10 +10,12 @@ public class StartScreen extends ApplicationAdapter implements Screen{
 
 	final Game1 game;
 	OrthographicCamera camera;
+	int nodewidth;
 	
-	public StartScreen(final Game1 game) {
+	public StartScreen(final Game1 game, int nodewidth) {
 		this.game = game;
 		System.out.println("her er jeg");
+		this.nodewidth = nodewidth;
 		
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1900, 1080);
@@ -40,7 +42,7 @@ public class StartScreen extends ApplicationAdapter implements Screen{
 		//game.setScreen(new GameScreen(game));
 		
 		if(Gdx.input.isTouched()) {
-			game.setScreen(new MainMenu(game));
+			game.setScreen(new MainMenu(game, nodewidth));
 			this.dispose();
 		}
 		

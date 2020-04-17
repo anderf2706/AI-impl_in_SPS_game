@@ -32,11 +32,15 @@ public class Biome {
 
 	}
 
-	protected void act_D1(Node node){
+	protected void act_C5(Node node){
 
 	}
 
-	protected void act_D2(Node node){
+	protected void act_C6(Node node){
+
+	}
+
+	protected void act_C7(Node node){
 
 	}
 

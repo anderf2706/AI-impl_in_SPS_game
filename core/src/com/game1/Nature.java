@@ -7,11 +7,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
 public class Nature implements InputProcessor, Screen {
-
 	public Node naturenode;
 	public Rectangle the_nature;
 	GameScreen gamescreen;
@@ -19,17 +19,20 @@ public class Nature implements InputProcessor, Screen {
 	public int health;
 	public Item material;
 
-	public Nature(Node node, GameScreen gamescreen,int x, int y, int height, int width){
-		this.gamescreen = gamescreen;
 
+	public Nature(Node node, GameScreen gamescreen,int x, int y, int height, int width, Texture texture){
+		this.gamescreen = gamescreen;
+		this.texture= texture;
 		the_nature = new Rectangle();
 		the_nature.height = height;
 		the_nature.width = width;
 		the_nature.x = x - the_nature.width / 2;
 		the_nature.y= y;
-		this.naturenode = node;
+		naturenode = node;
 		node.occupied = true;
+		node.mynature = this;
 		this.gamescreen.nature.add(this);
+
 
 	}
 

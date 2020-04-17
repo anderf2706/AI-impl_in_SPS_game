@@ -145,7 +145,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	public textures tex;
 
 	float[][] noisemap;
-	float[][] humiditymap;
+
 	Texture[][] textureoverworld;
 
 	float w;
@@ -178,6 +178,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
         this.nodewidth = nodewidth;
 
         makeItems();
+		makebiomes();
 
 		mapWidth = nodewidth * 32;
 		mapHeight = nodewidth *32;
@@ -188,10 +189,9 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		w = Gdx.graphics.getWidth();
 		h = Gdx.graphics.getHeight();
 
-		forest_temp = new Forest_temp(this);
-		desert = new Desert(this);
-		tundra = new Tundra(this);
-		rainforest = new Rainforest(this);
+
+
+
 		zoom = (float) 1.5;
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, w/(zoom), h/(zoom));
@@ -201,10 +201,8 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 		allnodes = new ArrayList<Node>();
 		sr = new ShapeRenderer();
-		noisemap = generateSimplexNoise((float) 0.5, nodewidth, nodewidth, 2, 4);
+		noisemap = generateSimplexNoise((float) 0.5, nodewidth, nodewidth, 4, 4);
 
-		humiditymap = generateSimplexNoise((float) 0.4, nodewidth, nodewidth, 0.2, 0.4);
-		makenodes();
 		font = new BitmapFont();
 
 		MGhud = new Maingamehud(game.batch, this);
@@ -220,6 +218,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		the_mouse = new Rectangle();
 		the_mouse.height = 2;
 		the_mouse.width = 2;
+		makenodes();
 
 		Vector2 mouseInWorld2D = new Vector2();
 		Vector3 mouseInWorld3D = new Vector3();
@@ -246,6 +245,15 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		this.fixborder();
 	}
 
+	public void makebiomes(){
+		forest_temp = new Forest_temp(this);
+		desert = new Desert(this);
+		tundra = new Tundra(this);
+		rainforest = new Rainforest(this);
+	}
+
+
+
 	public void makeItems(){
 		wood = new Item(this, this.tex.barrel);
 	}
@@ -255,22 +263,22 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	public void fixborder(){
 		if (listOfLists.get(0).get(0) != null) {
 			cmerasafe_x = listOfLists.get(0).get(16).x;
-			cmerasafe_x_max = 200 * 32 - 64 * 32;
+			cmerasafe_x_max = nodewidth * 32 - 64 * 32;
 			cmerasafe_x_min = 0;
 		}
 		else if(listOfLists.get(0).get(36) != null){
 			cmerasafe_x = listOfLists.get(0).get(36).x;
-			cmerasafe_x_max = 200 * 32 - 64 * 32;
+			cmerasafe_x_max = nodewidth * 32 - 64 * 32;
 			cmerasafe_x_min = 0;
 		}
 		else if(listOfLists.get(listOfLists.size()-1).get(0) != null){
 			cmerasafe_x = listOfLists.get(listOfLists.size()-1).get(0).x;
-			cmerasafe_x_max = 200*32;
+			cmerasafe_x_max = nodewidth*32;
 			cmerasafe_x_min = 32*64;
 		}
 		else{
 			cmerasafe_x = listOfLists.get(listOfLists.size()-1).get(36).x;
-			cmerasafe_x_max = 200*32;
+			cmerasafe_x_max = nodewidth*32;
 			cmerasafe_x_min = 32*64;
 		}
 	}
@@ -317,7 +325,8 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 
 
-				Node node = new Node(i*32, j*32, this, noisemap[i][j], humiditymap[i][j]);
+				Node node = new Node(i*32, j*32, this, noisemap[i][j],
+						game.humiditymap[i*(this.games_i)][j*(this.games_j)]);
 
 				allnodes.add(node);
 				nodedict.put(node.id, node);
@@ -404,7 +413,8 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		    for(Node node : list){
 		    	if (node != null) {
 					game.batch.draw(node.nodetexture, node.x - 16, node.y - 16, 32, 32);
-				}
+
+		    	}
 
 		    }
 
@@ -412,10 +422,25 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
         }
 
 
+		for (int j = 36; j >= 0; j--) {
+				for (int i = 0; i < 64; i++){
+					if (listOfLists.get(i).get(j) != null && this.nature.contains(listOfLists.get(i).get(j).mynature)) {
+						if (listOfLists.get(i).get(j).mynature != null) {
+							listOfLists.get(i).get(j).mynature.batch(game.batch);
+						}
+					}
 
-        if(chosenNode != null) {
+				}
+
+
+			}
+
+
+
+
+		if(chosenNode != null) {
         	game.batch.draw(green, chosenNode.x - 8, chosenNode.y - 8, 16, 16);
-			font.draw(game.batch, chosenNode.x + " " + chosenNode.y + " " + chosenNode.simplexnoise, chosenNode.x, chosenNode.y);
+			font.draw(game.batch, chosenNode.x + " " + chosenNode.y + " " + chosenNode.humidity, chosenNode.x, chosenNode.y);
 
 
 
@@ -434,7 +459,8 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		}
 
 		for(Nature nature : nature) {
-			nature.batch(game.batch);
+
+
 		}
 
 
