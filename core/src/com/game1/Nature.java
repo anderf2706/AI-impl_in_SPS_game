@@ -38,7 +38,7 @@ public class Nature implements InputProcessor, Screen {
 
 	public void batch(SpriteBatch batch){
 		batch.draw(texture, the_nature.x, the_nature.y, the_nature.width, the_nature.height);
-
+		batch.draw(gamescreen.green, naturenode.x, naturenode.y, 20, 20);
 	}
 
 	public Integer gety(){

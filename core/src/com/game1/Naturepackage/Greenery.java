@@ -13,6 +13,6 @@ public class Greenery extends Nature {
 		super(node, gamescreen, x, y, height, width, texture);
 
 		health = 200;
-		material = gamescreen.wood;
+		material = gamescreen.stick;
 	}
 }

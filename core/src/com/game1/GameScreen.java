@@ -120,12 +120,12 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	Texture grey;
 	Texture white;
 	Texture beige;
-	Texture water;
 	Texture grass;
 	Texture rock;
 	Texture dirt;
 	Texture snow;
 	Texture sand;
+	Texture watertexture;
 
 
 
@@ -138,6 +138,10 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	Map<Integer, Node> nodedict = new HashMap<Integer, Node>();
 
 	public Item wood;
+	public Item stone;
+	public Item stick;
+	public Item water;
+
 
 	public int nodewidth;
     List<List<Node>> listOfLists;
@@ -256,6 +260,9 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 	public void makeItems(){
 		wood = new Item(this, this.tex.barrel);
+		stone = new Item(this, this.tex.grasslandstone1);
+		stick = new Item(this, this.tex.barrentree);
+		water = new Item(this, this.tex.water);
 	}
 
 
@@ -312,7 +319,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		white = tex.white;
 		beige = tex.beige;
 		grass = tex.grass;
-		water = tex.water;
+		watertexture = tex.water;
 		rock = tex.rock;
 		sand = tex.sand;
 		snow = tex.snow;

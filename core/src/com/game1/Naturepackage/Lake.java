@@ -8,5 +8,7 @@ import com.game1.Node;
 public class Lake extends Nature {
 	public Lake(Node node, GameScreen gamescreen, int x, int y, int height, int width, Texture texture) {
 		super(node, gamescreen, x, y, height, width, texture);
+		health = 1000;
+		material = gamescreen.water;
 	}
 }

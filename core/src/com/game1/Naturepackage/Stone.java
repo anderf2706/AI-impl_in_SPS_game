@@ -8,6 +8,7 @@ import com.game1.Node;
 public class Stone extends Nature {
 	public Stone(Node node, GameScreen gamescreen, int x, int y, int height, int width, Texture texture) {
 		super(node, gamescreen, x, y, height, width, texture);
-
+		health = 200;
+		material = gamescreen.stone;
 	}
 }

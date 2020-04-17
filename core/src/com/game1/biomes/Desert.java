@@ -21,7 +21,7 @@ public class Desert extends Biome{
 
 		/////////////////Level C////////////////////////////////
 
-		public void act_C1(Node node) {
+		public void lake(Node node) {
 			Random rand = new Random();
 			int randomNum = rand.nextInt((300 - 1) + 1) + 1;
 			if (randomNum == 1) {
@@ -39,7 +39,7 @@ public class Desert extends Biome{
 			}
 		}
 
-		public void act_C2(Node node){
+		public void tree(Node node){
 			Random rand = new Random();
 
 			int randomNum = rand.nextInt((20 - 1) + 1) + 1;
@@ -92,7 +92,7 @@ public class Desert extends Biome{
 			}
 		}
 
-		public void act_C3(Node node){
+		public void stone(Node node){
 			Random rand = new Random();
 
 			int randomNum = rand.nextInt((20 - 1) + 1) + 1;
@@ -135,7 +135,7 @@ public class Desert extends Biome{
 			}
 		}
 
-		public void act_C4(Node node) {
+		public void greenery(Node node) {
 			Random rand = new Random();
 
 			int randomNum = rand.nextInt((15 - 1) + 1) + 1;
@@ -188,14 +188,16 @@ public class Desert extends Biome{
 
 		/////////////////Level E//////////////////////////////////////////////////////
 
-	public void act_E1(Node node) {
+	public void mountain(Node node) {
 		Random rand = new Random();
 
 		int randomNum = rand.nextInt((10 - 1) + 1) + 1;
 		if (randomNum == 1) {
 			node.occupied = true;
-			for (Node nodes : node.adjecent) {
-				nodes.occupied = true;
+			for (Node nodes : node.closest) {
+				if (node.y + 128 > nodes.y) {
+					nodes.occupied = true;
+				}
 			}
 			int randomtextureNum = rand.nextInt((3- 1) + 1) + 1;
 			Texture texture = gamescreen.tex.desertgreenery1;
@@ -213,7 +215,7 @@ public class Desert extends Biome{
 
 			}
 
-			new Stone(node, node.gamescreen, node.x, node.y - 16, 96, 96, texture);
+			new Stone(node, node.gamescreen, node.x, node.y - 16, 96*3, 96*3, texture);
 
 		}
 	}

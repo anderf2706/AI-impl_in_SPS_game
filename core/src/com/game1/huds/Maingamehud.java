@@ -27,29 +27,6 @@ public class Maingamehud extends Hud {
 
 ////////////////////////////mainhud/////////////////////////////////////////
 
-		Button builderbutton = new TextButton("Builder", super.skin);
-		builderbutton.setPosition(100, 25);
-		builderbutton.addListener( new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				stage.clear();
-				stage.addActor(background);
-				stage.addActor(buildertable);
-			}
-		});
-
-		Button playstatbutton = new TextButton("Playstat", super.skin);
-		playstatbutton.setPosition(builderbutton.getX() + builderbutton.getWidth(), 25);
-		playstatbutton.addListener( new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				stage.clear();
-				stage.addActor(background);
-				stage.addActor(playstattable);
-			}
-		});
-
-
 ///////////////////////////////////////////////////////////////////////////
 
 
@@ -67,53 +44,6 @@ public class Maingamehud extends Hud {
 		});
 
 
-		Button barracksbutton = new TextButton("Barracks", super.skin);
-		barracksbutton.setPosition(buildbackbutton.getX() + buildbackbutton.getWidth() + 50, 25);
-		barracksbutton.addListener( new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				gamescreen.makeHouse = false;
-				gamescreen.makeWall = false;
-				gamescreen.makeCastle = false;
-				gamescreen.makeBarracks = !gamescreen.makeBarracks;
-			}
-		});
-
-		Button housebutton = new TextButton("House", super.skin);
-		housebutton.setPosition(barracksbutton.getX() + barracksbutton.getWidth(), 25);
-		housebutton.addListener( new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				gamescreen.makeBarracks = false;
-				gamescreen.makeWall = false;
-				gamescreen.makeCastle = false;
-				gamescreen.makeHouse = !gamescreen.makeHouse;
-			}
-		});
-
-		Button wallbutton = new TextButton("Wall", super.skin);
-		wallbutton.setPosition(housebutton.getX() + housebutton.getWidth(), 25);
-		wallbutton.addListener( new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				gamescreen.makeHouse = false;
-				gamescreen.makeBarracks = false;
-				gamescreen.makeCastle = false;
-				gamescreen.makeWall = !gamescreen.makeWall;
-			}
-		});
-
-		Button castlebutton = new TextButton("Castle", super.skin);
-		castlebutton.setPosition(wallbutton.getX() + wallbutton.getWidth(), 25);
-		castlebutton.addListener( new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				gamescreen.makeHouse = false;
-				gamescreen.makeWall = false;
-				gamescreen.makeBarracks = false;
-				gamescreen.makeCastle = !gamescreen.makeCastle;
-			}
-		});
 
 ////////////////////////////////////////////////////////////////////////////
 
@@ -131,32 +61,13 @@ public class Maingamehud extends Hud {
 			}
 		});
 
-		Button playerbutton = new TextButton("player", super.skin);
-		playerbutton.setPosition(playstatbackbutton.getX() + playstatbackbutton.getWidth() + 50, 25);
-		playerbutton.addListener( new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-
-			}
-		});
 
 /////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////tables/////////////////////////////////
 
-		maintable.addActor(builderbutton);
-		maintable.addActor(playstatbutton);
-
-
-
-
 		buildertable.addActor(buildbackbutton);
-		buildertable.addActor(barracksbutton);
-		buildertable.addActor(housebutton);
-		buildertable.addActor(wallbutton);
-		buildertable.addActor(castlebutton);
 
-		playstattable.addActor(playerbutton);
 		playstattable.addActor(playstatbackbutton);
 
 		stage.addActor(background);

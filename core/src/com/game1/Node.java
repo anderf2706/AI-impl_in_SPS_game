@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class Node implements Serializable {
 	public ArrayList<Node> adjecent = new ArrayList<Node>();
-	ArrayList<Node> closest = new ArrayList<Node>();
+	public ArrayList<Node> closest = new ArrayList<Node>();
 	ArrayList<Player> players = new ArrayList<Player>();
 	Set<Node> adjecent2 = new HashSet<Node>();
 	int reuse_index;
@@ -51,10 +51,10 @@ public class Node implements Serializable {
 		this.id = count++;
 		body = new Rectangle(x - 16, y - 16, 32, 32);
 
-		if (this.humidity > 0.80) {
+		if (this.humidity > 0.90) {
 			this.myBiome = gamescreen.rainforest;
 		}
-		if (this.humidity <= 0.80 && this.humidity > 0.6) {
+		if (this.humidity <= 0.90 && this.humidity > 0.6) {
 			this.myBiome = gamescreen.tundra;
 
 		}
