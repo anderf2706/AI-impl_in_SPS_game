@@ -11,13 +11,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class Nature implements InputProcessor, Screen {
+public class Nature implements InputProcessor, Screen, DistanceObjects {
 	public Node naturenode;
 	public Rectangle the_nature;
 	GameScreen gamescreen;
 	public Texture texture;
 	public int health;
 	public Item material;
+	public boolean render = false;
 
 
 	public Nature(Node node, GameScreen gamescreen,int x, int y, int height, int width, Texture texture){
@@ -31,7 +32,9 @@ public class Nature implements InputProcessor, Screen {
 		naturenode = node;
 		node.occupied = true;
 		node.mynature = this;
+
 		this.gamescreen.nature.add(this);
+
 
 
 	}
@@ -43,6 +46,20 @@ public class Nature implements InputProcessor, Screen {
 
 	public Integer gety(){
 		return this.naturenode.y;
+	}
+
+	public void checkrender(){
+		for (DistanceObjects object : gamescreen.team_0){
+			double ac = Math.abs(object.getY() - this.naturenode.y);
+			double cb = Math.abs(object.getX() - this.naturenode.x);
+
+			double h = Math.hypot(ac, cb);
+			if (h < 320){
+				render = true;
+				return;
+			}
+		}
+		render = false;
 	}
 
 	@Override
@@ -92,7 +109,7 @@ public class Nature implements InputProcessor, Screen {
 
 	@Override
 	public void render(float delta) {
-
+		checkrender();
 
 	}
 
@@ -121,4 +138,13 @@ public class Nature implements InputProcessor, Screen {
 
 	}
 
+	@Override
+	public int getX() {
+		return this.naturenode.x;
+	}
+
+	@Override
+	public int getY() {
+		return this.naturenode.y;
+	}
 }

@@ -16,40 +16,25 @@ public class Biome {
 
 	}
 
-	protected void act_C1(Node node){
+	protected void tree(Node node, int chance){
 
 	}
 
-	protected void act_C2(Node node){
+	protected void lake(Node node, int chance){
 
 	}
 
-	protected void act_C3(Node node){
+	protected void mountain(Node node, int chance){
 
 	}
 
-	protected void act_C4(Node node){
+	protected void stone(Node node, int chance){
 
 	}
 
-	protected void act_C5(Node node){
+	protected void greenery(Node node, int chance){
 
 	}
 
-	protected void act_C6(Node node){
-
-	}
-
-	protected void act_C7(Node node){
-
-	}
-
-	protected void act_E1(Node node){
-
-	}
-
-	protected void act_E2(Node node){
-
-	}
 
 }

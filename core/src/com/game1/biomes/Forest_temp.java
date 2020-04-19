@@ -28,9 +28,9 @@ public class Forest_temp extends Biome {
 	}
 	/////////////////Level C////////////////////////////////
 
-	public void act_C1(Node node) {
+	public void lake(Node node, int chance) {
 		Random rand = new Random();
-		int randomNum = rand.nextInt((200 - 1) + 1) + 1;
+		int randomNum = rand.nextInt((chance - 1) + 1) + 1;
 		if (randomNum == 1) {
 			node.occupied = true;
 			Texture texture = gamescreen.tex.grasslandlake;
@@ -47,10 +47,10 @@ public class Forest_temp extends Biome {
 
 
 
-	public void act_C2(Node node){
+	public void tree(Node node, int chance){
 		Random rand = new Random();
 
-		int randomNum = rand.nextInt((20 - 1) + 1) + 1;
+		int randomNum = rand.nextInt((chance - 1) + 1) + 1;
 		if(randomNum == 1){
 			node.occupied = true;
 
@@ -89,8 +89,8 @@ public class Forest_temp extends Biome {
 					break;
 				case 11:
 					texture = gamescreen.tex.grasslandtree11;
-					break;                  
-				case 12:                    
+					break;
+				case 12:
 					texture = gamescreen.tex.grasslandtree12;
 					break;
 				case 13:
@@ -109,10 +109,10 @@ public class Forest_temp extends Biome {
 		}
 	}
 
-	public void act_C3(Node node){
+	public void stone(Node node, int chance){
 		Random rand = new Random();
 
-		int randomNum = rand.nextInt((20 - 1) + 1) + 1;
+		int randomNum = rand.nextInt((chance - 1) + 1) + 1;
 		if(randomNum == 1){
 			node.occupied = true;
 			int randomtextureNum = rand.nextInt((9- 1) + 1) + 1;
@@ -143,10 +143,10 @@ public class Forest_temp extends Biome {
 		}
 	}
 
-	public void act_C4(Node node) {
+	public void greenery(Node node, int chance) {
 		Random rand = new Random();
 
-		int randomNum = rand.nextInt((15 - 1) + 1) + 1;
+		int randomNum = rand.nextInt((chance - 1) + 1) + 1;
 		if (randomNum == 1) {
 			node.occupied = true;
 			int randomtextureNum = rand.nextInt((9- 1) + 1) + 1;
@@ -196,19 +196,20 @@ public class Forest_temp extends Biome {
 
 	/////////////////Level E//////////////////////////////////////////////////////
 
-	public void act_E1(Node node) {
+	public void mountain(Node node, int chance) {
 		Random rand = new Random();
 
-		int randomNum = rand.nextInt((10 - 1) + 1) + 1;
+		int randomNum = rand.nextInt((chance - 1) + 1) + 1;
 		if (randomNum == 1) {
 			node.occupied = true;
-			for (Node nodes : node.adjecent) {
-				nodes.occupied = true;
+			for (Node nodes : node.closest) {
+				if (nodes.y >= node.y && node.y + 96 >= nodes.y &&
+						nodes.x >= node.x - 64 && node.x + 64 > nodes.x) {
+					nodes.occupied = true;
+				}
 			}
-			Texture texture = gamescreen.tex.grasslandstone1;
-
-
-			new Stone(node, node.gamescreen, node.x, node.y - 16, 96, 96, texture);
+		Texture texture = gamescreen.tex.grasslandstone1;
+		new Stone(node, node.gamescreen, node.x, node.y - 16, 96*3, 96*3, texture);
 
 		}
 	}

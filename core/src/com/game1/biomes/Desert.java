@@ -39,10 +39,10 @@ public class Desert extends Biome{
 			}
 		}
 
-		public void tree(Node node){
+		public void tree(Node node, int chance){
 			Random rand = new Random();
 
-			int randomNum = rand.nextInt((20 - 1) + 1) + 1;
+			int randomNum = rand.nextInt((chance - 1) + 1) + 1;
 			if(randomNum == 1){
 				node.occupied = true;
 
@@ -92,10 +92,10 @@ public class Desert extends Biome{
 			}
 		}
 
-		public void stone(Node node){
+		public void stone(Node node, int chance){
 			Random rand = new Random();
 
-			int randomNum = rand.nextInt((20 - 1) + 1) + 1;
+			int randomNum = rand.nextInt((chance - 1) + 1) + 1;
 			if(randomNum == 1){
 				node.occupied = true;
 				int randomtextureNum = rand.nextInt((9- 1) + 1) + 1;
@@ -135,10 +135,10 @@ public class Desert extends Biome{
 			}
 		}
 
-		public void greenery(Node node) {
+		public void greenery(Node node, int chance) {
 			Random rand = new Random();
 
-			int randomNum = rand.nextInt((15 - 1) + 1) + 1;
+			int randomNum = rand.nextInt((chance - 1) + 1) + 1;
 			if (randomNum == 1) {
 				node.occupied = true;
 				int randomtextureNum = rand.nextInt((9- 1) + 1) + 1;
@@ -188,20 +188,21 @@ public class Desert extends Biome{
 
 		/////////////////Level E//////////////////////////////////////////////////////
 
-	public void mountain(Node node) {
+	public void mountain(Node node, int chance) {
 		Random rand = new Random();
 
-		int randomNum = rand.nextInt((10 - 1) + 1) + 1;
+		int randomNum = rand.nextInt((chance - 1) + 1) + 1;
 		if (randomNum == 1) {
 			node.occupied = true;
 			for (Node nodes : node.closest) {
-				if (node.y + 128 > nodes.y) {
+				if (nodes.y >= node.y && node.y + 96 >= nodes.y &&
+						nodes.x >= node.x - 64 && node.x + 64 > nodes.x) {
 					nodes.occupied = true;
 				}
 			}
-			int randomtextureNum = rand.nextInt((3- 1) + 1) + 1;
+			int randomtextureNum = rand.nextInt((3 - 1) + 1) + 1;
 			Texture texture = gamescreen.tex.desertgreenery1;
-			switch (randomtextureNum){
+			switch (randomtextureNum) {
 				case 1:
 					texture = gamescreen.tex.desertstone10;
 					break;
@@ -215,7 +216,8 @@ public class Desert extends Biome{
 
 			}
 
-			new Stone(node, node.gamescreen, node.x, node.y - 16, 96*3, 96*3, texture);
+			new Stone(node, node.gamescreen, node.x, node.y - 16, 96 * 3, 96 * 3, texture);
+
 
 		}
 	}

@@ -37,6 +37,7 @@ import com.game1.players.animals.cow;
 import com.game1.players.footenemy;
 import com.game1.players.protagonist;
 
+import javax.print.attribute.standard.Sides;
 
 
 public class GameScreen extends ApplicationAdapter implements Screen, InputProcessor {
@@ -101,6 +102,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	AssetManager manager;
 
 	ArrayList<Player> players = new ArrayList<Player>();
+	ArrayList<DistanceObjects> team_0 = new ArrayList<DistanceObjects>();
 	ArrayList<Building> buildings = new ArrayList<Building>();
 	ArrayList<Nature> nature = new ArrayList<Nature>();
 	ArrayList<Node> allnodes2 = new ArrayList<Node>();
@@ -419,7 +421,10 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		for (List<Node> list : listOfLists){
 		    for(Node node : list){
 		    	if (node != null) {
-					game.batch.draw(node.nodetexture, node.x - 16, node.y - 16, 32, 32);
+		    		node.checkrender();
+		    		if (node.render){
+						game.batch.draw(node.nodetexture, node.x - 16, node.y - 16, 32, 32);
+					}
 
 		    	}
 
@@ -430,19 +435,30 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 
 		for (int j = 36; j >= 0; j--) {
-				for (int i = 0; i < 64; i++){
-					if (listOfLists.get(i).get(j) != null && this.nature.contains(listOfLists.get(i).get(j).mynature)) {
-						if (listOfLists.get(i).get(j).mynature != null) {
-							listOfLists.get(i).get(j).mynature.batch(game.batch);
+			for (int i = 0; i < 64; i++) {
+				if (listOfLists.get(i).get(j) != null && this.nature.contains(listOfLists.get(i).get(j).mynature)) {
+					if (listOfLists.get(i).get(j).mynature != null && listOfLists.get(i).get(j).mynature.render) {
+						listOfLists.get(i).get(j).mynature.batch(game.batch);
+					}
+				}
+				if (listOfLists.get(i).get(j).mynature == null){
+					for (Player player : this.players){
+						if (player.playerNode == listOfLists.get(i).get(j)
+								&& listOfLists.get(i).get(j).render){
+							player.batch(game.batch);
 						}
 					}
-
 				}
-
-
+				if (listOfLists.get(i).get(j).mynature == null){
+					for (Building building : this.buildings){
+						if (building.buildingnode == listOfLists.get(i).get(j)
+								&& listOfLists.get(i).get(j).render){
+							building.batch(game.batch);
+						}
+					}
+				}
 			}
-
-
+		}
 
 
 		if(chosenNode != null) {
@@ -453,28 +469,6 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 
 		}
-
-		for(Player player : players) {
-		    if(player != null) {
-                player.batch(game.batch);
-
-            }
-		}
-
-		for(Building building : buildings) {
-			building.batch(game.batch);
-		}
-
-		for(Nature nature : nature) {
-
-
-		}
-
-
-
-
-
-
 
 		game.batch.end();
 

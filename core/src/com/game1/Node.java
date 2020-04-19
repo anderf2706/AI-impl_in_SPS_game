@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 
 
-public class Node implements Serializable {
+public class Node implements Serializable, DistanceObjects {
 	public ArrayList<Node> adjecent = new ArrayList<Node>();
 	public ArrayList<Node> closest = new ArrayList<Node>();
 	ArrayList<Player> players = new ArrayList<Player>();
@@ -40,6 +40,8 @@ public class Node implements Serializable {
 
 	public Nature mynature;
 
+	public boolean render = false;
+
 
 	public Node(int x, int y, GameScreen gamescreen, float simplexnoise, float humidity) {
 
@@ -69,6 +71,20 @@ public class Node implements Serializable {
 		}
 
 
+	}
+
+	public void checkrender(){
+		for (DistanceObjects object : gamescreen.team_0){
+			double ac = Math.abs(object.getY() - this.y);
+			double cb = Math.abs(object.getX() - this.x);
+
+			double h = Math.hypot(ac, cb);
+			if (h < 320){
+				render = true;
+				return;
+			}
+		}
+		render = false;
 	}
 
 	public void makeClosest(int id, ArrayList<Node> list, boolean center) {
@@ -108,40 +124,106 @@ public class Node implements Serializable {
 
 		if (this.simplexnoise > 0.8) {
 			this.nodetexture = myBiome.E;
-			if (!this.occupied) {
-				myBiome.act_E1(this);
+			if (myBiome == gamescreen.rainforest){
+				if (!occupied){
+					myBiome.tree(this, 10);
+				}
+				if (!occupied){
+					myBiome.greenery(this, 10);
+				}
 			}
-			if (!this.occupied) {
-				myBiome.act_E2(this);
+			else{
+				int i = 0;
+				for (Node node : closest) {
+					if (node.y >= this.y && this.y + 96 >= node.y &&
+							node.x >= this.x - 96 && this.x + 96 > node.x )
+					if (node.occupied){
+						i += 1;
+					}
+				}
+				if (i == 0){
+					myBiome.mountain(this, 50);
+				}
+				if (!occupied){
+					myBiome.greenery(this, 10);
+				}
+				if (!occupied) {
+					myBiome.stone(this, 25);
+				}
 			}
+
 			return;
 		}
 
 		if (this.simplexnoise <= 0.8 && this.simplexnoise > 0.20) {
 			this.nodetexture = myBiome.E;
-			if (!this.occupied) {
-				myBiome.act_C1(this);
+			if (myBiome == gamescreen.rainforest){
+				int i = 0;
+				for (Node nodes : adjecent){
+					if (this.y <= nodes.y){
+						if (nodes.occupied){
+							i += 1;
+						}
+					}
+				}
+				if (i == 0){
+					myBiome.lake(this, 200);
+				}
+				if (!this.occupied) {
+					myBiome.tree(this, 15);
+				}
+				if (!this.occupied) {
+					myBiome.stone(this, 25);
+				}
+				if (!this.occupied) {
+					myBiome.greenery(this, 15);
+				}
+				int j = 0;
+				for (Node node : closest) {
+					if (node.y >= this.y && this.y + 96 >= node.y &&
+							node.x >= this.x - 96 && this.x + 96 > node.x )
+						if (node.occupied){
+							j += 1;
+						}
+				}
+				if (j== 0){
+					myBiome.mountain(this, 50);
+				}
 			}
-			if (!this.occupied) {
-				myBiome.act_C2(this);
-			}
-			if (!this.occupied) {
-				myBiome.act_C3(this);
-			}
-			if (!this.occupied) {
-				myBiome.act_C4(this);
-			}
-			if (!this.occupied) {
-				myBiome.act_C5(this);
-			}
-			if (!this.occupied) {
-				myBiome.act_C6(this);
-			}
-			if (!this.occupied) {
-				myBiome.act_C7(this);
-			}
+			else {
+				int i = 0;
+				for (Node nodes : adjecent) {
+					if (this.y <= nodes.y) {
+						if (nodes.occupied) {
+							i += 1;
+						}
+					}
+				}
+				if (i == 0) {
+					myBiome.lake(this, 200);
+				}
+				if (!this.occupied) {
+					myBiome.tree(this, 20);
+				}
+				if (!this.occupied) {
+					myBiome.stone(this, 30);
+				}
+				if (!this.occupied) {
+					myBiome.greenery(this, 15);
+				}
+				int j = 0;
+				for (Node node : adjecent) {
+					if (node.occupied) {
+						j += 1;
+					}
+				}
+				if (j == 0) {
+					myBiome.mountain(this, 150);
+				}
 
-			return;
+
+				return;
+			}
 		}
 		if (this.simplexnoise <= 0.20 && this.simplexnoise >= 0) {
 			this.nodetexture = myBiome.A;
@@ -152,4 +234,13 @@ public class Node implements Serializable {
 
 	}
 
+	@Override
+	public int getX() {
+		return this.x;
+	}
+
+	@Override
+	public int getY() {
+		return this.y;
+	}
 }

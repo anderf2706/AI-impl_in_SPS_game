@@ -24,7 +24,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.game1.huds.Playerhud;
 
 
-public class Player implements Screen, InputProcessor{
+public class Player implements Screen, InputProcessor, DistanceObjects{
 	
 	public GameScreen gamescreen;
 	Game1 game;
@@ -107,6 +107,8 @@ public class Player implements Screen, InputProcessor{
 
 	public Node playerNode;
 	int k;
+
+	public boolean render = false;
 	
 	int team;
 	
@@ -154,6 +156,7 @@ public class Player implements Screen, InputProcessor{
 
 		if (team == 0) {
 			playerhud = new Playerhud(game.batch, gamescreen, this);
+			gamescreen.team_0.add(this);
 		}
 
 
@@ -168,12 +171,27 @@ public class Player implements Screen, InputProcessor{
 		}
 		else{
 			playerNode = node;
+			playerNode.occupied = true;
 		}
 
 		
 		gamescreen.players.add(this);
 
 		
+	}
+
+	public void checkrender(){
+		for (DistanceObjects object : gamescreen.team_0){
+			double ac = Math.abs(object.getY() - this.playerNode.y);
+			double cb = Math.abs(object.getX() - this.playerNode.x);
+
+			double h = Math.hypot(ac, cb);
+			if (h < 320){
+				render = true;
+				return;
+			}
+		}
+		render = false;
 	}
 	
 	public void collision() {
@@ -703,21 +721,14 @@ public class Player implements Screen, InputProcessor{
 		if (team == 0) {
 			UI(delta);
 		}
+		else{
+			checkrender();
+		}
 		if (gamescreen.renderboolean) {
 			check_player();
 			collision();
 
 		}
-
-
-
-
-
-
-		  	
-		  
-		  
-		  
 	}
 
 	public void UI(float delta){
@@ -850,6 +861,15 @@ public class Player implements Screen, InputProcessor{
 		
 	}
 
-	
+
+	@Override
+	public int getX() {
+		return this.playerNode.x;
+	}
+
+	@Override
+	public int getY() {
+		return this.playerNode.y;
+	}
 }
 

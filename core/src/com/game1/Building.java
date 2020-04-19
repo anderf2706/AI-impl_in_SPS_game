@@ -17,13 +17,14 @@ import com.badlogic.gdx.math.Rectangle;
 import com.game1.buildings.Gate;
 import com.game1.huds.BuildingHud;
 
-public class Building implements InputProcessor, Screen{
+public class Building implements InputProcessor, Screen, DistanceObjects{
 
 	public Node buildingnode;
 	public Rectangle the_building;
 	GameScreen gamescreen;
 	public Texture building;
 	Texture green;
+	public boolean render = false;
 
 	
 	boolean buildingChosen = false;
@@ -53,6 +54,9 @@ public class Building implements InputProcessor, Screen{
 					}
 				}
 			}
+		if (this.team == 0){
+			gamescreen.team_0.add(this);
+		}
 		bhud = new BuildingHud(gamescreen.game.batch, gamescreen, this);
 		green = gamescreen.tex.green;
 		
@@ -65,9 +69,23 @@ public class Building implements InputProcessor, Screen{
 
 		
 	}
-	
 
-	
+	public void checkrender(){
+		for (DistanceObjects object : gamescreen.team_0){
+			double ac = Math.abs(object.getY() - this.buildingnode.y);
+			double cb = Math.abs(object.getX() - this.buildingnode.x);
+
+			double h = Math.hypot(ac, cb);
+			if (h < 320){
+				render = true;
+				return;
+			}
+		}
+		render = false;
+	}
+
+
+
 	public void overlap(int button) {
 		if((Intersector.overlaps(gamescreen.the_mouse, the_building))){
 			buildingChosen = true;
@@ -140,8 +158,12 @@ public class Building implements InputProcessor, Screen{
 
 	@Override
 	public void render(float delta) {
-
-		UI(delta);
+		if (this.team == 0){
+			UI(delta);
+		}
+		else {
+			checkrender();
+		}
 		if (notrun){
 			generate();
 			notrun = false;
@@ -257,5 +279,13 @@ public class Building implements InputProcessor, Screen{
 	}
 
 
+	@Override
+	public int getX() {
+		return this.buildingnode.x;
+	}
 
+	@Override
+	public int getY() {
+		return this.buildingnode.y;
+	}
 }
