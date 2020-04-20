@@ -15,12 +15,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.game1.huds.Playerhud;
 
 
@@ -30,7 +33,26 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 	Game1 game;
 
 	public Timer timer;
-	
+
+    public Drawable drawable_object1;
+	int item1_object_count;
+
+	public Drawable drawable_object2;
+	int item2_object_count;
+
+	public Drawable drawable_object3;
+	int item3_object_count;
+
+	public Drawable drawable_object4;
+	int item4_object_count;
+
+	public Drawable drawable_object5;
+	int item5_object_count;
+
+	public Drawable drawable_object6;
+	int item6_object_count;
+
+
 	public Rectangle the_player;
 	Rectangle future_the_player;	
 	Rectangle future_the_player2;
@@ -52,6 +74,8 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 	public int health;
 	public int attack;
 	public int defense;
+
+	Timer itemtimer;
 
 	boolean alive = true;
 
@@ -80,6 +104,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 	
     
     ArrayList<Node> finalpath = new ArrayList<Node>();
+	Set<Item> keys;
     
     Node roadsplit;
     Node finalnode;
@@ -120,9 +145,11 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 
 	boolean natureattacking;
 
+	public Item activeitem;
+
 	Nature naturetarget;
 
-	Hashtable<Item, Integer>Inventory = new Hashtable<Item, Integer>();
+	public Hashtable<Item, Integer>Inventory = new Hashtable<Item, Integer>();
 
 	int gold;
 
@@ -135,12 +162,15 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 		this.game = game;
 		this.team = team;
 
+
 		
 		the_player = new Rectangle();
 		the_player.x = x;
 		the_player.y = y;
 
 		harvestspeed = 10;
+
+		keys = this.Inventory.keySet();
 
 
 		spritedir = 40;
@@ -160,22 +190,20 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 		}
 
 
-		if (team == 0) {
-			for (Node playernode : gamescreen.allnodes) {
-				if (Intersector.overlaps(playernode.body, the_player)) {
-					this.playerNode = playernode;
-					playernode.occupied = true;
-					break;
-				}
+		for (Node playernode : gamescreen.allnodes) {
+			if (Intersector.overlaps(playernode.body, the_player)) {
+				this.playerNode = playernode;
+				playernode.occupied = true;
+				break;
 			}
 		}
-		else{
-			playerNode = node;
-			playerNode.occupied = true;
-		}
+
+
 
 		
 		gamescreen.players.add(this);
+
+		itemchecker();
 
 		
 	}
@@ -407,6 +435,8 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 		t.cancel();
 
 	}
+
+
 
 
 
@@ -705,6 +735,74 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 		
 	}
 
+	public void setitem(int num){
+
+		this.activeitem = (Item) this.keys.toArray()[num - 1];
+	}
+
+	public void itemchecker(){
+		itemtimer = new Timer();
+		itemtimer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				itemchecker_t();
+
+			}
+		}, 0, 1000);
+	}
+
+	public void itemchecker_t(){
+
+		if (Inventory.size() > 0) {
+		/////////////item1//////////////////////////
+			Item item1 = (Item) keys.toArray()[0];
+			drawable_object1 = new TextureRegionDrawable((new TextureRegion(item1.icon)));
+			item1_object_count = this.Inventory.get(item1);
+		}
+		//////////////////////////////////////////
+
+		if (Inventory.size() > 1) {
+			/////////////item1//////////////////////////
+			Item item2 = (Item) keys.toArray()[1];
+			drawable_object2 = new TextureRegionDrawable((new TextureRegion(item2.icon)));
+			item2_object_count = this.Inventory.get(item2);
+		}
+
+		if (Inventory.size() > 2) {
+			/////////////item1//////////////////////////
+			Item item3 = (Item) keys.toArray()[2];
+			drawable_object3 = new TextureRegionDrawable((new TextureRegion(item3.icon)));
+			item3_object_count = this.Inventory.get(item3);
+		}
+
+		if (Inventory.size() > 3) {
+			/////////////item1//////////////////////////
+			Item item4 = (Item) keys.toArray()[3];
+			drawable_object4 = new TextureRegionDrawable((new TextureRegion(item4.icon)));
+			item4_object_count = this.Inventory.get(item4);
+		}
+
+		if (Inventory.size() > 4) {
+			/////////////item1//////////////////////////
+			Item item5 = (Item) keys.toArray()[4];
+			drawable_object5 = new TextureRegionDrawable((new TextureRegion(item5.icon)));
+			item5_object_count = this.Inventory.get(item5);
+		}
+
+		if (Inventory.size() > 5) {
+			/////////////item1//////////////////////////
+			Item item6 = (Item) keys.toArray()[5];
+			drawable_object6 = new TextureRegionDrawable((new TextureRegion(item6.icon)));
+			item6_object_count = this.Inventory.get(item6);
+		}
+
+		this.playerhud.render(drawable_object1, drawable_object2, drawable_object3, drawable_object4,
+				drawable_object5, drawable_object6, this);
+
+
+
+	}
+
 
 
 
@@ -720,6 +818,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 
 		if (team == 0) {
 			UI(delta);
+
 		}
 		else{
 			checkrender();
@@ -727,7 +826,6 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 		if (gamescreen.renderboolean) {
 			check_player();
 			collision();
-
 		}
 	}
 

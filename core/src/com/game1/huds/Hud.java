@@ -31,6 +31,7 @@ class Hud extends InputAdapter implements Screen{
      public Table playertable;
      public Table playstattable;
 	public Table itemtable;
+	public Table icontable;
 
 	Image backgrounds;
 	 Image topbackgrounds;
@@ -62,6 +63,10 @@ class Hud extends InputAdapter implements Screen{
 		buildingtable = new Table();
 		buildingtable.setVisible(true);
 
+		icontable = new Table();
+		icontable.setVisible(true);
+
+
 
 		playertable = new Table();
 		playertable.setVisible(true);
@@ -78,9 +83,9 @@ class Hud extends InputAdapter implements Screen{
 		backgrounds.toBack();
 
 		topbackgrounds = new Image(drawablebackground);
-		topbackgrounds.setPosition(0, 1030);
+		topbackgrounds.setPosition(0, 980);
 		topbackgrounds.setWidth(Gdx.graphics.getWidth());
-		topbackgrounds.setHeight(50);
+		topbackgrounds.setHeight(100);
 		topbackgrounds.toBack();
 
 		/*

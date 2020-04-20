@@ -202,6 +202,8 @@ public class textures {
 	public Texture tropicalgreenery8;
 	public Texture tropicalgreenery9;
 	public Texture tropicalgreenery10;
+	public Texture tropicalgreenery11;
+	public Texture tropicalgreenery12;
 
 	public Texture tropicallake;
 
@@ -468,6 +470,8 @@ public class textures {
 		tropicalgreenery8 = new Texture(Gdx.files.internal("Tropical/greenery_8.png"));
 		tropicalgreenery9 = new Texture(Gdx.files.internal("Tropical/greenery_9.png"));
 		tropicalgreenery10 = new Texture(Gdx.files.internal("tropical/greenery_10.png"));
+		tropicalgreenery11 = new Texture(Gdx.files.internal("Tropical/tree_11.png"));
+		tropicalgreenery12 = new Texture(Gdx.files.internal("tropical/tree_13.png"));
 
 		tropicaltree1 = new Texture(Gdx.files.internal("Tropical/tree_1.png"));
 		tropicaltree2 = new Texture(Gdx.files.internal("Tropical/tree_2.png"));
@@ -479,8 +483,7 @@ public class textures {
 		tropicaltree8 = new Texture(Gdx.files.internal("Tropical/tree_8.png"));
 		tropicaltree9 = new Texture(Gdx.files.internal("Tropical/tree_9.png"));
 		tropicaltree10 = new Texture(Gdx.files.internal("Tropical/tree_10.png"));
-		tropicaltree11 = new Texture(Gdx.files.internal("Tropical/tree_11.png"));
-		tropicaltree12 = new Texture(Gdx.files.internal("Tropical/tree_12.png"));
+		tropicaltree11 = new Texture(Gdx.files.internal("Tropical/tree_12.png"));
 
 		tropicalstone1 = new Texture(Gdx.files.internal("Tropical/stones_1.png"));
 		tropicalstone2 = new Texture(Gdx.files.internal("Tropical/stones_2.png"));

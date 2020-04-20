@@ -40,7 +40,7 @@ public class Forest_temp extends Biome {
 				}
 			}
 
-			new Lake(node, node.gamescreen, node.x, node.y - 16, 64, 96, texture);
+			new Lake(1000, node, node.gamescreen, node.x, node.y - 16, 64, 96, texture);
 
 		}
 	}
@@ -104,7 +104,7 @@ public class Forest_temp extends Biome {
 					break;
 
 			}
-			new Tree(node, node.gamescreen, node.x, node.y - 16, 96, 64, texture);
+			new Tree(500, node, node.gamescreen, node.x, node.y - 16, 96, 64, texture);
 
 		}
 	}
@@ -138,7 +138,7 @@ public class Forest_temp extends Biome {
 					break;
 
 			}
-			new Stone(node, node.gamescreen, node.x, node.y - 16, 32, 32, texture);
+			new Stone(200, node, node.gamescreen, node.x, node.y - 16, 32, 32, texture);
 
 		}
 	}
@@ -185,7 +185,7 @@ public class Forest_temp extends Biome {
 
 			}
 
-			new Greenery(node, node.gamescreen, node.x, node.y - 16, 32, 32, texture);
+			new Greenery(200, node, node.gamescreen, node.x, node.y - 16, 32, 32, texture);
 
 		}
 	}
@@ -202,14 +202,13 @@ public class Forest_temp extends Biome {
 		int randomNum = rand.nextInt((chance - 1) + 1) + 1;
 		if (randomNum == 1) {
 			node.occupied = true;
-			for (Node nodes : node.closest) {
-				if (nodes.y >= node.y && node.y + 96 >= nodes.y &&
-						nodes.x >= node.x - 64 && node.x + 64 > nodes.x) {
+			for (Node nodes : node.adjecent) {
+				if (nodes.y <= node.y + 32) {
 					nodes.occupied = true;
 				}
 			}
 		Texture texture = gamescreen.tex.grasslandstone1;
-		new Stone(node, node.gamescreen, node.x, node.y - 16, 96*3, 96*3, texture);
+		new Stone(2000, node, node.gamescreen, node.x, node.y - 16, 96, 96, texture);
 
 		}
 	}

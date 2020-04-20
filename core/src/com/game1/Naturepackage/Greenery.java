@@ -9,10 +9,9 @@ import com.game1.Node;
 public class Greenery extends Nature {
 
 
-	public Greenery(Node node, GameScreen gamescreen, int x, int y, int height, int width, Texture texture) {
-		super(node, gamescreen, x, y, height, width, texture);
+	public Greenery(int health, Node node, GameScreen gamescreen, int x, int y, int height, int width, Texture texture) {
+		super(health, node, gamescreen, x, y, height, width, texture);
 
-		health = 200;
 		material = gamescreen.stick;
 	}
 }

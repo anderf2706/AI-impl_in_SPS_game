@@ -21,7 +21,7 @@ public class Game1 extends Game {
 	
 	@Override
 	public void create () {
-		nodewidth = 400;
+		nodewidth = 200;
 		games = new GameScreen[10][10];
 		batch = new SpriteBatch();
 		//img = new Texture("badlogic.jpg");

@@ -8,9 +8,8 @@ import com.game1.Node;
 public class Tree extends Nature {
 
 
-	public Tree(Node node, GameScreen gamescreen, int x, int y, int height, int width, Texture texture) {
-		super(node, gamescreen, x, y, height, width, texture);
-		health = 500;
+	public Tree(int health, Node node, GameScreen gamescreen, int x, int y, int height, int width, Texture texture) {
+		super(health, node, gamescreen, x, y, height, width, texture);
 		material = gamescreen.wood;
 	}
 }

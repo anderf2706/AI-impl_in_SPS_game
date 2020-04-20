@@ -29,12 +29,15 @@ public class Rainforest extends Biome {
 		int randomNum = rand.nextInt((chance - 1) + 1) + 1;
 		if(randomNum == 1){
 			node.occupied = true;
-			for (Node nodes : node.closest) {
-				if (nodes.y >= node.y && node.y + 96 >= nodes.y &&
+			for (Node nodes : node.adjecent) {
+				nodes.occupied = true;
+			}
+			/*
+			if (nodes.y >= node.y && node.y + 96 >= nodes.y &&
 						nodes.x >= node.x - 64 && node.x + 64 > nodes.x) {
 					nodes.occupied = true;
 				}
-			}
+			 */
 
 			int randomtextureNum = rand.nextInt((6- 1) + 1) + 1;
 			Texture texture = gamescreen.tex.tropicalstone1;
@@ -59,7 +62,7 @@ public class Rainforest extends Biome {
 					break;
 
 			}
-			new Stone(node, node.gamescreen, node.x, node.y - 16, 96*3, 96*3, texture);
+			new Stone(2000, node, node.gamescreen, node.x, node.y - 16, 96, 96, texture);
 
 		}
 	}
@@ -76,7 +79,7 @@ public class Rainforest extends Biome {
 				}
 			}
 
-			new Lake(node, node.gamescreen, node.x, node.y - 16, 64, 96, texture);
+			new Lake(1000, node, node.gamescreen, node.x, node.y - 16, 64, 96, texture);
 
 		}
 	}
@@ -126,16 +129,14 @@ public class Rainforest extends Biome {
 				case 11:
 					texture = gamescreen.tex.tropicaltree11;
 					break;
-				case 12:
-					texture = gamescreen.tex.tropicaltree12;
-					break;
-				case 13:
-					texture = gamescreen.tex.tropicaltree13;
-					break;
 
 			}
-			new Tree(node, node.gamescreen, node.x, node.y - 16, 96, 64, texture);
-
+			if (texture != gamescreen.tex.tropicaltree11) {
+				new Tree(500, node, node.gamescreen, node.x, node.y - 16, 96, 64, texture);
+			}
+			else{
+				new Tree(500, node, node.gamescreen, node.x, node.y - 16, 32, 96, texture);
+			}
 		}
 	}
 
@@ -146,43 +147,49 @@ public class Rainforest extends Biome {
 		int randomNum = rand.nextInt((chance - 1) + 1) + 1;
 		if (randomNum == 1) {
 			node.occupied = true;
-			int randomtextureNum = rand.nextInt((9- 1) + 1) + 1;
-			Texture texture = gamescreen.tex.grasslandgreenery1;
+			int randomtextureNum = rand.nextInt((12- 1) + 1) + 1;
+			Texture texture = gamescreen.tex.tropicalgreenery1;
 			switch (randomtextureNum){
 				case 1:
-					texture = gamescreen.tex.grasslandgreenery1;
+					texture = gamescreen.tex.tropicalgreenery1;
 					break;
 				case 2:
-					texture = gamescreen.tex.grasslandgreenery2;
+					texture = gamescreen.tex.tropicalgreenery2;
 					break;
 				case 3:
-					texture = gamescreen.tex.grasslandgreenery3;
+					texture = gamescreen.tex.tropicalgreenery3;
 					break;
 				case 4:
-					texture = gamescreen.tex.grasslandgreenery4;
+					texture = gamescreen.tex.tropicalgreenery4;
 					break;
 				case 5:
-					texture = gamescreen.tex.grasslandgreenery5;
+					texture = gamescreen.tex.tropicalgreenery5;
 					break;
 				case 6:
-					texture = gamescreen.tex.grasslandgreenery6;
+					texture = gamescreen.tex.tropicalgreenery6;
 					break;
 				case 7:
-					texture = gamescreen.tex.grasslandgreenery7;
+					texture = gamescreen.tex.tropicalgreenery7;
 					break;
 				case 8:
-					texture = gamescreen.tex.grasslandgreenery8;
+					texture = gamescreen.tex.tropicalgreenery8;
 					break;
 				case 9:
-					texture = gamescreen.tex.grasslandgreenery9;
+					texture = gamescreen.tex.tropicalgreenery9;
 					break;
 				case 10:
-					texture = gamescreen.tex.grasslandgreenery10;
+					texture = gamescreen.tex.tropicalgreenery10;
+					break;
+				case 11:
+					texture = gamescreen.tex.tropicalgreenery11;
+					break;                  
+				case 12:                    
+					texture = gamescreen.tex.tropicalgreenery12;
 					break;
 
 			}
 
-			new Greenery(node, node.gamescreen, node.x, node.y - 16, 32, 32, texture);
+			new Greenery(200, node, node.gamescreen, node.x, node.y - 16, 32, 32, texture);
 
 		}
 	}
@@ -212,7 +219,7 @@ public class Rainforest extends Biome {
 					texture = gamescreen.tex.tropicalstone11;
 					break;
 			}
-			new Stone(node, node.gamescreen, node.x, node.y - 16, 32, 32, texture);
+			new Stone(200, node, node.gamescreen, node.x, node.y - 16, 32, 32, texture);
 
 		}
 	}

@@ -21,7 +21,7 @@ public class Nature implements InputProcessor, Screen, DistanceObjects {
 	public boolean render = false;
 
 
-	public Nature(Node node, GameScreen gamescreen,int x, int y, int height, int width, Texture texture){
+	public Nature(int health, Node node, GameScreen gamescreen,int x, int y, int height, int width, Texture texture){
 		this.gamescreen = gamescreen;
 		this.texture= texture;
 		the_nature = new Rectangle();
@@ -32,6 +32,7 @@ public class Nature implements InputProcessor, Screen, DistanceObjects {
 		naturenode = node;
 		node.occupied = true;
 		node.mynature = this;
+		this.health = health;
 
 		this.gamescreen.nature.add(this);
 
@@ -41,7 +42,10 @@ public class Nature implements InputProcessor, Screen, DistanceObjects {
 
 	public void batch(SpriteBatch batch){
 		batch.draw(texture, the_nature.x, the_nature.y, the_nature.width, the_nature.height);
-		batch.draw(gamescreen.green, naturenode.x, naturenode.y, 20, 20);
+		if (gamescreen.debug) {
+			gamescreen.font.draw(gamescreen.game.batch, naturenode.x + " " + naturenode.y,
+					naturenode.x, naturenode.y);
+		}
 	}
 
 	public Integer gety(){

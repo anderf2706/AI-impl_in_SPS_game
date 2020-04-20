@@ -171,6 +171,8 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	int cmerasafe_x_max;
 	int cmerasafe_x_min;
 
+	boolean debug = false;
+
 	public GameScreen(Game1 game, int nodewidth, int startposx, int startposy, int games_i, int games_j) throws IOException {
 		game.games[games_i][games_j] = this;
 		this.games_i = games_i;
@@ -222,8 +224,8 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		ss = new ShapeRenderer();
 
 		the_mouse = new Rectangle();
-		the_mouse.height = 2;
-		the_mouse.width = 2;
+		the_mouse.height = 1;
+		the_mouse.width = 1;
 		makenodes();
 
 		Vector2 mouseInWorld2D = new Vector2();
@@ -271,7 +273,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 	public void fixborder(){
 		if (listOfLists.get(0).get(0) != null) {
-			cmerasafe_x = listOfLists.get(0).get(16).x;
+			cmerasafe_x = listOfLists.get(0).get(0).x;
 			cmerasafe_x_max = nodewidth * 32 - 64 * 32;
 			cmerasafe_x_min = 0;
 		}
@@ -422,9 +424,10 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		    for(Node node : list){
 		    	if (node != null) {
 		    		node.checkrender();
-		    		if (node.render){
+		    		if (node.render || debug){
 						game.batch.draw(node.nodetexture, node.x - 16, node.y - 16, 32, 32);
-					}
+
+		    		}
 
 		    	}
 
@@ -437,27 +440,40 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		for (int j = 36; j >= 0; j--) {
 			for (int i = 0; i < 64; i++) {
 				if (listOfLists.get(i).get(j) != null && this.nature.contains(listOfLists.get(i).get(j).mynature)) {
-					if (listOfLists.get(i).get(j).mynature != null && listOfLists.get(i).get(j).mynature.render) {
+					if (listOfLists.get(i).get(j).mynature != null && listOfLists.get(i).get(j).mynature.render || debug) {
 						listOfLists.get(i).get(j).mynature.batch(game.batch);
 					}
 				}
-				if (listOfLists.get(i).get(j).mynature == null){
+				if (listOfLists.get(i).get(j) != null){
 					for (Player player : this.players){
 						if (player.playerNode == listOfLists.get(i).get(j)
-								&& listOfLists.get(i).get(j).render){
+								&& listOfLists.get(i).get(j).render || debug){
 							player.batch(game.batch);
 						}
 					}
 				}
-				if (listOfLists.get(i).get(j).mynature == null){
+				if (listOfLists.get(i).get(j) != null && listOfLists.get(i).get(j).mynature == null){
 					for (Building building : this.buildings){
 						if (building.buildingnode == listOfLists.get(i).get(j)
-								&& listOfLists.get(i).get(j).render){
+								&& listOfLists.get(i).get(j).render || debug){
 							building.batch(game.batch);
 						}
 					}
 				}
 			}
+		}
+
+		for (List<Node> list : listOfLists){
+			for(Node node : list){
+				if (node != null) {
+					if (node.occupied && debug){
+						game.batch.draw(green, node.x -10, node.y - 10, 20, 20);
+
+					}
+				}
+
+			}
+
 		}
 
 
@@ -897,7 +913,8 @@ public void makeCastle() {
 			if(A) {
 					left = -1;
 					cmerasafe_x -= 64;
-					ArrayList<Node> templist = new ArrayList<Node>();
+				System.out.println(cmerasafe_x);
+				ArrayList<Node> templist = new ArrayList<Node>();
 					Node node1;
 					if(cmerasafe_x >= cmerasafe_x_min) {
 						for (Node node : listOfLists.get(0)) {
