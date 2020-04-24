@@ -104,8 +104,35 @@ public class Playerhud extends Hud {
 			}
 		});
 
+		final Button inventorybutton = new TextButton("Inventory", super.skin);
+		inventorybutton.setPosition(playstatbutton.getX() + playstatbutton.getWidth(), 25);
+		inventorybutton.addListener( new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				stage.clear();
+				stage.addActor(background);
+				stage.addActor(inventorybackground);
+				stage.addActor(topbackgrounds);
+				stage.addActor(itemtable);
+				stage.addActor(inventorytable);
+			}
+		});
+
 
 ///////////////////////////////////////////////////////////////////////////
+
+		Button inventorybackbutton = new ImageButton(drawable);
+		inventorybackbutton.setPosition(20, 980 - 20);
+		inventorybackbutton.addListener( new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				stage.clear();
+				stage.addActor(background);
+				stage.addActor(maintable);
+				stage.addActor(topbackgrounds);
+				stage.addActor(itemtable);
+			}
+		});
 
 
 ////////////////////////////builderhud//////////////////////////////////
@@ -323,7 +350,8 @@ public class Playerhud extends Hud {
 			});
 
 
-
+		inventorytable.addActor(inventorybackbutton);
+		inventorytable.addActor(inventorybackgroundbutton);
 		//TextField gold = new TextField();
 
 		itemtable.addActor(item1);
@@ -340,6 +368,7 @@ public class Playerhud extends Hud {
 
 		maintable.addActor(builderbutton);
 		maintable.addActor(playstatbutton);
+		maintable.addActor(inventorybutton);
 
 
 
@@ -362,6 +391,9 @@ public class Playerhud extends Hud {
 
 
 	}
+
+
+
 	public void render(Drawable drawable1, Drawable drawable2, Drawable drawable3, Drawable drawable4,
 					   Drawable drawable5, Drawable drawable6, Player player){
 		/////////////////icon1/////////////////////////

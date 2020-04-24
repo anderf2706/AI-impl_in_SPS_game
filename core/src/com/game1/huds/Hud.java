@@ -30,12 +30,15 @@ class Hud extends InputAdapter implements Screen{
      public Table buildingtable;
      public Table playertable;
      public Table playstattable;
-	public Table itemtable;
+     public Table itemtable;
+	public Table inventorytable;
 	public Table icontable;
 
 	Image backgrounds;
 	 Image topbackgrounds;
+	 Image inventorybackground;
 	 Label Gold;
+	 ImageButton inventorybackgroundbutton;
 
 	Skin skin;
 
@@ -51,6 +54,9 @@ class Hud extends InputAdapter implements Screen{
 
 		maintable = new Table();
 		maintable.setVisible(true);
+
+		inventorytable = new Table();
+		inventorytable.setVisible(true);
 
 		itemtable = new Table();
 		itemtable.setVisible(true);
@@ -93,6 +99,23 @@ class Hud extends InputAdapter implements Screen{
 		Gold.setPosition(1700, 1030);
 
 		 */
+
+		inventorybackground = new Image(drawablebackground);
+		inventorybackground.setPosition(100, 200);
+		inventorybackground.setWidth(Gdx.graphics.getWidth() - 200);
+		inventorybackground.setHeight(980 -300);
+		inventorybackground.toBack();
+
+		inventorybackgroundbutton = new ImageButton(drawable);
+		inventorybackgroundbutton.setPosition(100, 200);
+		inventorybackgroundbutton.setWidth(Gdx.graphics.getWidth() - 200);
+		inventorybackgroundbutton.setHeight(980 -300);
+		inventorybackgroundbutton.toBack();
+		inventorybackgroundbutton.addListener( new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+			}
+		});
 
 
 
