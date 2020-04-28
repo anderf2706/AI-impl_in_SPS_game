@@ -124,9 +124,18 @@ public class Playerhud extends Hud {
 					for (int j = 0; j < 10; j++){
 						//  Actor actor = actors[(i * 10) + j];
 						// inventorytable.add(actor).width(actorWidth).height(actorHeight);
-						inventorytable.addActor(maketestbutton(i, j));
+                        Drawable drawable_object;
+                        try {
+                            Item item1 = (Item) player.keys.toArray()[(i * 10) + j];
+                            drawable_object = new TextureRegionDrawable((new TextureRegion(item1.icon)));
+                            item1_object_count = player.Inventory.get(item1);
+                        }
+                        catch (ArrayIndexOutOfBoundsException e){
+                            drawable_object = drawable;
+                        }
+						inventorytable.addActor(maketestbutton(drawable_object, i, j));
 					}
-					//inventorytable.row();
+
 				}
 				stage.addActor(inventorytable);
 
@@ -322,7 +331,7 @@ public class Playerhud extends Hud {
 
 	}
 
-	public ImageButton maketestbutton(int x, int y){
+	public ImageButton maketestbutton(Drawable drawable, int x, int y){
         ImageButton test = new ImageButton(drawable);
         test.setBounds(250 + x*50, 300 + y*50, 50, 50);
         test.addListener(new ClickListener() {

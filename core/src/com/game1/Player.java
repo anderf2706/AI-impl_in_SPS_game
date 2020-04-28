@@ -105,7 +105,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 	
     
     ArrayList<Node> finalpath = new ArrayList<Node>();
-	Set<Item> keys;
+	public Set<Item> keys;
     
     Node roadsplit;
     Node finalnode;
@@ -229,7 +229,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 	public void collision() {
 		for (Player player : gamescreen.players){
 			if (this.playerNode.adjecent.contains(player.playerNode) && player.team != this.team && !isAttacking && !moving && !following){
-				attack(player, 2000);
+				attack(this.health, player, 2000);
 				isAttacking = true;
 			}
 
@@ -427,7 +427,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 			this.the_player.y = finalpath.get(1).y - the_player.width / 2;
 		}
 		if (this.playerNode.adjecent.contains(player.playerNode) && player.team != this.team && !isAttacking && following){
-			attack(player, 0);
+			attack(this.health, player, 0);
 			isAttacking = true;
 		}
 	}
@@ -448,7 +448,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 
 	}
 
-	public void attack(final Player player, int delay){
+	public void attack(final int health, final Player player, int delay){
 		final Timer tattack = new Timer();
 
 			tattack.schedule(new TimerTask() {
@@ -456,7 +456,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 				@Override
 				public void run() {
 					// TODO Auto-generated method stub
-					if(player.health > 0 && playerNode.adjecent.contains(player.playerNode)) {
+					if(player.health > 0 && playerNode.adjecent.contains(player.playerNode) && health>0) {
 						player.health -= (int)(attack/(player.defense*0.5));
 					}
 					else {
@@ -856,6 +856,9 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 		 if (this.health <= 0){
 		 	this.playerNode.occupied = false;
 		 	this.playerNode = null;
+		 	if (attacking){
+
+            }
 		 	gamescreen.players.remove(this);
 		 	return;
 
