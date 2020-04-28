@@ -22,6 +22,7 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.game1.huds.Playerhud;
@@ -157,6 +158,8 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 	int food;
 	int water;
 
+	Actor[] actors;
+
 	public Player(Node node, GameScreen gamescreen, Game1 game, int x, int y, int team) {
 		this.gamescreen = gamescreen;
 		this.game = game;
@@ -187,6 +190,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 		if (team == 0) {
 			playerhud = new Playerhud(game.batch, gamescreen, this);
 			gamescreen.team_0.add(this);
+
 		}
 
 
@@ -214,7 +218,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 			double cb = Math.abs(object.getX() - this.playerNode.x);
 
 			double h = Math.hypot(ac, cb);
-			if (h < 320){
+			if (h < 200){
 				render = true;
 				return;
 			}
@@ -737,7 +741,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 
 	public void setitem(int num){
 
-		this.activeitem = (Item) this.keys.toArray()[num - 1];
+		this.activeitem = (Item) this.keys.toArray()[num];
 	}
 
 	public void itemchecker(){
@@ -795,6 +799,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 			drawable_object6 = new TextureRegionDrawable((new TextureRegion(item6.icon)));
 			item6_object_count = this.Inventory.get(item6);
 		}
+
 
 		this.playerhud.render(drawable_object1, drawable_object2, drawable_object3, drawable_object4,
 				drawable_object5, drawable_object6, this);

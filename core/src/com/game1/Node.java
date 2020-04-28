@@ -53,25 +53,24 @@ public class Node implements Serializable, DistanceObjects {
 		this.id = count++;
 		body = new Rectangle(x - 16, y - 16, 32, 32);
 
-		if (this.humidity > 0.1) {
+		if (this.humidity > 0.8) {
 			this.myBiome = gamescreen.rainforest;
 		}
-		if (this.humidity <= 0.1 && this.humidity > 0) {
+		if (this.humidity <= 0.8 && this.humidity > 0.6) {
 			this.myBiome = gamescreen.tundra;
 
 		}
-		/*
 		if (this.humidity <= 0.60 && this.humidity > 0.40) {
 			this.myBiome = gamescreen.forest_temp;
 		}
-		if (this.humidity <= 0.4) {
+		if (this.humidity <= 0.4 && this.humidity > 0.2) {
 			this.myBiome = gamescreen.desert;
 		}
 		if (this.humidity <= 0.2) {
 			this.myBiome = gamescreen.desert;
 		}
 
-		 */
+
 
 
 	}
@@ -82,7 +81,7 @@ public class Node implements Serializable, DistanceObjects {
 			double cb = Math.abs(object.getX() - this.x);
 
 			double h = Math.hypot(ac, cb);
-			if (h < 320){
+			if (h < 200){
 				render = true;
 				return;
 			}

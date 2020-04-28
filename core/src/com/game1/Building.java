@@ -76,7 +76,7 @@ public class Building implements InputProcessor, Screen, DistanceObjects{
 			double cb = Math.abs(object.getX() - this.buildingnode.x);
 
 			double h = Math.hypot(ac, cb);
-			if (h < 320){
+			if (h < 200){
 				render = true;
 				return;
 			}

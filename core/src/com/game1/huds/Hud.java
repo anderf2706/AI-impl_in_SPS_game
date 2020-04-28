@@ -39,6 +39,8 @@ class Hud extends InputAdapter implements Screen{
 	 Image inventorybackground;
 	 Label Gold;
 	 ImageButton inventorybackgroundbutton;
+	 ImageButton topbackgroundbutton;
+	 ImageButton backgroundbutton;
 
 	Skin skin;
 
@@ -88,11 +90,33 @@ class Hud extends InputAdapter implements Screen{
 		backgrounds.setHeight(100);
 		backgrounds.toBack();
 
+		backgroundbutton = new ImageButton(drawable);
+		backgroundbutton.setPosition(0, 0);
+		backgroundbutton.setWidth(Gdx.graphics.getWidth());
+		backgroundbutton.setHeight(100);
+		backgroundbutton.toBack();
+		backgroundbutton.addListener( new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+			}
+		});
+
 		topbackgrounds = new Image(drawablebackground);
 		topbackgrounds.setPosition(0, 980);
 		topbackgrounds.setWidth(Gdx.graphics.getWidth());
 		topbackgrounds.setHeight(100);
 		topbackgrounds.toBack();
+
+		topbackgroundbutton = new ImageButton(drawable);
+		topbackgroundbutton.setPosition(0, 980);
+		topbackgroundbutton.setWidth(Gdx.graphics.getWidth());
+		topbackgroundbutton.setHeight(100);
+		topbackgroundbutton.toBack();
+		topbackgroundbutton.addListener( new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+			}
+		});
 
 		/*
 		Gold = new Label("Gold: " + gamescreen.gold, skin);
@@ -124,7 +148,9 @@ class Hud extends InputAdapter implements Screen{
 
 
 		stage.addActor(backgrounds);
+		stage.addActor(backgroundbutton);
 		stage.addActor(topbackgrounds);
+		stage.addActor(topbackgroundbutton);
 
 
 	}

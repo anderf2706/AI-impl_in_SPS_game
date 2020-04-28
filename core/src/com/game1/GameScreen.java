@@ -173,7 +173,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 	boolean debug = false;
 
-	public GameScreen(Game1 game, int nodewidth, int startposx, int startposy, int games_i, int games_j) throws IOException {
+	public GameScreen(Game1 game, Player startme, int nodewidth, int startposx, int startposy, int games_i, int games_j) throws IOException {
 		game.games[games_i][games_j] = this;
 		this.games_i = games_i;
 		this.games_j = games_j;
@@ -236,9 +236,13 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
         camera.translate((nodewidth*32)/2, (nodewidth*32)/2);
         camera.update();
-
-        me = new protagonist(null, this, game ,startposx, startposy);
-		chosenNode = allnodes.get(10);
+		if (startme == null) {
+			me = new protagonist(null, this, game, startposx, startposy);
+		}
+		else {
+			me = startme;
+		}
+        chosenNode = allnodes.get(10);
 
 		for (int i = 0; i < 64; i++) {
 			for (int j = 0; j < 37; j++) {
@@ -778,7 +782,7 @@ public void makeCastle() {
 			if (me.playerNode.x == 6368) {
 				if (game.games[this.games_i + 1][this.games_j] == null) {
 					try {
-						game.setScreen(new GameScreen(game, nodewidth, 0, this.me.playerNode.y, this.games_i + 1, this.games_j));
+						game.setScreen(new GameScreen(game, me, nodewidth, 0, this.me.playerNode.y, this.games_i + 1, this.games_j));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -796,7 +800,7 @@ public void makeCastle() {
 			if (me.playerNode.x == 0){
 				if (game.games[this.games_i - 1][this.games_j] == null) {
 					try {
-						game.setScreen(new GameScreen(game, nodewidth, 6368, this.me.playerNode.y, this.games_i - 1, this.games_j));
+						game.setScreen(new GameScreen(game, me, nodewidth, 6368, this.me.playerNode.y, this.games_i - 1, this.games_j));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -815,7 +819,7 @@ public void makeCastle() {
 			if (me.playerNode.y == 0){
 				if (game.games[this.games_i][this.games_j - 1] == null) {
 					try {
-						game.setScreen(new GameScreen(game, nodewidth, this.me.playerNode.x, 6368, this.games_i, this.games_j - 1));
+						game.setScreen(new GameScreen(game, me, nodewidth, this.me.playerNode.x, 6368, this.games_i, this.games_j - 1));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -834,7 +838,7 @@ public void makeCastle() {
 			if (me.playerNode.y == 6368){
 				if (game.games[this.games_i][this.games_j + 1] == null) {
 					try {
-						game.setScreen(new GameScreen(game, nodewidth, this.me.playerNode.x, 0, this.games_i, this.games_j + 1));
+						game.setScreen(new GameScreen(game, me, nodewidth, this.me.playerNode.x, 0, this.games_i, this.games_j + 1));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}

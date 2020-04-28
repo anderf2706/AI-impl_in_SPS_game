@@ -1,9 +1,11 @@
 package com.game1.huds;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -24,6 +26,10 @@ public class Playerhud extends Hud {
 	public boolean playstat = false;
 	public Image background;
 	public Player player;
+
+    int actorWidth = Gdx.graphics.getWidth() / 10;
+    int actorHeight = Gdx.graphics.getHeight() /  10;
+    Actor[] actors = new Actor[10 * 10];
 
 	////
 	public Item item1_object;
@@ -114,7 +120,16 @@ public class Playerhud extends Hud {
 				stage.addActor(inventorybackground);
 				stage.addActor(topbackgrounds);
 				stage.addActor(itemtable);
+				for (int i = 0; i < 10; i++){
+					for (int j = 0; j < 10; j++){
+						//  Actor actor = actors[(i * 10) + j];
+						// inventorytable.add(actor).width(actorWidth).height(actorHeight);
+						inventorytable.addActor(maketestbutton(i, j));
+					}
+					//inventorytable.row();
+				}
 				stage.addActor(inventorytable);
+
 			}
 		});
 
@@ -122,7 +137,7 @@ public class Playerhud extends Hud {
 ///////////////////////////////////////////////////////////////////////////
 
 		Button inventorybackbutton = new ImageButton(drawable);
-		inventorybackbutton.setPosition(20, 980 - 20);
+		inventorybackbutton.setPosition(100, 980 - 140);
 		inventorybackbutton.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -131,6 +146,7 @@ public class Playerhud extends Hud {
 				stage.addActor(maintable);
 				stage.addActor(topbackgrounds);
 				stage.addActor(itemtable);
+
 			}
 		});
 
@@ -260,106 +276,20 @@ public class Playerhud extends Hud {
 
 			}
 		});
-		Button item1 = new TextButton("1", super.skin);
-			item1.setPosition(100, 990);
-			item1.addListener(new ClickListener() {
-				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					int num = 1;
-					if (player.Inventory.size() >= num) {
-
-						player.setitem(num);
 
 
-					}
-
-				}
-			});
-
-
-		Button item2 = new TextButton("2", super.skin);
-			item2.setPosition(item1.getX() + item1.getWidth() + 50, 990);
-			item2.addListener(new ClickListener() {
-				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					int num = 2;
-					if (player.Inventory.size() >= num) {
-
-						player.setitem(num);
-					}
-
-				}
-			});
-
-
-		Button item3 = new TextButton("3", super.skin);
-			item3.setPosition(item2.getX() + item2.getWidth() + 50, 990);
-			item3.addListener(new ClickListener() {
-				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					int num = 3;
-					if (player.Inventory.size() >= num) {
-						player.setitem(num);
-					}
-
-				}
-			});
-
-
-		Button item4 = new TextButton("4", super.skin);
-			item4.setPosition(item3.getX() + item3.getWidth() + 50, 990);
-			item4.addListener(new ClickListener() {
-				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					int num = 4;
-					if (player.Inventory.size() >= num) {
-
-						player.setitem(num);
-					}
-
-				}
-			});
-
-
-		Button item5 = new TextButton("5", super.skin);
-			item5.setPosition(item4.getX() + item4.getWidth() + 50, 990);
-			item5.addListener(new ClickListener() {
-				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					int num = 5;
-					if (player.Inventory.size() >= num) {
-
-						player.setitem(num);
-					}
-
-				}
-			});
-
-
-		Button item6 = new TextButton("6", super.skin);
-			item6.setPosition(item5.getX() + item5.getWidth() + 50, 990);
-			item6.addListener(new ClickListener() {
-				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					int num = 6;
-					if (player.Inventory.size() >= 6) {
-
-						player.setitem(num);
-					}
-				}
-			});
-
-
-		inventorytable.addActor(inventorybackbutton);
 		inventorytable.addActor(inventorybackgroundbutton);
-		//TextField gold = new TextField();
+		inventorytable.addActor(inventorybackbutton);
+		/*
+        for (int i = 0; i < 10*10; i++) {
+            actors[i] = test;
+        }
 
-		itemtable.addActor(item1);
-		itemtable.addActor(item2);
-		itemtable.addActor(item3);
-		itemtable.addActor(item4);
-		itemtable.addActor(item5);
-		itemtable.addActor(item6);
+		 */
+
+
+
+		//TextField gold = new TextField();
 
 
 ///////////////////////////////////////////////////////////////////
@@ -392,70 +322,145 @@ public class Playerhud extends Hud {
 
 	}
 
+	public ImageButton maketestbutton(int x, int y){
+        ImageButton test = new ImageButton(drawable);
+        test.setBounds(250 + x*50, 300 + y*50, 50, 50);
+        test.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("heio1");
+
+            }
+        });
+        return test;
+
+    }
+
 
 
 	public void render(Drawable drawable1, Drawable drawable2, Drawable drawable3, Drawable drawable4,
-					   Drawable drawable5, Drawable drawable6, Player player){
+					   Drawable drawable5, Drawable drawable6, final Player player){
 		/////////////////icon1/////////////////////////
 
 		if (player.Inventory.size() > 0) {
 			ImageButton icon1 = new ImageButton(drawable1);
-			icon1.setPosition(100, 1055);
+			icon1.setPosition(100, 1000);
 			icon1.setSize(50, 50);
+			icon1.addListener(new ClickListener() {
+			  @Override
+			  public void clicked(InputEvent event, float x, float y) {
+				  System.out.println("heio1");
+				  player.setitem(0);
+
+
+
+
+			  }
+			});
 			icontable.removeActor(icon1);
 			icontable.addActor(icon1);
-			stage.addActor(icontable);
 			//////////////////////////////////////////////
 		}
 		/////////////////icon2/////////////////////////
 		if (player.Inventory.size() > 1) {
 			ImageButton icon2 = new ImageButton(drawable2);
-			icon2.setPosition(200, 1055);
+			icon2.setPosition(200, 1000);
 			icon2.setSize(50, 50);
+			icon2.addListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					System.out.println("heio2");
+					player.setitem(1);
+
+
+
+
+				}
+			});
 			icontable.removeActor(icon2);
 			icontable.addActor(icon2);
-			stage.addActor(icontable);
 			//////////////////////////////////////////////
 		}
 		/////////////////icon1/////////////////////////
 		if (player.Inventory.size() > 2) {
 			ImageButton icon3 = new ImageButton(drawable3);
-			icon3.setPosition(300, 1055);
+            icon3.setPosition(300, 1000);
 			icon3.setSize(50, 50);
+			icon3.addListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					System.out.println("heio3");
+					player.setitem(2);
+
+
+
+
+				}
+			});
 			icontable.removeActor(icon3);
 			icontable.addActor(icon3);
-			stage.addActor(icontable);
 			//////////////////////////////////////////////
 		}
 		/////////////////icon1/////////////////////////
 		if (player.Inventory.size() > 3) {
 			ImageButton icon4 = new ImageButton(drawable4);
-			icon4.setPosition(400, 1055);
+			icon4.setPosition(400, 1000);
 			icon4.setSize(50, 50);
+			icon4.addListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					System.out.println("heio4");
+					player.setitem(3);
+
+
+
+
+				}
+			});
 			icontable.removeActor(icon4);
 			icontable.addActor(icon4);
-			stage.addActor(icontable);
 			//////////////////////////////////////////////
 		}
 		/////////////////icon1/////////////////////////
 		if (player.Inventory.size() > 4) {
 			ImageButton icon5 = new ImageButton(drawable5);
-			icon5.setPosition(500, 1055);
+			icon5.setPosition(500, 950);
 			icon5.setSize(50, 50);
+			icon5.addListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					System.out.println("heio5");
+					player.setitem(4);
+
+
+
+
+				}
+			});
 			icontable.removeActor(icon5);
 			icontable.addActor(icon5);
-			stage.addActor(icontable);
 			//////////////////////////////////////////////
 		}
 		/////////////////icon1/////////////////////////
 		if (player.Inventory.size() > 5) {
 			ImageButton icon6 = new ImageButton(drawable6);
-			icon6.setPosition(600, 1055);
+			icon6.setPosition(600, 1000);
+			icon6.addListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					System.out.println("heio6");
+					player.setitem(5);
+
+
+
+
+				}
+			});
 			icontable.removeActor(icon6);
 			icontable.addActor(icon6);
-			stage.addActor(icontable);
 			//////////////////////////////////////////////
 		}
+		stage.addActor(icontable);
 
 
 	}

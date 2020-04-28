@@ -6,9 +6,13 @@ public class Item {
 
 	int weight;
 	public Texture icon;
+	public GameScreen gamescreen;
 
 
 	public Item(GameScreen gamescreen, Texture icon){
+		this.gamescreen = gamescreen;
+		this.icon = icon;
+		this.weight = 1;
 
 	}
 
