@@ -86,7 +86,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	boolean rotate2 = false;
 	boolean nothud = false;
 
-	BitmapFont font;
+	public BitmapFont font;
 
 
 	public Game1 game;

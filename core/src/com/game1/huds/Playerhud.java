@@ -29,51 +29,12 @@ public class Playerhud extends Hud {
 
     int actorWidth = Gdx.graphics.getWidth() / 10;
     int actorHeight = Gdx.graphics.getHeight() /  10;
-    Actor[] actors = new Actor[10 * 10];
-
-	////
-	public Item item1_object;
-	public int item1_object_count = 0;
-	////
-
-	////
-	public Item item2_object;
-	public int item2_object_count = 0;
-	////
-
-	////
-	public Item item3_object;
-
-	public int item3_object_count = 0;
-	////
-
-	////
-	public Item item4_object;
-
-	public int item4_object_count = 0;
-	////
-
-	////
-	public Item item5_object;
-
-	public int item5_object_count = 0;
-	////
-
-	////
-	public Item item6_object;
-
-	public int item6_object_count = 0;
-	////
-
-
-
-
+    Actor[] actors = new Actor[6 * 6];
 
 
 	public Playerhud(SpriteBatch spriteBatch, final GameScreen gamescreen, final Player player) {
 		super(spriteBatch, gamescreen);
 		background = super.backgrounds;
-		this.item1_object = gamescreen.wood;
 
 
 		this.gamescreen = gamescreen;
@@ -120,20 +81,23 @@ public class Playerhud extends Hud {
 				stage.addActor(inventorybackground);
 				stage.addActor(topbackgrounds);
 				stage.addActor(itemtable);
-				for (int i = 0; i < 10; i++){
-					for (int j = 0; j < 10; j++){
+				for (int i = 0; i < 6; i++){
+					for (int j = 0; j < 6; j++){
 						//  Actor actor = actors[(i * 10) + j];
 						// inventorytable.add(actor).width(actorWidth).height(actorHeight);
                         Drawable drawable_object;
+						int count;
                         try {
-                            Item item1 = (Item) player.keys.toArray()[(i * 10) + j];
+                            Item item1 = (Item) player.keys.toArray()[(i * 6) + j];
                             drawable_object = new TextureRegionDrawable((new TextureRegion(item1.icon)));
-                            item1_object_count = player.Inventory.get(item1);
+                            count = player.Inventory.get(item1);
                         }
                         catch (ArrayIndexOutOfBoundsException e){
                             drawable_object = drawable;
+                            count = 0;
                         }
 						inventorytable.addActor(maketestbutton(drawable_object, i, j));
+                        gamescreen.font.draw(gamescreen.game.batch, "" + count, 250 + x*75, 340 + y*75);
 					}
 
 				}
@@ -145,8 +109,9 @@ public class Playerhud extends Hud {
 
 ///////////////////////////////////////////////////////////////////////////
 
-		Button inventorybackbutton = new ImageButton(drawable);
+		Button inventorybackbutton = new ImageButton(backbutton);
 		inventorybackbutton.setPosition(100, 980 - 140);
+		inventorybackbutton.setSize(50,50);
 		inventorybackbutton.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -333,7 +298,7 @@ public class Playerhud extends Hud {
 
 	public ImageButton maketestbutton(Drawable drawable, int x, int y){
         ImageButton test = new ImageButton(drawable);
-        test.setBounds(250 + x*50, 300 + y*50, 50, 50);
+        test.setBounds(250 + x*75, 300 + y*75, 50, 50);
         test.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -352,7 +317,8 @@ public class Playerhud extends Hud {
 		/////////////////icon1/////////////////////////
 
 		if (player.Inventory.size() > 0) {
-			ImageButton icon1 = new ImageButton(drawable1);
+
+			ImageButton icon1 = new ImageButton(drawable);
 			icon1.setPosition(100, 1000);
 			icon1.setSize(50, 50);
 			icon1.addListener(new ClickListener() {
@@ -366,12 +332,19 @@ public class Playerhud extends Hud {
 
 			  }
 			});
+			Image icon = new Image(drawable1);
+			icon.setPosition(105, 1005);
+			icon.setSize(40,40);
 			icontable.removeActor(icon1);
 			icontable.addActor(icon1);
+			icontable.removeActor(icon);
+			icontable.addActor(icon);
 			//////////////////////////////////////////////
 		}
 		/////////////////icon2/////////////////////////
+
 		if (player.Inventory.size() > 1) {
+
 			ImageButton icon2 = new ImageButton(drawable2);
 			icon2.setPosition(200, 1000);
 			icon2.setSize(50, 50);
@@ -386,12 +359,19 @@ public class Playerhud extends Hud {
 
 				}
 			});
+			Image icon = new Image(drawable2);
+			icon.setPosition(205, 1005);
+			icon.setSize(40,40);
 			icontable.removeActor(icon2);
 			icontable.addActor(icon2);
+			icontable.removeActor(icon);
+			icontable.addActor(icon);
+
 			//////////////////////////////////////////////
 		}
 		/////////////////icon1/////////////////////////
 		if (player.Inventory.size() > 2) {
+
 			ImageButton icon3 = new ImageButton(drawable3);
             icon3.setPosition(300, 1000);
 			icon3.setSize(50, 50);
@@ -406,12 +386,19 @@ public class Playerhud extends Hud {
 
 				}
 			});
+			Image icon = new Image(drawable3);
+			icon.setPosition(305, 1005);
+			icon.setSize(40,40);
 			icontable.removeActor(icon3);
 			icontable.addActor(icon3);
+			icontable.removeActor(icon);
+			icontable.addActor(icon);
+
 			//////////////////////////////////////////////
 		}
 		/////////////////icon1/////////////////////////
 		if (player.Inventory.size() > 3) {
+
 			ImageButton icon4 = new ImageButton(drawable4);
 			icon4.setPosition(400, 1000);
 			icon4.setSize(50, 50);
@@ -426,14 +413,21 @@ public class Playerhud extends Hud {
 
 				}
 			});
+			Image icon = new Image(drawable4);
+			icon.setPosition(405, 1005);
+			icon.setSize(40,40);
 			icontable.removeActor(icon4);
 			icontable.addActor(icon4);
+			icontable.removeActor(icon);
+			icontable.addActor(icon);
+
 			//////////////////////////////////////////////
 		}
 		/////////////////icon1/////////////////////////
 		if (player.Inventory.size() > 4) {
+
 			ImageButton icon5 = new ImageButton(drawable5);
-			icon5.setPosition(500, 950);
+			icon5.setPosition(500, 1000);
 			icon5.setSize(50, 50);
 			icon5.addListener(new ClickListener() {
 				@Override
@@ -446,12 +440,19 @@ public class Playerhud extends Hud {
 
 				}
 			});
+			Image icon = new Image(drawable5);
+			icon.setPosition(505, 1005);
+			icon.setSize(40,40);
 			icontable.removeActor(icon5);
 			icontable.addActor(icon5);
+			icontable.removeActor(icon);
+			icontable.addActor(icon);
+
 			//////////////////////////////////////////////
 		}
 		/////////////////icon1/////////////////////////
 		if (player.Inventory.size() > 5) {
+			
 			ImageButton icon6 = new ImageButton(drawable6);
 			icon6.setPosition(600, 1000);
 			icon6.addListener(new ClickListener() {
@@ -465,8 +466,14 @@ public class Playerhud extends Hud {
 
 				}
 			});
+			Image icon = new Image(drawable6);
+			icon.setPosition(605, 1005);
+			icon.setSize(40,40);
 			icontable.removeActor(icon6);
 			icontable.addActor(icon6);
+			icontable.removeActor(icon);
+			icontable.addActor(icon);
+
 			//////////////////////////////////////////////
 		}
 		stage.addActor(icontable);

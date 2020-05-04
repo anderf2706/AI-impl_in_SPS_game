@@ -20,10 +20,13 @@ class Hud extends InputAdapter implements Screen{
 
 	public Stage stage;
 	public FitViewport stageViewport;
-	 Texture texture;
+	 Texture greybutton;
+	 Texture empty;
      Drawable drawable;
      Drawable drawablebackground;
+     Drawable drawable_invisible;
      Texture background;
+     Texture background_top;
      public GameScreen gamescreen;
      public Table maintable;
      public Table buildertable;
@@ -41,16 +44,24 @@ class Hud extends InputAdapter implements Screen{
 	 ImageButton inventorybackgroundbutton;
 	 ImageButton topbackgroundbutton;
 	 ImageButton backgroundbutton;
+	Drawable backbutton;
 
 	Skin skin;
 
 	public Hud(SpriteBatch spriteBatch, final GameScreen gamescreen) {
 		stageViewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		stage = new Stage(stageViewport, spriteBatch); //create stage with the stageViewport and the SpriteBatch given in Constructor
-		texture = new Texture(Gdx.files.internal("sprites/man1/man1_fr1.gif"));
-		background = new Texture(Gdx.files.internal("brown rectangle.jfif"));
+		greybutton = new Texture(Gdx.files.internal("ui/upd_separeted_png/119.png"));
+		empty = new Texture(Gdx.files.internal("Empty.png"));
+		background = new Texture(Gdx.files.internal("ui/upd_separeted_png/75.png"));
+		background_top = new Texture(Gdx.files.internal("ui/upd_separeted_png/120.png"));
+
 		drawablebackground = new TextureRegionDrawable((new TextureRegion(background)));
-		drawable = new TextureRegionDrawable((new TextureRegion(texture)));
+		Drawable drawablebackground_top = new TextureRegionDrawable((new TextureRegion(background_top)));
+		drawable = new TextureRegionDrawable((new TextureRegion(greybutton)));
+		drawable_invisible = new TextureRegionDrawable((new TextureRegion(empty)));
+		backbutton = new TextureRegionDrawable((new TextureRegion(new Texture(Gdx.files.internal("ui/upd_separeted_png/34.png")))));
+
 		skin = new Skin(Gdx.files.internal("ui\\skin\\plain-james-ui.json"));
 		this.gamescreen = gamescreen;
 
@@ -84,13 +95,13 @@ class Hud extends InputAdapter implements Screen{
 		playstattable.setVisible(true);
 
 
-		backgrounds = new Image(drawablebackground);
+		backgrounds = new Image(drawablebackground_top);
 		backgrounds.setPosition(0, 0);
 		backgrounds.setWidth(Gdx.graphics.getWidth());
 		backgrounds.setHeight(100);
 		backgrounds.toBack();
 
-		backgroundbutton = new ImageButton(drawable);
+		backgroundbutton = new ImageButton(drawable_invisible);
 		backgroundbutton.setPosition(0, 0);
 		backgroundbutton.setWidth(Gdx.graphics.getWidth());
 		backgroundbutton.setHeight(100);
@@ -101,13 +112,13 @@ class Hud extends InputAdapter implements Screen{
 			}
 		});
 
-		topbackgrounds = new Image(drawablebackground);
+		topbackgrounds = new Image(drawablebackground_top);
 		topbackgrounds.setPosition(0, 980);
 		topbackgrounds.setWidth(Gdx.graphics.getWidth());
 		topbackgrounds.setHeight(100);
 		topbackgrounds.toBack();
 
-		topbackgroundbutton = new ImageButton(drawable);
+		topbackgroundbutton = new ImageButton(drawable_invisible);
 		topbackgroundbutton.setPosition(0, 980);
 		topbackgroundbutton.setWidth(Gdx.graphics.getWidth());
 		topbackgroundbutton.setHeight(100);
@@ -130,7 +141,7 @@ class Hud extends InputAdapter implements Screen{
 		inventorybackground.setHeight(980 -300);
 		inventorybackground.toBack();
 
-		inventorybackgroundbutton = new ImageButton(drawable);
+		inventorybackgroundbutton = new ImageButton(drawable_invisible);
 		inventorybackgroundbutton.setPosition(100, 200);
 		inventorybackgroundbutton.setWidth(Gdx.graphics.getWidth() - 200);
 		inventorybackgroundbutton.setHeight(980 -300);
