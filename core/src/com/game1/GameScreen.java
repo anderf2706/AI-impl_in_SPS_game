@@ -129,6 +129,9 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	Texture sand;
 	Texture watertexture;
 
+	int startposx;
+	int startposy;
+
 
 
 	public InputMultiplexer multiplexer;
@@ -171,7 +174,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	int cmerasafe_x_max;
 	int cmerasafe_x_min;
 
-	boolean debug = false;
+	boolean debug = true;
 
 	public GameScreen(Game1 game, Player startme, int nodewidth, int startposx, int startposy, int games_i, int games_j) throws IOException {
 		game.games[games_i][games_j] = this;
@@ -184,6 +187,9 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		settextures();
 
         this.nodewidth = nodewidth;
+
+        this.startposx = startposx;
+        this.startposy = startposy;
 
         makeItems();
 		makebiomes();
@@ -226,7 +232,17 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		the_mouse = new Rectangle();
 		the_mouse.height = 1;
 		the_mouse.width = 1;
+
+
 		makenodes();
+		if (startme != null) {
+			me = new protagonist(startme, null, this, game, startposx, startposy);
+		}
+		else {
+			me = new protagonist(null, null, this, game, startposx, startposy);
+
+		}
+
 
 		Vector2 mouseInWorld2D = new Vector2();
 		Vector3 mouseInWorld3D = new Vector3();
@@ -236,12 +252,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
         camera.translate((nodewidth*32)/2, (nodewidth*32)/2);
         camera.update();
-		if (startme == null) {
-			me = new protagonist(null, this, game, startposx, startposy);
-		}
-		else {
-			me = startme;
-		}
+
         chosenNode = allnodes.get(10);
 
 		for (int i = 0; i < 64; i++) {
@@ -252,8 +263,10 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 			}
 
 		}
+        System.out.println(nodedict.size());
 		camera.position.x = me.the_player.x;
 		camera.position.y = me.the_player.y;
+
 		this.fixborder();
 	}
 
@@ -291,11 +304,14 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 			cmerasafe_x_max = nodewidth*32;
 			cmerasafe_x_min = 32*64;
 		}
+
 		else{
 			cmerasafe_x = listOfLists.get(listOfLists.size()-1).get(36).x;
 			cmerasafe_x_max = nodewidth*32;
 			cmerasafe_x_min = 32*64;
 		}
+
+
 	}
 
 
@@ -352,6 +368,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		}
 
 		for (Node node : allnodes){
+
 			node.makeClosest(node.id, node.adjecent, false);
 
 			node.makeClosest(node.id, node.closest, true);
@@ -622,7 +639,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 	public void makeP() {
 		try {
-			new protagonist(null, this, game, findavailablenode(chosenNode).x, findavailablenode(chosenNode).y);
+			new protagonist(null, null, this, game, findavailablenode(chosenNode).x, findavailablenode(chosenNode).y);
 
 		}
 		catch(Exception e) {
@@ -1053,8 +1070,7 @@ public void makeCastle() {
 			}
 
 
-			camera.position.x = me.the_player.x;
-			camera.position.y = me.the_player.y;
+
 			fixborder();
 
 

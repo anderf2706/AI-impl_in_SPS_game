@@ -7,10 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -97,7 +94,10 @@ public class Playerhud extends Hud {
                             count = 0;
                         }
 						inventorytable.addActor(maketestbutton(drawable_object, i, j));
-                        gamescreen.font.draw(gamescreen.game.batch, "" + count, 250 + x*75, 340 + y*75);
+						Label countlabel = new Label(count + "", skin);
+						countlabel.setBounds(200 + i*75, 340 + j*75, 40, 10);
+						inventorytable.addActor(countlabel);
+                        //gamescreen.font.draw(gamescreen.game.batch, "" + count, 250 + x*75, 340 + y*75);
 					}
 
 				}
@@ -296,13 +296,19 @@ public class Playerhud extends Hud {
 
 	}
 
-	public ImageButton maketestbutton(Drawable drawable, int x, int y){
+	public ImageButton maketestbutton(Drawable drawable, final int x_pos, final int y_pos){
         ImageButton test = new ImageButton(drawable);
-        test.setBounds(250 + x*75, 300 + y*75, 50, 50);
+        test.setBounds(300 + x_pos*75, 300 + y_pos*75, 50, 50);
         test.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("heio1");
+            	try {
+					System.out.println("heio1");
+					player.setitem((5 * x_pos + y_pos));
+				}
+            	catch (NullPointerException e){
+            		System.out.println("no item");
+				}
 
             }
         });

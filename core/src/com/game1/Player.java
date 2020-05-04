@@ -159,11 +159,16 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 	int water;
 
 	Actor[] actors;
+	Player player;
 
-	public Player(Node node, GameScreen gamescreen, Game1 game, int x, int y, int team) {
+	public Player(Player player, Node node, GameScreen gamescreen, Game1 game, int x, int y, int team) {
 		this.gamescreen = gamescreen;
 		this.game = game;
 		this.team = team;
+		this.player = player;
+		if (player != null){
+			this.Inventory = player.Inventory;
+		}
 
 
 		
@@ -198,6 +203,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 			if (Intersector.overlaps(playernode.body, the_player)) {
 				this.playerNode = playernode;
 				playernode.occupied = true;
+				System.out.println("done");
 				break;
 			}
 		}

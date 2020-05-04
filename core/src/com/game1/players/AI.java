@@ -14,7 +14,7 @@ public class AI extends Player {
 	int speed;
 
 	public AI(Node node, GameScreen gamescreen, Game1 game, int x, int y, int team, int speed) {
-		super(node, gamescreen, game, x, y, team);
+		super(null, node, gamescreen, game, x, y, team);
 		this.gamescreen = gamescreen;
 		this.speed = speed;
 		rand = new Random();
