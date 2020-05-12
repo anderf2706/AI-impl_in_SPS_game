@@ -48,7 +48,15 @@ public class textures {
 	public Texture spritecowright;
 	public Texture spritecowright2;
 
-	public Animation<TextureRegion> wizardfront;
+	public Animation<TextureRegion> wizardfrontidle;
+	public Animation<TextureRegion> wizardbackidle;
+	public Animation<TextureRegion> wizardrightidle;
+	public Animation<TextureRegion> wizardleftidle;
+
+	public Animation<TextureRegion> wizardfrontwalk;
+	public Animation<TextureRegion> wizardbackwalk;
+	public Animation<TextureRegion> wizardrightwalk;
+	public Animation<TextureRegion> wizardleftwalk;
 
 
 	////////////////desert//////////////////////
@@ -280,12 +288,16 @@ public class textures {
 
 	}
 
-	public Array getAllImages(File directory) throws IOException {
-		Array resultList = new Array();
-		File[] f = directory.listFiles();
-		for (File file : f) {
-			resultList.add(new Texture(file.getCanonicalPath()));
-		}
+	public Array getAllImages(String path) throws IOException {
+		Array<Texture> resultList = new Array<Texture>();
+        File folder = new File(path);
+        File[] listOfFiles = folder.listFiles();
+        for (int i = 0; i < listOfFiles.length; i++) {
+            if (listOfFiles[i].isFile()) {
+                System.out.println(listOfFiles[i].getName());
+                resultList.add(new Texture(Gdx.files.internal(path + listOfFiles[i].getName())));
+            }
+        }
 		return resultList;
 	}
 
@@ -319,9 +331,19 @@ public class textures {
 		spritecowright2 = new Texture(Gdx.files.internal("sprites/cow/cowright2.png"));
 
 		////////////////////////////////wizard/////////////////////////////////////////
-		wizardfront = new Animation<TextureRegion>((float) 0.05, this.getAllImages(new File("sprites/wizard/Wizard_animations/Front" +
-				"/PNG Sequences/Wizard_clothes_1/Idle")));
+        String wizard_front = "sprites/wizard/Wizard_animations/Front/PNG Sequences/Wizard_clothes_1/";
+		String wizard_back = "sprites/wizard/Wizard_animations/Back/PNG Sequences/Wizard_clothes_1/";
+		String wizard_right = "sprites/wizard/Wizard_animations/Right_Side/PNG Sequences/Wizard_clothes_1/";
+		String wizard_left = "sprites/wizard/Wizard_animations/Left_Side/PNG Sequences/Wizard_clothes_1/";
+		wizardfrontidle = new Animation<TextureRegion>((float) 0.05, this.getAllImages(wizard_front + "Idle Blinking/"));
+		wizardbackidle = new Animation<TextureRegion>((float) 0.05, this.getAllImages(wizard_back + "Idle/"));
+		wizardrightidle = new Animation<TextureRegion>((float) 0.05, this.getAllImages(wizard_right + "Idle Blinking/"));
+		wizardleftidle = new Animation<TextureRegion>((float) 0.05, this.getAllImages(wizard_left + "Idle Blinking/"));
 
+		wizardfrontwalk = new Animation<TextureRegion>((float) 0.05, this.getAllImages(wizard_front + "Walk/"));
+		wizardbackwalk = new Animation<TextureRegion>((float) 0.05, this.getAllImages(wizard_back + "Walk/"));
+		wizardrightwalk = new Animation<TextureRegion>((float) 0.05, this.getAllImages(wizard_right + "Walk/"));
+		wizardleftwalk = new Animation<TextureRegion>((float) 0.05, this.getAllImages(wizard_left + "Walk/"));
 
 
 

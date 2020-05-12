@@ -77,7 +77,18 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 
 	boolean alive = true;
 
-	public Animation ani_spritefront;
+	public Animation idle_spritefront;
+	public Animation idle_spriteback;
+	public Animation idle_spriteright;
+	public Animation idle_spriteleft;
+
+	public Animation walk_spritefront;
+	public Animation walk_spriteback;
+	public Animation walk_spriteright;
+	public Animation walk_spriteleft;
+
+
+
 
 	public Texture spritefront;
 	public Texture spritefront2;
@@ -162,6 +173,8 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 
 	float elapsedTime;
 
+
+
 	public Player(Player player, Node node, GameScreen gamescreen, Game1 game, int x, int y, int team) {
 		this.gamescreen = gamescreen;
 		this.game = game;
@@ -182,7 +195,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 		keys = this.Inventory.keySet();
 
 
-		spritedir = 40;
+		spritedir = 1;
 
 		future_the_player = new Rectangle();
 
@@ -286,6 +299,10 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 		System.out.println(naturetarget.health);
 	}
 
+	public void moveWASD(){
+
+	}
+
 
 	
 	
@@ -319,38 +336,22 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 		final Node nextnode = finalpath.get(b);
 		if (nextnode.id == this.playerNode.id + 1 || nextnode.id == this.playerNode.id + (1+gamescreen.nodewidth)
 		|| nextnode.id == this.playerNode.id + (1-gamescreen.nodewidth)){
-			if (spritedir == 1){
-				spritedir = 10;
-			}
-			else{
 				spritedir = 1;
-			}
+
 
 		}
 		else if (nextnode.id == this.playerNode.id - 1 || nextnode.id == this.playerNode.id + ((-1) + gamescreen.nodewidth)
 				|| nextnode.id == this.playerNode.id + ((-1) - gamescreen.nodewidth)){
-			if (spritedir == 4){
-				spritedir = 40;
-			}
-			else{
 				spritedir = 4;
-			}
+
 		}
 		else if (nextnode.id == this.playerNode.id + gamescreen.nodewidth){
-			if (spritedir == 2){
-				spritedir = 20;
-			}
-			else{
 				spritedir = 2;
-			}
+
 		}
 		else if(nextnode.id == this.playerNode.id - gamescreen.nodewidth){
-			if (spritedir == 3){
-				spritedir = 30;
-			}
-			else{
 				spritedir = 3;
-			}
+
 		}
 
 
@@ -396,38 +397,22 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 
 			if (nextnode.id == this.playerNode.id + 1 || nextnode.id == this.playerNode.id + (1+gamescreen.nodewidth)
 					|| nextnode.id == this.playerNode.id + (1-gamescreen.nodewidth)){
-				if (spritedir == 1){
-					spritedir = 10;
-				}
-				else{
-					spritedir = 1;
-				}
+				spritedir = 1;
+
 
 			}
 			else if (nextnode.id == this.playerNode.id - 1 || nextnode.id == this.playerNode.id + ((-1) + gamescreen.nodewidth)
 					|| nextnode.id == this.playerNode.id + ((-1) - gamescreen.nodewidth)){
-				if (spritedir == 4){
-					spritedir = 40;
-				}
-				else{
-					spritedir = 4;
-				}
+				spritedir = 4;
+
 			}
 			else if (nextnode.id == this.playerNode.id + gamescreen.nodewidth){
-				if (spritedir == 2){
-					spritedir = 20;
-				}
-				else{
-					spritedir = 2;
-				}
+				spritedir = 2;
+
 			}
 			else if(nextnode.id == this.playerNode.id - gamescreen.nodewidth){
-				if (spritedir == 3){
-					spritedir = 30;
-				}
-				else{
-					spritedir = 3;
-				}
+				spritedir = 3;
+
 			}
 
 			this.the_player.x = finalpath.get(1).x - the_player.width / 2;
@@ -681,41 +666,57 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 	
 	public void batch(SpriteBatch batch) {
 		if (isAttacking){
-			spritedir = 4;
+			//spritedir = 4;
 		}
 		elapsedTime += Gdx.graphics.getDeltaTime();
 		switch (spritedir){
-			case 4:
-				TextureRegion currentFrame = (TextureRegion) ani_spritefront.getKeyFrame(elapsedTime, true);
-				batch.draw(currentFrame, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
-				//batch.draw(this.spritefront, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
-				break;
-			case 40:
-				batch.draw(this.spritefront2, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
-				break;
+
 			case 1:
-				batch.draw(this.spriteback, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
-
+				if(moving){
+					Texture currentFrame = (Texture) walk_spriteback.getKeyFrame(elapsedTime, true);
+					batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
+				}
+				else{
+					Texture currentFrame = (Texture) idle_spriteback.getKeyFrame(elapsedTime, true);
+					batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
+					//batch.draw(this.spritefront, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
+				}
 				break;
-			case 10:
-				batch.draw(this.spriteback2, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
 
-				break;
 			case 2:
-				batch.draw(this.spriteright, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
+				if (moving) {
+					Texture currentFrame = (Texture) walk_spriteright.getKeyFrame(elapsedTime, true);
+					batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
+				}
+				else{
+				Texture currentFrame = (Texture) idle_spriteright.getKeyFrame(elapsedTime, true);
+				batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
+				//batch.draw(this.spritefront, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
+			}
+			break;
 
-				break;
-			case 20:
-				batch.draw(this.spriteright2, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
-
-				break;
 			case 3:
-				batch.draw(this.spriteleft, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
+				if (moving) {
+					Texture currentFrame = (Texture) walk_spriteleft.getKeyFrame(elapsedTime, true);
+					batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
+				}
+				else{
+				Texture currentFrame = (Texture) idle_spriteleft.getKeyFrame(elapsedTime, true);
+				batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
+				//batch.draw(this.spritefront, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
+			}
+			break;
 
-				break;
-			case 30:
-				batch.draw(this.spriteleft2, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
-
+			case 4:
+				if (moving){
+					Texture currentFrame = (Texture) walk_spritefront.getKeyFrame(elapsedTime, true);
+					batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
+				}
+				else{
+					Texture currentFrame = (Texture) idle_spritefront.getKeyFrame(elapsedTime, true);
+					batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
+					//batch.draw(this.spritefront, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
+				}
 				break;
 		}
 		

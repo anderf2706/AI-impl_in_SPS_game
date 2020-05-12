@@ -10,8 +10,16 @@ public class protagonist extends Player {
 	public protagonist(Player player, Node node, GameScreen gamescreen, Game1 game, int x, int y) {
 		super(player, node, gamescreen, game, x, y, 0);
 
-		ani_spritefront = gamescreen.tex.wizardfront;
-		spritefront2 = gamescreen.tex.spriteprotfront2;
+		idle_spritefront = gamescreen.tex.wizardfrontidle;
+		idle_spriteback = gamescreen.tex.wizardbackidle;
+		idle_spriteright = gamescreen.tex.wizardrightidle;
+		idle_spriteleft = gamescreen.tex.wizardleftidle;
+
+		walk_spritefront = gamescreen.tex.wizardfrontwalk;
+		walk_spriteback = gamescreen.tex.wizardbackwalk;
+		walk_spriteright = gamescreen.tex.wizardrightwalk;
+		walk_spriteleft = gamescreen.tex.wizardleftwalk;
+
 		spriteback = gamescreen.tex.spriteprotback;
 		spriteback2 = gamescreen.tex.spriteprotback2;
 		spriteleft = gamescreen.tex.spriteprotleft;

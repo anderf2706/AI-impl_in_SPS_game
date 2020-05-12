@@ -175,6 +175,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	int cmerasafe_x_min;
 
 	boolean debug = false;
+	boolean cameraonplayer = false;
 
 	public GameScreen(Game1 game, Player startme, int nodewidth, int startposx, int startposy, int games_i, int games_j) throws IOException {
 		game.games[games_i][games_j] = this;
@@ -577,7 +578,24 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 			ss.rect(touchdownmouseX, 1080 - touchdownmouseY,-(touchdownmouseX - Gdx.input.getX()),((touchdownmouseY) - Gdx.input.getY()));
 			ss.end();
 		}
+		if (cameraonplayer) {
 
+			listOfLists = new ArrayList<List<Node>>();
+			for (int i = 0; i < 64; i++) {
+				listOfLists.add(new ArrayList<Node>());
+			}
+
+			for (int i = 0; i < 64; i++) {
+				for (int j = 0; j < 37; j++) {
+					listOfLists.get(i).add(j, nodedict.get((me.playerNode.id - ((32 * nodewidth) + 18)) + ((i * nodewidth) + j)));
+				}
+
+			}
+
+			fixborder();
+			camera.position.x = me.the_player.x;
+			camera.position.y = me.the_player.y;
+		}
 
 
 
@@ -873,6 +891,10 @@ public void makeCastle() {
 
 		//&& listOfLists.get(listOfLists.size() - 1).get(37 - 1).id <= nodewidth*(nodewidth - 1)
 		if(	keycode == Input.Keys.D) {
+			if (cameraonplayer){
+
+			}
+			else {
 				if (D) {
 					renderboolean = true;
 					right = 1;
@@ -887,8 +909,7 @@ public void makeCastle() {
 							templist.add(node1);
 						}
 
-					}
-					else {
+					} else {
 						for (int i = 0; i < 37; i++) {
 							node1 = null;
 							templist.add(node1);
@@ -905,8 +926,7 @@ public void makeCastle() {
 							node2 = nodedict.get(node.id + nodewidth);
 							templist2.add(node2);
 						}
-					}
-					else {
+					} else {
 						for (int i = 0; i < 37; i++) {
 							node2 = null;
 							templist2.add(node2);
@@ -923,6 +943,7 @@ public void makeCastle() {
 					D = false;
 
 				}
+			}
 
 
 
@@ -931,20 +952,23 @@ public void makeCastle() {
 
 		// && listOfLists.get(0).get(0).id >= nodewidth
 		if(keycode == Input.Keys.A) { // 32
-			if(A) {
+			if (cameraonplayer){
+
+			}
+			else {
+				if (A) {
 					left = -1;
 					cmerasafe_x -= 64;
-				System.out.println(cmerasafe_x);
-				ArrayList<Node> templist = new ArrayList<Node>();
+					System.out.println(cmerasafe_x);
+					ArrayList<Node> templist = new ArrayList<Node>();
 					Node node1;
-					if(cmerasafe_x >= cmerasafe_x_min) {
+					if (cmerasafe_x >= cmerasafe_x_min) {
 						for (Node node : listOfLists.get(0)) {
 							node1 = nodedict.get(node.id - nodewidth);
 							templist.add(node1);
 
 						}
-					}
-					else{
+					} else {
 						for (int i = 0; i < 37; i++) {
 							node1 = null;
 							templist.add(node1);
@@ -955,14 +979,13 @@ public void makeCastle() {
 
 					ArrayList<Node> templist2 = new ArrayList<Node>();
 					Node node2;
-					if(cmerasafe_x >= cmerasafe_x_min) {
+					if (cmerasafe_x >= cmerasafe_x_min) {
 						for (Node node : listOfLists.get(0)) {
 							node2 = nodedict.get(node.id - nodewidth);
 							templist2.add(node2);
 
 						}
-					}
-					else{
+					} else {
 						for (int i = 0; i < 37; i++) {
 							node2 = null;
 							templist2.add(node2);
@@ -978,18 +1001,23 @@ public void makeCastle() {
 
 					A = false;
 				}
+			}
 
 
 		}
 		// && cmerasafe_y + 34 < nodewidth
 		if(keycode == Input.Keys.W){//6368
-			if(W) {
+			if (cameraonplayer){
+				
+			}
+			else {
+				if (W) {
 
 					up = 1;
 					Node node;
 					Node node2;
 
-					try{
+					try {
 						node = nodedict.get(listOfLists.get(0).get(listOfLists.get(0).size() - 1).id + 1);
 						node2 = nodedict.get(listOfLists.get(0).get(listOfLists.get(0).size() - 1).id + 2);
 						for (int i = 0; i < 64; i++) {
@@ -998,23 +1026,27 @@ public void makeCastle() {
 							listOfLists.get(i).remove(1);
 							listOfLists.get(i).remove(0);
 						}
-					}
-					catch(NullPointerException e){
+					} catch (NullPointerException e) {
 						up = 0;
 					}
 
 					W = false;
 				}
+			}
 
 		}
 		// && cmerasafe_y - 1  > 1
 		if(keycode == Input.Keys.S) { //32
-			if(S) {
+			if (cameraonplayer){
+
+			}
+			else {
+				if (S) {
 
 					Node node;
 					Node node2;
 					down = -1;
-					try{
+					try {
 						node = nodedict.get(listOfLists.get(0).get(0).id - 1);
 						node2 = nodedict.get(listOfLists.get(0).get(0).id - 2);
 						for (int i = 0; i < 64; i++) {
@@ -1023,12 +1055,12 @@ public void makeCastle() {
 							listOfLists.get(i).remove(listOfLists.get(i).size() - 1);
 							listOfLists.get(i).remove(listOfLists.get(i).size() - 1);
 						}
-					}
-					catch(NullPointerException e){
+					} catch (NullPointerException e) {
 						down = 0;
 					}
 					S = false;
 				}
+			}
 
 
 		}
@@ -1051,6 +1083,9 @@ public void makeCastle() {
 			makeB = !makeB;
 
 		}
+		if (keycode == Input.Keys.C){
+			cameraonplayer = !cameraonplayer;
+		}
 
 
 
@@ -1072,6 +1107,7 @@ public void makeCastle() {
 
 
 			fixborder();
+			System.out.println("yee boy");
 
 
 		}
