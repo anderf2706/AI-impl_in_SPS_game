@@ -2,9 +2,20 @@ package com.game1;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.bullet.softbody.SWIGTYPE_p_btAlignedObjectArrayT_btSparseSdfT_3_t__Cell_p_t;
+import com.badlogic.gdx.utils.Array;
+
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 
 public class textures {
@@ -36,6 +47,9 @@ public class textures {
 	public Texture spritecowleft2;
 	public Texture spritecowright;
 	public Texture spritecowright2;
+
+	public Animation<TextureRegion> wizardfront;
+
 
 	////////////////desert//////////////////////
 
@@ -252,7 +266,7 @@ public class textures {
 
 
 
-	public textures() {
+	public textures() throws IOException {
 
 		sprites();
 		landtextures();
@@ -266,7 +280,16 @@ public class textures {
 
 	}
 
-	public void sprites(){
+	public Array getAllImages(File directory) throws IOException {
+		Array resultList = new Array();
+		File[] f = directory.listFiles();
+		for (File file : f) {
+			resultList.add(new Texture(file.getCanonicalPath()));
+		}
+		return resultList;
+	}
+
+	public void sprites() throws IOException {
 		spritefront = new Texture(Gdx.files.internal("sprites/knt1/knt1_fr1.gif"));
 		spritefront2 = new Texture(Gdx.files.internal("sprites/knt1/knt1_fr2.gif"));
 		spriteback = new Texture(Gdx.files.internal("sprites/knt1/knt1_bk1.gif"));
@@ -294,6 +317,11 @@ public class textures {
 		spritecowleft2 = new Texture(Gdx.files.internal("sprites/cow/cowleft2.png"));
 		spritecowright = new Texture(Gdx.files.internal("sprites/cow/cowright1.png"));
 		spritecowright2 = new Texture(Gdx.files.internal("sprites/cow/cowright2.png"));
+
+		////////////////////////////////wizard/////////////////////////////////////////
+		wizardfront = new Animation<TextureRegion>((float) 0.05, this.getAllImages(new File("sprites/wizard/Wizard_animations/Front" +
+				"/PNG Sequences/Wizard_clothes_1/Idle")));
+
 
 
 

@@ -28,6 +28,9 @@ public class Forest_temp extends Biome {
 	}
 	/////////////////Level C////////////////////////////////
 
+
+
+
 	public void lake(Node node, int chance) {
 		Random rand = new Random();
 		int randomNum = rand.nextInt((chance - 1) + 1) + 1;
@@ -207,8 +210,20 @@ public class Forest_temp extends Biome {
 					nodes.occupied = true;
 				}
 			}
-		Texture texture = gamescreen.tex.grasslandstone1;
-		new Stone(2000, node, node.gamescreen, node.x, node.y - 16, 96, 96, texture);
+			Texture texture = gamescreen.tex.grasslandstone1;
+			new Stone(2000, node, node.gamescreen, node.x, node.y - 16, 96, 96, texture);
+
+		}
+	}
+
+	public void animal_1(Node node, int chance) {
+		Random rand = new Random();
+
+		int randomNum = rand.nextInt((chance - 1) + 1) + 1;
+		if (randomNum == 1) {
+			if (!node.occupied){
+				new cow(node, gamescreen, gamescreen.game, node.x, node.y);
+			}
 
 		}
 	}

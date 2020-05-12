@@ -36,5 +36,9 @@ public class Biome {
 
 	}
 
+	protected void animal_1(Node node, int chance){
+
+	}
+
 
 }

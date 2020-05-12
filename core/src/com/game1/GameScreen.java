@@ -174,7 +174,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	int cmerasafe_x_max;
 	int cmerasafe_x_min;
 
-	boolean debug = true;
+	boolean debug = false;
 
 	public GameScreen(Game1 game, Player startme, int nodewidth, int startposx, int startposy, int games_i, int games_j) throws IOException {
 		game.games[games_i][games_j] = this;
@@ -335,7 +335,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		return (Node)available_nodes.get(0).get(1);
 	}
 
-	public void settextures(){
+	public void settextures() throws IOException {
 		tex = new textures();
 		green = tex.green;
 		blue = tex.blue;

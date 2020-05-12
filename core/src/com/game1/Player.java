@@ -12,10 +12,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.math.Intersector;
@@ -79,6 +76,8 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 	Timer itemtimer;
 
 	boolean alive = true;
+
+	public Animation ani_spritefront;
 
 	public Texture spritefront;
 	public Texture spritefront2;
@@ -160,6 +159,8 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 
 	Actor[] actors;
 	Player player;
+
+	float elapsedTime;
 
 	public Player(Player player, Node node, GameScreen gamescreen, Game1 game, int x, int y, int team) {
 		this.gamescreen = gamescreen;
@@ -682,10 +683,12 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 		if (isAttacking){
 			spritedir = 4;
 		}
+		elapsedTime += Gdx.graphics.getDeltaTime();
 		switch (spritedir){
 			case 4:
-				batch.draw(this.spritefront, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
-
+				TextureRegion currentFrame = (TextureRegion) ani_spritefront.getKeyFrame(elapsedTime, true);
+				batch.draw(currentFrame, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
+				//batch.draw(this.spritefront, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
 				break;
 			case 40:
 				batch.draw(this.spritefront2, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);

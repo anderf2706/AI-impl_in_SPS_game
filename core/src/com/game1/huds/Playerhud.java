@@ -95,7 +95,7 @@ public class Playerhud extends Hud {
                         }
 						inventorytable.addActor(maketestbutton(drawable_object, i, j));
 						Label countlabel = new Label(count + "", skin);
-						countlabel.setBounds(200 + i*75, 340 + j*75, 40, 10);
+						countlabel.setBounds(300 + i*75, 340 + j*75, 40, 10);
 						inventorytable.addActor(countlabel);
                         //gamescreen.font.draw(gamescreen.game.batch, "" + count, 250 + x*75, 340 + y*75);
 					}
