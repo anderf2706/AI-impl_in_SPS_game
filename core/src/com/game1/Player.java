@@ -519,93 +519,88 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 
 			if(playerChosen) {
                 if (button == Input.Buttons.RIGHT) {
+					if (!gamescreen.cameraonplayer) {
 
-                	if (endnode != null) {
-					}
-                    endnode = gamescreen.chosenNode;
-					finalnode = gamescreen.chosenNode;
-					isAttacking = false;
-
-
-					if (executed) {
-						t.cancel();
-					}
-					following = false;
-					attacking = false;
- 					moving = true;
+						if (endnode != null) {
+						}
+						endnode = gamescreen.chosenNode;
+						finalnode = gamescreen.chosenNode;
+						isAttacking = false;
 
 
+						if (executed) {
+							t.cancel();
+						}
+						following = false;
+						attacking = false;
+						moving = true;
 
 
-                    for (Player player : gamescreen.players) {
-                        if (Intersector.overlaps(gamescreen.the_mouse, player.the_player)) {
-                            Player target = player;
-                            following = true;
-                            follow(target);
+						for (Player player : gamescreen.players) {
+							if (Intersector.overlaps(gamescreen.the_mouse, player.the_player)) {
+								Player target = player;
+								following = true;
+								follow(target);
 
-                        }
+							}
 
-                    }
-                    for (Building building : gamescreen.buildings) {
-                        if (Intersector.overlaps(gamescreen.the_mouse, building.the_building)) {
-                            this.buildingtarget = building;
-                            attacking = true;
-
-
-                        }
+						}
+						for (Building building : gamescreen.buildings) {
+							if (Intersector.overlaps(gamescreen.the_mouse, building.the_building)) {
+								this.buildingtarget = building;
+								attacking = true;
 
 
-                    }
+							}
 
 
-                    for (Nature nature : gamescreen.nature){
-                    	if (Intersector.overlaps(gamescreen.the_mouse, nature.the_nature)) {
-                    		this.naturetarget = nature;
-                    		natureattacking = true;
-                    		endnode = gamescreen.findavailablenode(naturetarget.naturenode);
-                    	}
-					}
+						}
 
 
-                    if (!following) {
+						for (Nature nature : gamescreen.nature) {
+							if (Intersector.overlaps(gamescreen.the_mouse, nature.the_nature)) {
+								this.naturetarget = nature;
+								natureattacking = true;
+								endnode = gamescreen.findavailablenode(naturetarget.naturenode);
+							}
+						}
 
 
-                        if (attacking) {
-                            endnode = gamescreen.findavailablenode(buildingtarget.buildingnode);
-                        }
+						if (!following) {
 
 
+							if (attacking) {
+								endnode = gamescreen.findavailablenode(buildingtarget.buildingnode);
+							}
 
-                                int k = 0;
-                                for (Node node2 : playerNode.adjecent) {
-                                    if (!node2.occupied) {
-                                        k += 1;
-                                    }
-                                }
-                                if (k == 0){
-									finalpath.clear();
 
+							int k = 0;
+							for (Node node2 : playerNode.adjecent) {
+								if (!node2.occupied) {
+									k += 1;
+								}
+							}
+							if (k == 0) {
+								finalpath.clear();
+
+
+							} else {
+								try {
+									finalpath = astar.pathfinder(playerNode, endnode, null);
+								} catch (IndexOutOfBoundsException ignored) {
+									finalpath = astar.pathfinder(playerNode, gamescreen.findavailablenode(endnode), null);
 
 								}
-
-                                else{
-                                	try {
-										finalpath = astar.pathfinder(playerNode, endnode, null);
-									}
-                                	catch (IndexOutOfBoundsException ignored){
-                                		finalpath = astar.pathfinder(playerNode, gamescreen.findavailablenode(endnode), null);
-
-									}
-								}
+							}
 
 
+							move(null);
 
-                        move(null);
 
-
-                        executed = true;
-                    }
-                }
+							executed = true;
+						}
+					}
+				}
             }
 
 		return false;
@@ -890,7 +885,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 		 if(!Intersector.overlaps(the_player, this.playerNode.body)) {
 		 	  playerNode.occupied = false;
 
-				 for (Node node : gamescreen.allnodes) {
+				 for (Node node : playerNode.adjecent) {
 
 					 if (Intersector.overlaps(node.body, the_player)) {
 						 this.playerNode = node;
@@ -901,16 +896,18 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 				 }
 
 		  }
-		 if (moving || following){
-		 	disttogoal = Math.sqrt(Math.pow((endnode.x - playerNode.x), 2)
-					 + Math.pow((endnode.y - playerNode.y), 2));
-		 }
-		 if(t != null && (Intersector.overlaps(endnode.body, this.the_player))) {
-				stopmove();
-				moving = false;
-				executed = false;
+		 if (endnode != null) {
+			 if (moving || following) {
+				 disttogoal = Math.sqrt(Math.pow((endnode.x - playerNode.x), 2)
+						 + Math.pow((endnode.y - playerNode.y), 2));
+			 }
+			 if (t != null && (Intersector.overlaps(endnode.body, this.the_player))) {
+				 stopmove();
+				 moving = false;
+				 executed = false;
 
-			}
+			 }
+		 }
 
 		for(Player player : gamescreen.players){
 			if (player.playerNode == this.playerNode && !(this == player)){

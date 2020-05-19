@@ -174,6 +174,9 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	int cmerasafe_x_max;
 	int cmerasafe_x_min;
 
+	int memovement_x = 0;
+	int memovement_y = 0;
+
 	boolean debug = false;
 	boolean cameraonplayer = false;
 
@@ -470,6 +473,25 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 					for (Player player : this.players){
 						if (player.playerNode == listOfLists.get(i).get(j)
 								&& listOfLists.get(i).get(j).render || debug){
+							if (player == me){
+								if (memovement_y == 1){
+									me.spritedir = 1;
+
+								}
+								else if(memovement_y == -1){
+									me.spritedir = 4;
+
+								}
+								else if (memovement_x == 1){
+									me.spritedir = 2;
+
+
+								}
+								else if(memovement_x == -1){
+									me.spritedir = 3;
+
+								}
+							}
 							player.batch(game.batch);
 						}
 					}
@@ -527,11 +549,10 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 			}
 		}
 		for(Player player2 : players) {
-			player2.render(delta);
-			if (player2.playerChosen) {
-				nothud = true;
-			}
-
+            player2.render(delta);
+            if (player2.playerChosen) {
+                nothud = true;
+            }
 		}
 
 		for (Nature nature : this.nature){
@@ -579,6 +600,9 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 			ss.end();
 		}
 		if (cameraonplayer) {
+
+		    me.the_player.x += memovement_x * 16*3 * Gdx.graphics.getDeltaTime();
+		    me.the_player.y += memovement_y * 16*3 * Gdx.graphics.getDeltaTime();
 
 			listOfLists = new ArrayList<List<Node>>();
 			for (int i = 0; i < 64; i++) {
@@ -892,7 +916,14 @@ public void makeCastle() {
 		//&& listOfLists.get(listOfLists.size() - 1).get(37 - 1).id <= nodewidth*(nodewidth - 1)
 		if(	keycode == Input.Keys.D) {
 			if (cameraonplayer){
-
+				for (Node node : me.playerNode.adjecent){
+					if (node.id == me.playerNode.id + nodewidth){
+						if (!node.occupied){
+							memovement_x = 1;
+							me.moving = true;
+						}
+					}
+				}
 			}
 			else {
 				if (D) {
@@ -953,7 +984,8 @@ public void makeCastle() {
 		// && listOfLists.get(0).get(0).id >= nodewidth
 		if(keycode == Input.Keys.A) { // 32
 			if (cameraonplayer){
-
+                memovement_x = -1;
+                me.moving = true;
 			}
 			else {
 				if (A) {
@@ -1008,7 +1040,8 @@ public void makeCastle() {
 		// && cmerasafe_y + 34 < nodewidth
 		if(keycode == Input.Keys.W){//6368
 			if (cameraonplayer){
-				
+				memovement_y = 1;
+				me.moving = true;
 			}
 			else {
 				if (W) {
@@ -1038,7 +1071,8 @@ public void makeCastle() {
 		// && cmerasafe_y - 1  > 1
 		if(keycode == Input.Keys.S) { //32
 			if (cameraonplayer){
-
+                memovement_y = -1;
+                me.moving= true;
 			}
 			else {
 				if (S) {
@@ -1140,6 +1174,9 @@ public void makeCastle() {
 
 	@Override
 	public boolean keyUp(int keycode) {
+
+
+
 		switch (keycode){
 			case Input.Keys.NUM_1:
 				team = 1;
@@ -1158,21 +1195,29 @@ public void makeCastle() {
 
 
 		if(keycode == Input.Keys.D) {
+		    memovement_x = 0;
 			right = 0;
 			D = true;
+			me.moving = false;
 		}
 		if(keycode == Input.Keys.A) {
+		    memovement_x = 0;
 			left = 0;
 			A = true;
+			me.moving = false;
 		}
 			
 		if(keycode == Input.Keys.W) {
+		    memovement_y = 0;
 			up = 0;
 			W = true;
+			me.moving = false;
 		}
 		if(keycode == Input.Keys.S) {
+		    memovement_y = 0;
 			down = 0;
 			S = true;
+			me.moving = false;
 		}
 		if(keycode == Input.Keys.Q) {
 			rotate1 = false;

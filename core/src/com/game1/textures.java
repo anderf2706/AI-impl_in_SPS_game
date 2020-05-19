@@ -340,10 +340,10 @@ public class textures {
 		wizardrightidle = new Animation<TextureRegion>((float) 0.05, this.getAllImages(wizard_right + "Idle Blinking/"));
 		wizardleftidle = new Animation<TextureRegion>((float) 0.05, this.getAllImages(wizard_left + "Idle Blinking/"));
 
-		wizardfrontwalk = new Animation<TextureRegion>((float) 0.05, this.getAllImages(wizard_front + "Walk/"));
-		wizardbackwalk = new Animation<TextureRegion>((float) 0.05, this.getAllImages(wizard_back + "Walk/"));
-		wizardrightwalk = new Animation<TextureRegion>((float) 0.05, this.getAllImages(wizard_right + "Walk/"));
-		wizardleftwalk = new Animation<TextureRegion>((float) 0.05, this.getAllImages(wizard_left + "Walk/"));
+		wizardfrontwalk = new Animation<TextureRegion>((float) 0.05, this.getAllImages(wizard_front + "Run/"));
+		wizardbackwalk = new Animation<TextureRegion>((float) 0.05, this.getAllImages(wizard_back + "Run/"));
+		wizardrightwalk = new Animation<TextureRegion>((float) 0.05, this.getAllImages(wizard_right + "Run/"));
+		wizardleftwalk = new Animation<TextureRegion>((float) 0.05, this.getAllImages(wizard_left + "Run/"));
 
 
 
