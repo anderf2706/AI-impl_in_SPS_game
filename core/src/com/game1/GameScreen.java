@@ -443,6 +443,10 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
         	rotate(-40);
         }
 
+        if(memovement_x == 0 && memovement_y == 0){
+        	me.moving = false;
+		}
+
         game.batch.begin();
 
 		for (List<Node> list : listOfLists){
@@ -1193,31 +1197,30 @@ public void makeCastle() {
 
 		}
 
-
 		if(keycode == Input.Keys.D) {
 		    memovement_x = 0;
 			right = 0;
 			D = true;
-			me.moving = false;
+			//me.moving = false;
 		}
 		if(keycode == Input.Keys.A) {
 		    memovement_x = 0;
 			left = 0;
 			A = true;
-			me.moving = false;
+			//me.moving = false;
 		}
 			
 		if(keycode == Input.Keys.W) {
 		    memovement_y = 0;
 			up = 0;
 			W = true;
-			me.moving = false;
+			//me.moving = false;
 		}
 		if(keycode == Input.Keys.S) {
 		    memovement_y = 0;
 			down = 0;
 			S = true;
-			me.moving = false;
+			//me.moving = false;
 		}
 		if(keycode == Input.Keys.Q) {
 			rotate1 = false;
