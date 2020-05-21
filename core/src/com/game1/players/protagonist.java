@@ -1,9 +1,8 @@
 package com.game1.players;
 
-import com.game1.Game1;
-import com.game1.GameScreen;
-import com.game1.Node;
-import com.game1.Player;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Intersector;
+import com.game1.*;
 
 public class protagonist extends Player {
 
@@ -19,6 +18,11 @@ public class protagonist extends Player {
 		walk_spriteback = gamescreen.tex.wizardbackwalk;
 		walk_spriteright = gamescreen.tex.wizardrightwalk;
 		walk_spriteleft = gamescreen.tex.wizardleftwalk;
+
+		harvest_spritefront = gamescreen.tex.wizardfrontharvest;
+		harvest_spriteback = gamescreen.tex.wizardbackharvest;
+		harvest_spriteright = gamescreen.tex.wizardrightharvest;
+		harvest_spriteleft = gamescreen.tex.wizardleftharvest;
 
 		spriteback = gamescreen.tex.spriteprotback;
 		spriteback2 = gamescreen.tex.spriteprotback2;
@@ -38,6 +42,30 @@ public class protagonist extends Player {
 		this.defense = 2;
 		this.speed = 10;
 
+
+	}
+
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		if (button == Input.Buttons.LEFT) {
+			if (super.gamescreen.cameraonplayer) {
+				for (Player players : gamescreen.players){
+					if (players.playerNode == gamescreen.chosenNode && players.team != this.team){
+						protagonist_attack(players);
+					}
+				}
+				for(Nature nature: gamescreen.nature){
+					if (nature.naturenode == gamescreen.chosenNode && this.playerNode.adjecent.contains(nature.naturenode)){
+						harvest(nature);
+					}
+				}
+
+			}
+		}
+		return super.touchDown(screenX, screenY, pointer, button);
+	}
+
+	public void protagonist_attack(Player player){
 
 	}
 }

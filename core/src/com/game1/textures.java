@@ -58,6 +58,11 @@ public class textures {
 	public Animation<TextureRegion> wizardrightwalk;
 	public Animation<TextureRegion> wizardleftwalk;
 
+    public Animation<TextureRegion> wizardfrontharvest;
+    public Animation<TextureRegion> wizardbackharvest;
+    public Animation<TextureRegion> wizardrightharvest;
+    public Animation<TextureRegion> wizardleftharvest;
+
 
 	////////////////desert//////////////////////
 
@@ -294,7 +299,6 @@ public class textures {
         File[] listOfFiles = folder.listFiles();
         for (int i = 0; i < listOfFiles.length; i++) {
             if (listOfFiles[i].isFile()) {
-                System.out.println(listOfFiles[i].getName());
                 resultList.add(new Texture(Gdx.files.internal(path + listOfFiles[i].getName())));
             }
         }
@@ -345,6 +349,10 @@ public class textures {
 		wizardrightwalk = new Animation<TextureRegion>((float) 0.05, this.getAllImages(wizard_right + "Run/"));
 		wizardleftwalk = new Animation<TextureRegion>((float) 0.05, this.getAllImages(wizard_left + "Run/"));
 
+        wizardfrontharvest = new Animation<TextureRegion>((float) 0.05, this.getAllImages(wizard_front + "Attack_1/"));
+        wizardbackharvest = new Animation<TextureRegion>((float) 0.05, this.getAllImages(wizard_back + "Attack_1/"));
+        wizardrightharvest = new Animation<TextureRegion>((float) 0.05, this.getAllImages(wizard_right + "Attack_1/"));
+        wizardleftharvest = new Animation<TextureRegion>((float) 0.05, this.getAllImages(wizard_left + "Attack_1/"));
 
 
 

@@ -42,7 +42,7 @@ import javax.print.attribute.standard.Sides;
 
 public class GameScreen extends ApplicationAdapter implements Screen, InputProcessor {
 
-	Rectangle the_mouse;
+	public Rectangle the_mouse;
 	Vector2 mouseInWorld2D;
 	Vector3 mouseInWorld3D;
 	Vector2 start;
@@ -101,10 +101,10 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	int mapHeight;
 	AssetManager manager;
 
-	ArrayList<Player> players = new ArrayList<Player>();
+	public ArrayList<Player> players = new ArrayList<Player>();
 	ArrayList<DistanceObjects> team_0 = new ArrayList<DistanceObjects>();
-	ArrayList<Building> buildings = new ArrayList<Building>();
-	ArrayList<Nature> nature = new ArrayList<Nature>();
+	public ArrayList<Building> buildings = new ArrayList<Building>();
+	public ArrayList<Nature> nature = new ArrayList<Nature>();
 	ArrayList<Node> allnodes2 = new ArrayList<Node>();
 
 	ShapeRenderer sr;
@@ -178,7 +178,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	int memovement_y = 0;
 
 	boolean debug = false;
-	boolean cameraonplayer = false;
+	public boolean cameraonplayer = false;
 
 	public GameScreen(Game1 game, Player startme, int nodewidth, int startposx, int startposy, int games_i, int games_j) throws IOException {
 		game.games[games_i][games_j] = this;

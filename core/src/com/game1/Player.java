@@ -87,6 +87,11 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 	public Animation walk_spriteright;
 	public Animation walk_spriteleft;
 
+	public Animation harvest_spritefront;
+	public Animation harvest_spriteback;
+	public Animation harvest_spriteright;
+	public Animation harvest_spriteleft;
+
 
 
 
@@ -146,7 +151,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 
 	public boolean render = false;
 	
-	int team;
+	public int team;
 	
 	float oldX;
 	float oldY;
@@ -172,6 +177,8 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 	Player player;
 
 	float elapsedTime;
+
+	boolean is_harvesting = false;
 
 
 
@@ -267,8 +274,9 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				if (naturetarget.health > 0 ) {
+				if (naturetarget.health > 0) {
 					System.out.println("har");
+					is_harvesting = true;
 					harvest_t(naturetarget);
 				}
 				else{
@@ -277,8 +285,12 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 					naturetarget.the_nature = null;
 					gamescreen.nature.remove(naturetarget);
 					naturetarget.dispose();
-
-
+					is_harvesting = false;
+					t.cancel();
+				}
+				if (!playerNode.adjecent.contains(naturetarget.naturenode)){
+					is_harvesting = false;
+					t.cancel();
 				}
 
 
@@ -667,7 +679,12 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 		switch (spritedir){
 
 			case 1:
-				if(moving){
+				if (is_harvesting){
+					Texture currentFrame = (Texture) harvest_spriteback.getKeyFrame(elapsedTime, true);
+					batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
+				}
+
+				else if(moving){
 					Texture currentFrame = (Texture) walk_spriteback.getKeyFrame(elapsedTime, true);
 					batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
 				}
@@ -679,7 +696,11 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 				break;
 
 			case 2:
-				if (moving) {
+				if (is_harvesting){
+					Texture currentFrame = (Texture) harvest_spriteright.getKeyFrame(elapsedTime, true);
+					batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
+				}
+				else if (moving) {
 					Texture currentFrame = (Texture) walk_spriteright.getKeyFrame(elapsedTime, true);
 					batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
 				}
@@ -691,7 +712,11 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 			break;
 
 			case 3:
-				if (moving) {
+				if (is_harvesting){
+					Texture currentFrame = (Texture) harvest_spriteleft.getKeyFrame(elapsedTime, true);
+					batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
+				}
+				else if (moving) {
 					Texture currentFrame = (Texture) walk_spriteleft.getKeyFrame(elapsedTime, true);
 					batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
 				}
@@ -703,7 +728,11 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 			break;
 
 			case 4:
-				if (moving){
+				if (is_harvesting){
+					Texture currentFrame = (Texture) harvest_spritefront.getKeyFrame(elapsedTime, true);
+					batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
+				}
+				else if (moving){
 					Texture currentFrame = (Texture) walk_spritefront.getKeyFrame(elapsedTime, true);
 					batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
 				}
