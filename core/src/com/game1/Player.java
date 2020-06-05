@@ -283,8 +283,8 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 					naturetarget.naturenode.occupied = false;
 					naturetarget.naturenode = null;
 					naturetarget.the_nature = null;
-					gamescreen.nature.remove(naturetarget);
-					naturetarget.dispose();
+					//gamescreen.nature.remove(naturetarget);
+					//naturetarget.dispose();
 					is_harvesting = false;
 					t.cancel();
 				}
@@ -670,13 +670,15 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 		// TODO Auto-generated method stub
 		
 	}
-	
+	//TODO: fix at elapsedtime blir for lang for idle.
 	public void batch(SpriteBatch batch) {
 		if (isAttacking){
 			//spritedir = 4;
 		}
 		elapsedTime += Gdx.graphics.getDeltaTime();
+		System.out.println(elapsedTime);
 		switch (spritedir){
+
 
 			case 1:
 				if (is_harvesting){
@@ -689,8 +691,14 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 					batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
 				}
 				else{
-					Texture currentFrame = (Texture) idle_spriteback.getKeyFrame(elapsedTime, true);
-					batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
+					Texture currentFrame;
+					try {
+						currentFrame = (Texture) idle_spriteback.getKeyFrame(elapsedTime, true);
+					}
+					catch (NullPointerException e){
+						currentFrame = (Texture) idle_spriteback.getKeyFrame(0, true);
+					}
+					batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width * 2, this.the_player.height * 2);
 					//batch.draw(this.spritefront, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
 				}
 				break;
@@ -705,9 +713,14 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 					batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
 				}
 				else{
-				Texture currentFrame = (Texture) idle_spriteright.getKeyFrame(elapsedTime, true);
+					Texture currentFrame;
+					try {
+						currentFrame = (Texture) idle_spriteright.getKeyFrame(elapsedTime, true);
+					}
+					catch (NullPointerException e){
+						currentFrame = (Texture) idle_spriteright.getKeyFrame(0, true);
+					}
 				batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
-				//batch.draw(this.spritefront, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
 			}
 			break;
 
@@ -721,7 +734,13 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 					batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
 				}
 				else{
-				Texture currentFrame = (Texture) idle_spriteleft.getKeyFrame(elapsedTime, true);
+					Texture currentFrame;
+					try {
+						currentFrame = (Texture) idle_spriteleft.getKeyFrame(elapsedTime, true);
+					}
+					catch (NullPointerException e){
+						currentFrame = (Texture) idle_spriteleft.getKeyFrame(0, true);
+					}
 				batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
 				//batch.draw(this.spritefront, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
 			}
@@ -737,7 +756,13 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 					batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
 				}
 				else{
-					Texture currentFrame = (Texture) idle_spritefront.getKeyFrame(elapsedTime, true);
+					Texture currentFrame;
+					try {
+						currentFrame = (Texture) idle_spritefront.getKeyFrame(elapsedTime, true);
+					}
+					catch (NullPointerException e){
+						currentFrame = (Texture) idle_spritefront.getKeyFrame(0, true);
+					}
 					batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
 					//batch.draw(this.spritefront, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
 				}

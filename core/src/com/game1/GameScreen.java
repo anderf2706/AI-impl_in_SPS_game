@@ -453,10 +453,10 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		    for(Node node : list){
 		    	if (node != null) {
 		    		node.checkrender();
-		    		if (node.render || debug){
+		    		if (node.render || debug) {
 						game.batch.draw(node.nodetexture, node.x - 16, node.y - 16, 32, 32);
 
-		    		}
+					}
 
 		    	}
 
@@ -469,7 +469,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		for (int j = 36; j >= 0; j--) {
 			for (int i = 0; i < 64; i++) {
 				if (listOfLists.get(i).get(j) != null && this.nature.contains(listOfLists.get(i).get(j).mynature)) {
-					if (listOfLists.get(i).get(j).mynature != null && listOfLists.get(i).get(j).mynature.render || debug) {
+					if (listOfLists.get(i).get(j).mynature.the_nature != null && listOfLists.get(i).get(j).mynature.render || debug) {
 						listOfLists.get(i).get(j).mynature.batch(game.batch);
 					}
 				}
@@ -560,7 +560,9 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		}
 
 		for (Nature nature : this.nature){
-			nature.render(delta);
+			if (nature.the_nature != null) {
+				nature.render(delta);
+			}
 		}
 
 		if (!nothud){
