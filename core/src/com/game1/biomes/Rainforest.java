@@ -30,7 +30,9 @@ public class Rainforest extends Biome {
 		if(randomNum == 1){
 			node.occupied = true;
 			for (Node nodes : node.adjecent) {
-				nodes.occupied = true;
+				if (nodes.y >= node.y ) {
+					nodes.occupied = true;
+				}
 			}
 			/*
 			if (nodes.y >= node.y && node.y + 96 >= nodes.y &&

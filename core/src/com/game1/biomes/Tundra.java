@@ -194,7 +194,7 @@ public class Tundra extends Biome {
 		if (randomNum == 1) {
 			node.occupied = true;
 			for (Node nodes : node.adjecent) {
-				if (nodes.y <= node.y + 32) {
+				if (nodes.y >= node.y) {
 					nodes.occupied = true;
 				}
 			}

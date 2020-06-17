@@ -693,10 +693,11 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 				else{
 					Texture currentFrame;
 					try {
+
 						currentFrame = (Texture) idle_spriteback.getKeyFrame(elapsedTime, true);
 					}
 					catch (NullPointerException e){
-						currentFrame = (Texture) idle_spriteback.getKeyFrame(0, true);
+						currentFrame = (Texture) walk_spriteback.getKeyFrame(elapsedTime, true);
 					}
 					batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width * 2, this.the_player.height * 2);
 					//batch.draw(this.spritefront, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
@@ -715,13 +716,15 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 				else{
 					Texture currentFrame;
 					try {
+
 						currentFrame = (Texture) idle_spriteright.getKeyFrame(elapsedTime, true);
 					}
 					catch (NullPointerException e){
-						currentFrame = (Texture) idle_spriteright.getKeyFrame(0, true);
+						currentFrame = (Texture) walk_spriteright.getKeyFrame(elapsedTime, true);
 					}
+
 				batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
-			}
+				}
 			break;
 
 			case 3:
@@ -739,8 +742,9 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 						currentFrame = (Texture) idle_spriteleft.getKeyFrame(elapsedTime, true);
 					}
 					catch (NullPointerException e){
-						currentFrame = (Texture) idle_spriteleft.getKeyFrame(0, true);
+						currentFrame = (Texture) walk_spriteleft.getKeyFrame(elapsedTime, true);
 					}
+
 				batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
 				//batch.draw(this.spritefront, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
 			}
@@ -758,11 +762,13 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 				else{
 					Texture currentFrame;
 					try {
+
 						currentFrame = (Texture) idle_spritefront.getKeyFrame(elapsedTime, true);
 					}
 					catch (NullPointerException e){
-						currentFrame = (Texture) idle_spritefront.getKeyFrame(0, true);
+						currentFrame = (Texture) walk_spritefront.getKeyFrame(elapsedTime, true);
 					}
+
 					batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
 					//batch.draw(this.spritefront, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
 				}
@@ -933,8 +939,28 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 			}
 		}
 
-
+        /*
 		 //if (this.playerNode)
+		if (moving) {
+			double closestNodefloat;
+			double closestNodefloatold = 0;
+			Node closestnode = null;
+			for (Node node : playerNode.adjecent) {
+				closestNodefloat = Math.sqrt(((node.y) - (this.the_player.y + 16)) * ((node.y) - (this.the_player.y + 16)) + ((node.x) - (this.the_player.x + 16)) * ((node.x) - (this.the_player.x + 16)));
+				if (closestnode == null || closestNodefloat < closestNodefloatold) {
+					closestnode = node;
+					closestNodefloatold = closestNodefloat;
+				}
+
+			}
+			this.playerNode.occupied = false;
+			this.playerNode = closestnode;
+			playerNode.occupied = true;
+		}
+
+         */
+
+
 
 		 if(!Intersector.overlaps(the_player, this.playerNode.body)) {
 		 	  playerNode.occupied = false;
@@ -950,6 +976,9 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 				 }
 
 		  }
+
+
+
 		 if (endnode != null) {
 			 if (moving || following) {
 				 disttogoal = Math.sqrt(Math.pow((endnode.x - playerNode.x), 2)
@@ -981,6 +1010,8 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 			}
 
 		}
+
+
 	}
 
 

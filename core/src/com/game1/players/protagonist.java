@@ -10,30 +10,30 @@ public class protagonist extends Player {
 		super(player, node, gamescreen, game, x, y, 0);
 
 		idle_spritefront = gamescreen.tex.wizardfrontidle;
-		idle_spriteback = gamescreen.tex.wizardbackidle;
-		idle_spriteright = gamescreen.tex.wizardrightidle;
-		idle_spriteleft = gamescreen.tex.wizardleftidle;
+	idle_spriteback = gamescreen.tex.wizardbackidle;
+	idle_spriteright = gamescreen.tex.wizardrightidle;
+	idle_spriteleft = gamescreen.tex.wizardleftidle;
 
-		walk_spritefront = gamescreen.tex.wizardfrontwalk;
-		walk_spriteback = gamescreen.tex.wizardbackwalk;
-		walk_spriteright = gamescreen.tex.wizardrightwalk;
-		walk_spriteleft = gamescreen.tex.wizardleftwalk;
+	walk_spritefront = gamescreen.tex.wizardfrontwalk;
+	walk_spriteback = gamescreen.tex.wizardbackwalk;
+	walk_spriteright = gamescreen.tex.wizardrightwalk;
+	walk_spriteleft = gamescreen.tex.wizardleftwalk;
 
-		harvest_spritefront = gamescreen.tex.wizardfrontharvest;
-		harvest_spriteback = gamescreen.tex.wizardbackharvest;
-		harvest_spriteright = gamescreen.tex.wizardrightharvest;
-		harvest_spriteleft = gamescreen.tex.wizardleftharvest;
+	harvest_spritefront = gamescreen.tex.wizardfrontharvest;
+	harvest_spriteback = gamescreen.tex.wizardbackharvest;
+	harvest_spriteright = gamescreen.tex.wizardrightharvest;
+	harvest_spriteleft = gamescreen.tex.wizardleftharvest;
 
-		spriteback = gamescreen.tex.spriteprotback;
-		spriteback2 = gamescreen.tex.spriteprotback2;
-		spriteleft = gamescreen.tex.spriteprotleft;
-		spriteleft2 = gamescreen.tex.spriteprotleft2;
-		spriteright = gamescreen.tex.spriteprotright;
-		spriteright2 = gamescreen.tex.spriteprotright2;
+	spriteback = gamescreen.tex.spriteprotback;
+	spriteback2 = gamescreen.tex.spriteprotback2;
+	spriteleft = gamescreen.tex.spriteprotleft;
+	spriteleft2 = gamescreen.tex.spriteprotleft2;
+	spriteright = gamescreen.tex.spriteprotright;
+	spriteright2 = gamescreen.tex.spriteprotright2;
 
 
-		the_player.x = x - 15;
-		the_player.y = y - 15;
+	the_player.x = x - 15;
+	the_player.y = y - 15;
 
 		this.the_player.height = 30;
 		this.the_player.width = 30;
@@ -43,7 +43,7 @@ public class protagonist extends Player {
 		this.speed = 10;
 
 
-	}
+}
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
@@ -66,6 +66,6 @@ public class protagonist extends Player {
 	}
 
 	public void protagonist_attack(Player player){
-
+		
 	}
 }

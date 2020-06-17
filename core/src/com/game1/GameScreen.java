@@ -75,6 +75,10 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 	public Player me;
 
+	boolean RMA = false;
+    boolean LMA = false;
+    boolean UMA = false;
+    boolean DMA = false;
 
 	public boolean makeBarracks = false;
 	public boolean makeHouse = false;
@@ -178,7 +182,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	int memovement_y = 0;
 
 	boolean debug = false;
-	public boolean cameraonplayer = false;
+	public boolean cameraonplayer = true;
 
 	public GameScreen(Game1 game, Player startme, int nodewidth, int startposx, int startposy, int games_i, int games_j) throws IOException {
 		game.games[games_i][games_j] = this;
@@ -210,7 +214,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 
 
-		zoom = (float) 1.5;
+		zoom = (float) 2.5;
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, w/(zoom), h/(zoom));
 		camera.update();
@@ -392,6 +396,106 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 
 	}
+
+	public void check_me_walking(){
+        for (Node node : me.playerNode.adjecent) {
+            //right
+			if (RMA) {
+				if (node.id == me.playerNode.id + nodewidth) {
+					if (node.occupied) {
+						me.the_player.x += memovement_x * 16*3 * Gdx.graphics.getDeltaTime();
+						if (Intersector.overlaps(me.the_player, node.body)) {
+							memovement_x = 0;
+							me.moving = false;
+							me.the_player.x -= memovement_x * 16*3 * Gdx.graphics.getDeltaTime();
+
+						} else {
+							memovement_x = 1;
+							me.moving = true;
+							me.the_player.x -= memovement_x * 16*3 * Gdx.graphics.getDeltaTime();
+						}
+					} else {
+						memovement_x = 1;
+						me.moving = true;
+					}
+
+				}
+			}
+
+            //left
+			if (LMA) {
+				if (node.id == me.playerNode.id - nodewidth) {
+					if (node.occupied) {
+						me.the_player.x -= memovement_x * 16*3 * Gdx.graphics.getDeltaTime();
+						if (Intersector.overlaps(me.the_player, node.body)) {
+							memovement_x = 0;
+							me.moving = false;
+							me.the_player.x += memovement_x * 16*3 * Gdx.graphics.getDeltaTime();
+
+
+						} else {
+							memovement_x = -1;
+							me.moving = true;
+							me.the_player.x += memovement_x * 16*3 * Gdx.graphics.getDeltaTime();
+
+						}
+					} else {
+						memovement_x  = -1;
+						me.moving = true;
+					}
+
+				}
+			}
+            //up
+			if (UMA) {
+				if (node.id == me.playerNode.id + 1) {
+					if (node.occupied) {
+						me.the_player.y += memovement_y * 16*3 * Gdx.graphics.getDeltaTime();
+						if (Intersector.overlaps(me.the_player, node.body)) {
+							memovement_y = 0;
+							me.moving = false;
+							me.the_player.y -= memovement_y * 16*3 * Gdx.graphics.getDeltaTime();
+
+						} else {
+							memovement_y = 1;
+							me.moving = true;
+							me.the_player.y -= memovement_y * 16*3 * Gdx.graphics.getDeltaTime();
+
+						}
+					} else {
+						memovement_y = 1;
+						me.moving = true;
+					}
+
+				}
+			}
+            //left
+			if (DMA) {
+				if (node.id == me.playerNode.id - 1) {
+					if (node.occupied) {
+						me.the_player.y -= memovement_y * 16*3 * Gdx.graphics.getDeltaTime();
+						if (Intersector.overlaps(me.the_player, node.body)) {
+							memovement_y = 0;
+							me.moving = false;
+							me.the_player.y += memovement_y * 16*3 * Gdx.graphics.getDeltaTime();
+
+						} else {
+							memovement_y = -1;
+							me.moving = true;
+							me.the_player.y += memovement_y * 16*3 * Gdx.graphics.getDeltaTime();
+
+						}
+					} else {
+						memovement_y = -1;
+						me.moving = true;
+					}
+
+				}
+
+			}
+
+        }
+    }
 	
 	
 	
@@ -407,6 +511,8 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	public void render(float delta) {
 
 		nothud = false;
+		System.out.println(memovement_x);
+		System.out.println(RMA);
 
 		Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -446,6 +552,8 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
         if(memovement_x == 0 && memovement_y == 0){
         	me.moving = false;
 		}
+
+        check_me_walking();
 
         game.batch.begin();
 
@@ -514,7 +622,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		for (List<Node> list : listOfLists){
 			for(Node node : list){
 				if (node != null) {
-					if (node.occupied && debug){
+					if (node.occupied){
 						game.batch.draw(green, node.x -10, node.y - 10, 20, 20);
 
 					}
@@ -842,7 +950,7 @@ public void makeCastle() {
 		if (keycode == Input.Keys.ESCAPE){
 			Gdx.app.exit();
 		}
-		if (keycode == Input.Keys.ENTER ) {
+		if (keycode == Input.Keys.ENTER) {
 			/////////////////////right/////////////////////////////
 			if (me.playerNode.x == 6368) {
 				if (game.games[this.games_i + 1][this.games_j] == null) {
@@ -851,8 +959,7 @@ public void makeCastle() {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-				}
-				else{
+				} else {
 					game.games[this.games_i + 1][this.games_j].me.playerNode.x = 0;
 					game.games[this.games_i + 1][this.games_j].me.playerNode.y = this.me.playerNode.y;
 					game.setScreen(game.games[this.games_i + 1][this.games_j]);
@@ -862,15 +969,14 @@ public void makeCastle() {
 			/////////////////////////////////////////////////////////
 
 			//////////////////////left//////////////////////////
-			if (me.playerNode.x == 0){
+			if (me.playerNode.x == 0) {
 				if (game.games[this.games_i - 1][this.games_j] == null) {
 					try {
 						game.setScreen(new GameScreen(game, me, nodewidth, 6368, this.me.playerNode.y, this.games_i - 1, this.games_j));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-				}
-				else{
+				} else {
 					game.games[this.games_i - 1][this.games_j].me.playerNode.x = 6368;
 					game.games[this.games_i - 1][this.games_j].me.playerNode.y = this.me.playerNode.y;
 					game.setScreen(game.games[this.games_i - 1][this.games_j]);
@@ -881,15 +987,14 @@ public void makeCastle() {
 
 
 			////////////////////////////down////////////////////////////
-			if (me.playerNode.y == 0){
+			if (me.playerNode.y == 0) {
 				if (game.games[this.games_i][this.games_j - 1] == null) {
 					try {
 						game.setScreen(new GameScreen(game, me, nodewidth, this.me.playerNode.x, 6368, this.games_i, this.games_j - 1));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-				}
-				else{
+				} else {
 					game.games[this.games_i][this.games_j - 1].me.playerNode.x = this.me.playerNode.x;
 					game.games[this.games_i][this.games_j - 1].me.playerNode.y = 6368;
 					game.setScreen(game.games[this.games_i][this.games_j - 1]);
@@ -900,37 +1005,29 @@ public void makeCastle() {
 
 
 			////////////////////////////up////////////////////////////
-			if (me.playerNode.y == 6368){
+			if (me.playerNode.y == 6368) {
 				if (game.games[this.games_i][this.games_j + 1] == null) {
 					try {
 						game.setScreen(new GameScreen(game, me, nodewidth, this.me.playerNode.x, 0, this.games_i, this.games_j + 1));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-				}
-				else{
+				} else {
 					game.games[this.games_i][this.games_j + 1].me.playerNode.x = this.me.playerNode.x;
 					game.games[this.games_i][this.games_j + 1].me.playerNode.y = 0;
 					game.setScreen(game.games[this.games_i][this.games_j + 1]);
 
 				}
 			}
-			///////////////////////////////////////////////////////////
-
 		}
+        ///////////////////////////////////////////////////////////
 
 		//&& listOfLists.get(listOfLists.size() - 1).get(37 - 1).id <= nodewidth*(nodewidth - 1)
 		if(	keycode == Input.Keys.D) {
-			if (cameraonplayer){
-				for (Node node : me.playerNode.adjecent){
-					if (node.id == me.playerNode.id + nodewidth){
-						if (!node.occupied){
-							memovement_x = 1;
-							me.moving = true;
-						}
-					}
-				}
+			if (cameraonplayer) {
+				RMA = true;
 			}
+            }
 			else {
 				if (D) {
 					renderboolean = true;
@@ -984,14 +1081,11 @@ public void makeCastle() {
 
 
 
-		}
-
-
 		// && listOfLists.get(0).get(0).id >= nodewidth
 		if(keycode == Input.Keys.A) { // 32
 			if (cameraonplayer){
-                memovement_x = -1;
-                me.moving = true;
+			    LMA = true;
+
 			}
 			else {
 				if (A) {
@@ -1046,8 +1140,7 @@ public void makeCastle() {
 		// && cmerasafe_y + 34 < nodewidth
 		if(keycode == Input.Keys.W){//6368
 			if (cameraonplayer){
-				memovement_y = 1;
-				me.moving = true;
+				UMA = true;
 			}
 			else {
 				if (W) {
@@ -1077,8 +1170,7 @@ public void makeCastle() {
 		// && cmerasafe_y - 1  > 1
 		if(keycode == Input.Keys.S) { //32
 			if (cameraonplayer){
-                memovement_y = -1;
-                me.moving= true;
+                DMA = true;
 			}
 			else {
 				if (S) {
@@ -1200,28 +1292,28 @@ public void makeCastle() {
 		}
 
 		if(keycode == Input.Keys.D) {
-		    memovement_x = 0;
-			right = 0;
+		    RMA = false;
 			D = true;
+			memovement_x = 0;
 			//me.moving = false;
 		}
 		if(keycode == Input.Keys.A) {
-		    memovement_x = 0;
-			left = 0;
+		    LMA = false;
 			A = true;
+			memovement_x = 0;
 			//me.moving = false;
 		}
 			
 		if(keycode == Input.Keys.W) {
-		    memovement_y = 0;
-			up = 0;
+		    UMA = false;
 			W = true;
+			memovement_y = 0;
 			//me.moving = false;
 		}
 		if(keycode == Input.Keys.S) {
-		    memovement_y = 0;
-			down = 0;
+		    DMA = false;
 			S = true;
+			memovement_y = 0;
 			//me.moving = false;
 		}
 		if(keycode == Input.Keys.Q) {
