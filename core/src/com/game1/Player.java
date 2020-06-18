@@ -1,11 +1,6 @@
 package com.game1;
 
 import java.util.*;
-import java.util.concurrent.*;
-
-import javax.management.openmbean.TabularData;
-import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -13,8 +8,6 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -165,6 +158,8 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 
 	Nature naturetarget;
 
+	public Timer tattack;;
+
 	public Hashtable<Item, Integer>Inventory = new Hashtable<Item, Integer>();
 
 	int gold;
@@ -187,6 +182,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 		this.game = game;
 		this.team = team;
 		this.player = player;
+		this.tattack = new Timer();
 		if (player != null){
 			this.Inventory = player.Inventory;
 		}
@@ -255,7 +251,8 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 	
 	public void collision() {
 		for (Player player : gamescreen.players){
-			if (this.playerNode.adjecent.contains(player.playerNode) && player.team != this.team && !isAttacking && !moving && !following){
+			if (this.playerNode.adjecent.contains(player.playerNode) && player.team != this.team && !isAttacking && !moving && !following && health >= 0){
+				tattack = new Timer();
 				attack(this.health, player, 2000);
 				isAttacking = true;
 			}
@@ -453,7 +450,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 	}
 
 	public void attack(final int health, final Player player, int delay){
-		final Timer tattack = new Timer();
+
 
 			tattack.schedule(new TimerTask() {
 
@@ -462,6 +459,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 					// TODO Auto-generated method stub
 					if(player.health > 0 && playerNode.adjecent.contains(player.playerNode) && health>0) {
 						player.health -= (int)(attack/(player.defense*0.5));
+						isAttacking = true;
 					}
 					else {
 						tattack.cancel();
@@ -681,7 +679,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 
 
 			case 1:
-				if (is_harvesting){
+				if (is_harvesting || isAttacking){
 					Texture currentFrame = (Texture) harvest_spriteback.getKeyFrame(elapsedTime, true);
 					batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
 				}
@@ -705,7 +703,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 				break;
 
 			case 2:
-				if (is_harvesting){
+				if (is_harvesting || isAttacking){
 					Texture currentFrame = (Texture) harvest_spriteright.getKeyFrame(elapsedTime, true);
 					batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
 				}
@@ -728,7 +726,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 			break;
 
 			case 3:
-				if (is_harvesting){
+				if (is_harvesting || isAttacking){
 					Texture currentFrame = (Texture) harvest_spriteleft.getKeyFrame(elapsedTime, true);
 					batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
 				}
@@ -751,7 +749,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 			break;
 
 			case 4:
-				if (is_harvesting){
+				if (is_harvesting ||isAttacking){
 					Texture currentFrame = (Texture) harvest_spritefront.getKeyFrame(elapsedTime, true);
 					batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
 				}
@@ -918,16 +916,6 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 	}
 	
 	public void check_player() {
-		 if (this.health <= 0){
-		 	this.playerNode.occupied = false;
-		 	this.playerNode = null;
-		 	if (attacking){
-
-            }
-		 	gamescreen.players.remove(this);
-		 	return;
-
-		 }
 
 
 		 /////////////////////check_player///////////////////////////////
@@ -939,7 +927,11 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 			}
 		}
 
-        /*
+
+
+
+
+
 		 //if (this.playerNode)
 		if (moving) {
 			double closestNodefloat;
@@ -953,15 +945,18 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 				}
 
 			}
-			this.playerNode.occupied = false;
-			this.playerNode = closestnode;
-			playerNode.occupied = true;
+            double playernodefloat = Math.sqrt(((this.playerNode.y) - (this.the_player.y + 16)) * ((this.playerNode.y) - (this.the_player.y + 16)) + ((this.playerNode.x) - (this.the_player.x + 16)) * ((this.playerNode.x) - (this.the_player.x + 16)));
+			if (closestNodefloatold < playernodefloat) {
+                this.playerNode.occupied = false;
+                this.playerNode = closestnode;
+                playerNode.occupied = true;
+            }
 		}
 
-         */
 
 
 
+		/*
 		 if(!Intersector.overlaps(the_player, this.playerNode.body)) {
 		 	  playerNode.occupied = false;
 
@@ -976,6 +971,8 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 				 }
 
 		  }
+
+		 */
 
 
 
@@ -1011,6 +1008,14 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 
 		}
 
+
+	}
+
+	public void eliminate(){
+		if (isAttacking){
+			tattack.cancel();
+		}
+		this.dispose();
 
 	}
 

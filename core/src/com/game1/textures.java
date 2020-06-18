@@ -63,6 +63,21 @@ public class textures {
     public Animation<TextureRegion> wizardrightharvest;
     public Animation<TextureRegion> wizardleftharvest;
 
+    public Animation<TextureRegion> warriorfrontidle;
+    public Animation<TextureRegion> warriorbackidle;
+    public Animation<TextureRegion> warriorrightidle;
+    public Animation<TextureRegion> warriorleftidle;
+
+    public Animation<TextureRegion> warriorfrontwalk;
+    public Animation<TextureRegion> warriorbackwalk;
+    public Animation<TextureRegion> warriorrightwalk;
+    public Animation<TextureRegion> warriorleftwalk;
+
+    public Animation<TextureRegion> warriorfrontharvest;
+    public Animation<TextureRegion> warriorbackharvest;
+    public Animation<TextureRegion> warriorrightharvest;
+    public Animation<TextureRegion> warriorleftharvest;
+
 
 	////////////////desert//////////////////////
 
@@ -353,6 +368,28 @@ public class textures {
         wizardbackharvest = new Animation<TextureRegion>((float) 0.05, this.getAllImages(wizard_back + "Attack_1/"));
         wizardrightharvest = new Animation<TextureRegion>((float) 0.05, this.getAllImages(wizard_right + "Attack_1/"));
         wizardleftharvest = new Animation<TextureRegion>((float) 0.05, this.getAllImages(wizard_left + "Attack_1/"));
+        /////////////////////////////////////////////////////////////////////////////////
+
+        ///////////////////////////Warrior/////////////////////////////////////
+        String warrior_front = "sprites/warrior_male/Warrior_animations/Front/PNG Sequences/Warrior_clothes_1/";
+        String warrior_back = "sprites/warrior_male/Warrior_animations/Back/PNG Sequences/Warrior_clothes_1/";
+        String warrior_right = "sprites/warrior_male/Warrior_animations/Right_Side/PNG Sequences/Warrior_clothes_1/";
+        String warrior_left = "sprites/warrior_male/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_1/";
+        warriorfrontidle = new Animation<TextureRegion>((float) 0.05, this.getAllImages(warrior_front + "Idle Blinking/"));
+        warriorbackidle = new Animation<TextureRegion>((float) 0.05, this.getAllImages(warrior_back + "Idle/"));
+        warriorrightidle = new Animation<TextureRegion>((float) 0.05, this.getAllImages(warrior_right + "Idle Blinking/"));
+        warriorleftidle = new Animation<TextureRegion>((float) 0.05, this.getAllImages(warrior_left + "Idle Blinking/"));
+
+        warriorfrontwalk = new Animation<TextureRegion>((float) 0.05, this.getAllImages(warrior_front + "Run/"));
+        warriorbackwalk = new Animation<TextureRegion>((float) 0.05, this.getAllImages(warrior_back + "Run/"));
+        warriorrightwalk = new Animation<TextureRegion>((float) 0.05, this.getAllImages(warrior_right + "Run/"));
+        warriorleftwalk = new Animation<TextureRegion>((float) 0.05, this.getAllImages(warrior_left + "Run/"));
+
+        warriorfrontharvest = new Animation<TextureRegion>((float) 0.05, this.getAllImages(warrior_front + "Attack_1/"));
+        warriorbackharvest = new Animation<TextureRegion>((float) 0.05, this.getAllImages(warrior_back + "Attack_1/"));
+        warriorrightharvest = new Animation<TextureRegion>((float) 0.05, this.getAllImages(warrior_right + "Attack_1/"));
+        warriorleftharvest = new Animation<TextureRegion>((float) 0.05, this.getAllImages(warrior_left + "Attack_1/"));
+        /////////////////////////////////////////////////////////////////////////
 
 
 

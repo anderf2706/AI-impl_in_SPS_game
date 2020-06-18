@@ -1,8 +1,5 @@
 package com.game1.players;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.game1.*;
 
 import java.util.*;
@@ -65,6 +62,10 @@ public class AI extends Player {
 			this.the_player.x = this.playerNode.x - 16;
 			this.the_player.y = this.playerNode.y - 16;
 			this.playerNode.occupied = true;
+		}
+
+		if (health <= 0){
+			this.dispose();
 		}
 
 	}
@@ -131,38 +132,22 @@ public class AI extends Player {
 	public void chosedir(Node node){
 		if (this.playerNode.id == node.id + 1 || this.playerNode.id == node.id + (1+gamescreen.nodewidth)
 				|| this.playerNode.id == node.id + (1-gamescreen.nodewidth)){
-			if (spritedir == 4){
-				spritedir = 40;
-			}
-			else{
 				spritedir = 4;
-			}
 
 		}
 		else if (this.playerNode.id == node.id - 1 || this.playerNode.id == node.id + ((-1) + gamescreen.nodewidth)
 				|| node.id == this.playerNode.id + ((-1) - gamescreen.nodewidth)){
-			if (spritedir == 1){
-				spritedir = 10;
-			}
-			else{
+
 				spritedir = 1;
-			}
+
 		}
 		else if (this.playerNode.id == node.id + gamescreen.nodewidth){
-			if (spritedir == 3){
-				spritedir = 30;
-			}
-			else{
 				spritedir = 3;
-			}
+
 		}
 		else if(this.playerNode.id == node.id - gamescreen.nodewidth){
-			if (spritedir == 2){
-				spritedir = 20;
-			}
-			else{
 				spritedir = 2;
-			}
+
 		}
 	}
 }

@@ -656,6 +656,8 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 			if (players.get(i).health <= 0){
 				players.get(i).playerNode.players.remove(players.get(i));
 				players.get(i).playerNode.occupied = false;
+				players.get(i).playerNode = null;
+                players.get(i).eliminate();
 				players.remove(players.get(i));
 				i -= 1;
 			}
@@ -795,7 +797,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 	public void makeP() {
 		try {
-			new protagonist(null, null, this, game, findavailablenode(chosenNode).x, findavailablenode(chosenNode).y);
+			new footenemy(chosenNode, this, this.game, findavailablenode(chosenNode).x, findavailablenode(chosenNode).y);
 
 		}
 		catch(Exception e) {

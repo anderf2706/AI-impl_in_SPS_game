@@ -1,15 +1,19 @@
 package com.game1.players;
 
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.math.Intersector;
 import com.game1.*;
 
+import java.util.concurrent.TimeUnit;
+
 public class protagonist extends Player {
+
+    boolean Attacking = false;
+    private volatile long start;
 
 	public protagonist(Player player, Node node, GameScreen gamescreen, Game1 game, int x, int y) {
 		super(player, node, gamescreen, game, x, y, 0);
 
-		idle_spritefront = gamescreen.tex.wizardfrontidle;
+    idle_spritefront = gamescreen.tex.wizardfrontidle;
 	idle_spriteback = gamescreen.tex.wizardbackidle;
 	idle_spriteright = gamescreen.tex.wizardrightidle;
 	idle_spriteleft = gamescreen.tex.wizardleftidle;
@@ -49,9 +53,14 @@ public class protagonist extends Player {
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		if (button == Input.Buttons.LEFT) {
 			if (super.gamescreen.cameraonplayer) {
+			    if (System.nanoTime() - start < TimeUnit.SECONDS.toNanos(2)){
+			        Attacking = false;
+                }
 				for (Player players : gamescreen.players){
-					if (players.playerNode == gamescreen.chosenNode && players.team != this.team){
-						protagonist_attack(players);
+                    if (players.playerNode == gamescreen.chosenNode && players.team != this.team && !Attacking){
+                        start = System.nanoTime();
+                        protagonist_attack_meele(players);
+                        Attacking = true;
 					}
 				}
 				for(Nature nature: gamescreen.nature){
@@ -65,7 +74,17 @@ public class protagonist extends Player {
 		return super.touchDown(screenX, screenY, pointer, button);
 	}
 
-	public void protagonist_attack(Player player){
-		
+	public void protagonist_attack_meele(Player player){
+        if(player.health > 0 && playerNode.adjecent.contains(player.playerNode) && health> 0) {
+            player.health -= (int)(attack/(player.defense*0.5));
+
+        }
 	}
+
+
+    private boolean timedBoolean() {
+	    start = System.nanoTime();
+        return System.nanoTime()-start < TimeUnit.SECONDS.toNanos(2);
+    }
+
 }

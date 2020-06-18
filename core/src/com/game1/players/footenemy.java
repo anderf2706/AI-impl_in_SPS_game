@@ -9,14 +9,20 @@ public class footenemy extends AI{
 
 	public footenemy(Node node, GameScreen gamescreen, Game1 game, int x, int y) {
 		super(node, gamescreen, game, x, y, 1, 5);
-		spritefront = gamescreen.tex.spritefront;
-		spritefront2 = gamescreen.tex.spritefront2;
-		spriteback = gamescreen.tex.spriteback;
-		spriteback2 = gamescreen.tex.spriteback2;
-		spriteleft = gamescreen.tex.spriteleft;
-		spriteleft2 = gamescreen.tex.spriteleft2;
-		spriteright = gamescreen.tex.spriteright;
-		spriteright2 = gamescreen.tex.spriteright2;
+        idle_spritefront = gamescreen.tex.warriorfrontidle;
+        idle_spriteback = gamescreen.tex.warriorbackidle;
+        idle_spriteright = gamescreen.tex.warriorrightidle;
+        idle_spriteleft = gamescreen.tex.warriorleftidle;
+
+        walk_spritefront = gamescreen.tex.warriorfrontwalk;
+        walk_spriteback = gamescreen.tex.warriorbackwalk;
+        walk_spriteright = gamescreen.tex.warriorrightwalk;
+        walk_spriteleft = gamescreen.tex.warriorleftwalk;
+
+        harvest_spritefront = gamescreen.tex.warriorfrontharvest;
+        harvest_spriteback = gamescreen.tex.warriorbackharvest;
+        harvest_spriteright = gamescreen.tex.warriorrightharvest;
+        harvest_spriteleft = gamescreen.tex.warriorleftharvest;
 		the_player.x = x - 15;
 		the_player.y = y - 15;
 
