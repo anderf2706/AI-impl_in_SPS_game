@@ -271,7 +271,6 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 			}
 
 		}
-        System.out.println(nodedict.size());
 		camera.position.x = me.the_player.x;
 		camera.position.y = me.the_player.y;
 
@@ -511,8 +510,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	public void render(float delta) {
 
 		nothud = false;
-		System.out.println(memovement_x);
-		System.out.println(RMA);
+
 
 		Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -676,17 +674,17 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		}
 
 		if (!nothud){
-			MGhud.getStage().act(delta); //act the Hud
-			MGhud.getStage().draw(); //draw the Hud
-			if(multiplexer.getProcessors().first() != MGhud.stage) {
-				multiplexer.addProcessor(0, MGhud.stage);
+			me.playerhud.getStage().act(delta); //act the Hud
+			me.playerhud.getStage().draw(); //draw the Hud
+			if(multiplexer.getProcessors().first() != me.playerhud.stage) {
+				multiplexer.addProcessor(0, me.playerhud.stage);
 			}
 
 		}
 		else{
 			MGhud.dispose();
-			if (multiplexer.getProcessors().contains(MGhud, true)) {
-				multiplexer.removeProcessor(multiplexer.getProcessors().indexOf(MGhud, true));
+			if (multiplexer.getProcessors().contains(me.playerhud, true)) {
+				multiplexer.removeProcessor(multiplexer.getProcessors().indexOf(me.playerhud, true));
 			}
 		}
 
@@ -747,7 +745,6 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		float[][]simplexnoise=new float[width][height];
 		Random r = new Random();
 		double randomfreq = min + r.nextDouble() * (max - min);
-		System.out.println(randomfreq);
 		float frequency=(float)randomfreq/(float)width;
 		double random = (Math.random() * (10000) + 1);
 		for(int x=0;x<width; x++){
@@ -1038,7 +1035,6 @@ public void makeCastle() {
 
 					ArrayList<Node> templist = new ArrayList<Node>();
 					Node node1;
-					System.out.println(cmerasafe_x);
 					if (cmerasafe_x <= cmerasafe_x_max) {
 						for (Node node : listOfLists.get(listOfLists.size() - 1)) {
 							node1 = nodedict.get(node.id + nodewidth);
@@ -1056,7 +1052,6 @@ public void makeCastle() {
 
 					ArrayList<Node> templist2 = new ArrayList<Node>();
 					Node node2;
-					System.out.println(cmerasafe_x);
 					if (cmerasafe_x <= cmerasafe_x_max) {
 						for (Node node : listOfLists.get(listOfLists.size() - 1)) {
 							node2 = nodedict.get(node.id + nodewidth);
@@ -1093,7 +1088,6 @@ public void makeCastle() {
 				if (A) {
 					left = -1;
 					cmerasafe_x -= 64;
-					System.out.println(cmerasafe_x);
 					ArrayList<Node> templist = new ArrayList<Node>();
 					Node node1;
 					if (cmerasafe_x >= cmerasafe_x_min) {
@@ -1481,7 +1475,6 @@ public void makeCastle() {
 		if(amount == -1 && zoom > 0.3){
 			zoom -= 0.1;
 			camera.zoom = zoom;
-			System.out.println(zoom);
 		}
 		if(amount == 1 && zoom < 1){
 			zoom += 0.1;

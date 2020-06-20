@@ -131,7 +131,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 	public int spritedir;
 	
 	int i;
-	boolean isAttacking = false;
+	public boolean isAttacking = false;
 	
 	boolean playerChosen = false;
 	boolean moving = false;
@@ -173,7 +173,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 
 	float elapsedTime;
 
-	boolean is_harvesting = false;
+	public boolean is_harvesting = false;
 
 
 
@@ -220,7 +220,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 			if (Intersector.overlaps(playernode.body, the_player)) {
 				this.playerNode = playernode;
 				playernode.occupied = true;
-				System.out.println("done");
+
 				break;
 			}
 		}
@@ -261,7 +261,6 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 	}
 
 	public void harvest(final Nature naturetarget){
-		System.out.println(naturetarget.health);
 		if(t != null){
 			t.cancel();
 		}
@@ -272,7 +271,6 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 			public void run() {
 				// TODO Auto-generated method stub
 				if (naturetarget.health > 0) {
-					System.out.println("har");
 					is_harvesting = true;
 					harvest_t(naturetarget);
 				}
@@ -305,7 +303,6 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 		}
 
 		naturetarget.health -= 10;
-		System.out.println(naturetarget.health);
 	}
 
 	public void moveWASD(){
@@ -527,7 +524,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 
 
 
-			if(playerChosen) {
+			if(playerChosen && this != gamescreen.me) {
                 if (button == Input.Buttons.RIGHT) {
 					if (!gamescreen.cameraonplayer) {
 
@@ -674,7 +671,6 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 			//spritedir = 4;
 		}
 		elapsedTime += Gdx.graphics.getDeltaTime();
-		System.out.println(elapsedTime);
 		switch (spritedir){
 
 
@@ -695,7 +691,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 						currentFrame = (Texture) idle_spriteback.getKeyFrame(elapsedTime, true);
 					}
 					catch (NullPointerException e){
-						currentFrame = (Texture) walk_spriteback.getKeyFrame(elapsedTime, true);
+						currentFrame = (Texture) walk_spriteback.getKeyFrame(elapsedTime, false);
 					}
 					batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width * 2, this.the_player.height * 2);
 					//batch.draw(this.spritefront, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
@@ -718,7 +714,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 						currentFrame = (Texture) idle_spriteright.getKeyFrame(elapsedTime, true);
 					}
 					catch (NullPointerException e){
-						currentFrame = (Texture) walk_spriteright.getKeyFrame(elapsedTime, true);
+						currentFrame = (Texture) walk_spriteright.getKeyFrame(elapsedTime, false);
 					}
 
 				batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
@@ -740,7 +736,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 						currentFrame = (Texture) idle_spriteleft.getKeyFrame(elapsedTime, true);
 					}
 					catch (NullPointerException e){
-						currentFrame = (Texture) walk_spriteleft.getKeyFrame(elapsedTime, true);
+						currentFrame = (Texture) walk_spriteleft.getKeyFrame(elapsedTime, false);
 					}
 
 				batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
@@ -764,7 +760,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 						currentFrame = (Texture) idle_spritefront.getKeyFrame(elapsedTime, true);
 					}
 					catch (NullPointerException e){
-						currentFrame = (Texture) walk_spritefront.getKeyFrame(elapsedTime, true);
+						currentFrame = (Texture) walk_spritefront.getKeyFrame(elapsedTime, false);
 					}
 
 					batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
@@ -893,7 +889,9 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 		}
 		if (gamescreen.renderboolean) {
 			check_player();
-			collision();
+			if (this != gamescreen.me){
+				collision();
+			}
 		}
 	}
 
@@ -920,7 +918,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 
 		 /////////////////////check_player///////////////////////////////
 
-		if (natureattacking){
+		if (natureattacking && this != gamescreen.me){
 			if (playerNode.adjecent.contains(naturetarget.naturenode)){
 				harvest(naturetarget);
 				natureattacking = false;

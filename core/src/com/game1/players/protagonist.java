@@ -3,12 +3,14 @@ package com.game1.players;
 import com.badlogic.gdx.Input;
 import com.game1.*;
 
-import java.util.concurrent.TimeUnit;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class protagonist extends Player {
 
-    boolean Attacking = false;
+
     private volatile long start;
+    Timer t_protagonist;
 
 	public protagonist(Player player, Node node, GameScreen gamescreen, Game1 game, int x, int y) {
 		super(player, node, gamescreen, game, x, y, 0);
@@ -51,21 +53,24 @@ public class protagonist extends Player {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		if (button == Input.Buttons.LEFT) {
+		if (button == Input.Buttons.RIGHT) {
 			if (super.gamescreen.cameraonplayer) {
-			    if (System.nanoTime() - start < TimeUnit.SECONDS.toNanos(2)){
-			        Attacking = false;
-                }
-				for (Player players : gamescreen.players){
-                    if (players.playerNode == gamescreen.chosenNode && players.team != this.team && !Attacking){
-                        start = System.nanoTime();
-                        protagonist_attack_meele(players);
-                        Attacking = true;
+			    if (!isAttacking) {
+					isAttacking = true;
+
+					System.out.println("inne");
+					timedBoolean();
+					for (Player players : gamescreen.players) {
+						if (players.playerNode == gamescreen.chosenNode && players.team != this.team) {
+							start = System.nanoTime();
+							protagonist_attack_meele(players);
+						}
 					}
-				}
-				for(Nature nature: gamescreen.nature){
-					if (nature.naturenode == gamescreen.chosenNode && this.playerNode.adjecent.contains(nature.naturenode)){
-						harvest(nature);
+					for (Nature nature : gamescreen.nature) {
+						if (nature.naturenode == gamescreen.chosenNode && this.playerNode.adjecent.contains(nature.naturenode)) {
+							is_harvesting = true;
+							protagonist_harvest(nature);
+						}
 					}
 				}
 
@@ -75,16 +80,52 @@ public class protagonist extends Player {
 	}
 
 	public void protagonist_attack_meele(Player player){
+
         if(player.health > 0 && playerNode.adjecent.contains(player.playerNode) && health> 0) {
             player.health -= (int)(attack/(player.defense*0.5));
+            System.out.println("jepp");
 
         }
 	}
 
+	public void protagonist_harvest (Nature naturetarget){
+		if (naturetarget.health > 0 && playerNode.adjecent.contains(naturetarget.naturenode)) {
+			if (!this.Inventory.containsKey(naturetarget.material)){
+				this.Inventory.put(naturetarget.material, 1);
+			}
+			else {
+				int mat_num = Inventory.get(naturetarget.material);
+				this.Inventory.put(naturetarget.material, mat_num + 1);
+			}
 
-    private boolean timedBoolean() {
-	    start = System.nanoTime();
-        return System.nanoTime()-start < TimeUnit.SECONDS.toNanos(2);
-    }
+			naturetarget.health -= 10;
+
+		}
+		else {
+			naturetarget.naturenode.occupied = false;
+			naturetarget.naturenode = null;
+			naturetarget.the_nature = null;
+			//gamescreen.nature.remove(naturetarget);
+			//naturetarget.dispose();
+			is_harvesting = false;
+		}
+	}
+
+
+    private void timedBoolean() {
+		t_protagonist = new Timer();
+
+		t_protagonist.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				isAttacking = false;
+				is_harvesting = false;
+				t_protagonist.cancel();
+
+			}
+		}, 750, 1);
+	}
 
 }
