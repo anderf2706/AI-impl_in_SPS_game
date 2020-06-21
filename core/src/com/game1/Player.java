@@ -44,6 +44,18 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 	int item6_object_count;
 
 
+
+	boolean UP = false;
+	boolean DOWN = false;
+	boolean RIGHT = false;
+	boolean LEFT = false;
+	boolean UPRIGHT = false;
+	boolean UPLEFT = false;
+	boolean DOWNRIGHT = false;
+	boolean DOWNLEFT = false;
+
+
+
 	public Rectangle the_player;
 	Rectangle future_the_player;	
 	Rectangle future_the_player2;
@@ -325,11 +337,18 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 				public void run() {
 					// TODO Auto-generated method stub
 					if (dush < finalpath.size()) {
+						UP = false;
+						DOWN = false;
+						RIGHT = false;
+						LEFT = false;
+						UPRIGHT = false;
+						UPLEFT = false;
+						DOWNLEFT = false;
+						DOWNRIGHT = false;
 						move_t(dush);
 					}
 					else{
 						t.cancel();
-						return;
 					}
 
 			    }
@@ -340,29 +359,54 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 		
 	public void move_t(int b) {
 		final Node nextnode = finalpath.get(b);
-		if (nextnode.id == this.playerNode.id + 1 || nextnode.id == this.playerNode.id + (1+gamescreen.nodewidth)
-		|| nextnode.id == this.playerNode.id + (1-gamescreen.nodewidth)){
-				spritedir = 1;
-
-
-		}
-		else if (nextnode.id == this.playerNode.id - 1 || nextnode.id == this.playerNode.id + ((-1) + gamescreen.nodewidth)
-				|| nextnode.id == this.playerNode.id + ((-1) - gamescreen.nodewidth)){
-				spritedir = 4;
+		this.moving = true;
+		if (nextnode.id == this.playerNode.id + 1){
+			spritedir = 1;
+			UP = true;
 
 		}
+
+		else if (nextnode.id == this.playerNode.id + (1+gamescreen.nodewidth)){
+			spritedir = 1;
+			UPRIGHT = true;
+		}
+
+		else if (nextnode.id == this.playerNode.id + (1-gamescreen.nodewidth)){
+			spritedir = 1;
+			UPLEFT = true;
+		}
+
+		else if (nextnode.id == this.playerNode.id - 1){
+			spritedir = 4;
+			DOWN = true;
+		}
+
+		else if (nextnode.id == this.playerNode.id + ((-1) + gamescreen.nodewidth)){
+			spritedir = 4;
+			DOWNRIGHT = true;
+		}
+
+		else if (nextnode.id == this.playerNode.id + ((-1) - gamescreen.nodewidth)){
+			spritedir = 4;
+			DOWNLEFT = true;
+		}
+
 		else if (nextnode.id == this.playerNode.id + gamescreen.nodewidth){
-				spritedir = 2;
-
+			spritedir = 2;
+			RIGHT = true;
 		}
+
 		else if(nextnode.id == this.playerNode.id - gamescreen.nodewidth){
-				spritedir = 3;
-
+			spritedir = 3;
+			LEFT = true;
 		}
 
-
+		/*
 		this.the_player.x = nextnode.x - the_player.width/2;
 		this.the_player.y = nextnode.y - the_player.height/2;
+
+
+		 */
 
 		if(colliding) {
 				
@@ -524,7 +568,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 
 
 
-			if(playerChosen && this != gamescreen.me) {
+			if(playerChosen) {
                 if (button == Input.Buttons.RIGHT) {
 					if (!gamescreen.cameraonplayer) {
 
@@ -691,7 +735,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 						currentFrame = (Texture) idle_spriteback.getKeyFrame(elapsedTime, true);
 					}
 					catch (NullPointerException e){
-						currentFrame = (Texture) walk_spriteback.getKeyFrame(elapsedTime, false);
+						currentFrame = (Texture) gamescreen.green;
 					}
 					batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width * 2, this.the_player.height * 2);
 					//batch.draw(this.spritefront, this.the_player.x, this.the_player.y, this.the_player.width, this.the_player.height);
@@ -714,7 +758,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 						currentFrame = (Texture) idle_spriteright.getKeyFrame(elapsedTime, true);
 					}
 					catch (NullPointerException e){
-						currentFrame = (Texture) walk_spriteright.getKeyFrame(elapsedTime, false);
+						currentFrame = (Texture) gamescreen.green;
 					}
 
 				batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
@@ -736,7 +780,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 						currentFrame = (Texture) idle_spriteleft.getKeyFrame(elapsedTime, true);
 					}
 					catch (NullPointerException e){
-						currentFrame = (Texture) walk_spriteleft.getKeyFrame(elapsedTime, false);
+						currentFrame = (Texture) gamescreen.green;
 					}
 
 				batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
@@ -760,7 +804,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 						currentFrame = (Texture) idle_spritefront.getKeyFrame(elapsedTime, true);
 					}
 					catch (NullPointerException e){
-						currentFrame = (Texture) walk_spritefront.getKeyFrame(elapsedTime, false);
+						currentFrame = (Texture) gamescreen.green;
 					}
 
 					batch.draw(currentFrame, this.the_player.x - 16, this.the_player.y - 10, this.the_player.width*2, this.the_player.height*2);
@@ -884,6 +928,9 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 			UI(delta);
 
 		}
+
+
+
 		else{
 			checkrender();
 		}
@@ -927,10 +974,41 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 
 
 
+		if (UP) {
+			this.the_player.y += 1 * 16 * 3 * Gdx.graphics.getDeltaTime();
+		}
+		if (DOWN) {
+			this.the_player.y -= 1 * 16 * 3 * Gdx.graphics.getDeltaTime();
+		}
+		if (RIGHT) {
+			this.the_player.x += 1 * 16 * 3 * Gdx.graphics.getDeltaTime();
+		}
+		if (LEFT) {
+			this.the_player.x -= 1 * 16 * 3 * Gdx.graphics.getDeltaTime();
+		}
+		if (UPRIGHT) {
+			this.the_player.x += 1 * 16 * 3 * Gdx.graphics.getDeltaTime();
+			this.the_player.y += 1 * 16 * 3 * Gdx.graphics.getDeltaTime();
+		}
+		if (UPLEFT) {
+			this.the_player.x -= 1 * 16 * 3 * Gdx.graphics.getDeltaTime();
+			this.the_player.y += 1 * 16 * 3 * Gdx.graphics.getDeltaTime();
+		}
+		if (DOWNRIGHT) {
+			this.the_player.x += 1 * 16 * 3 * Gdx.graphics.getDeltaTime();
+			this.the_player.y -= 1 * 16 * 3 * Gdx.graphics.getDeltaTime();
+		}
+		if (DOWNLEFT) {
+			this.the_player.x -= 1 * 16 * 3 * Gdx.graphics.getDeltaTime();
+			this.the_player.y -= 1 * 16 * 3 * Gdx.graphics.getDeltaTime();
+		}
 
 
 
-		 //if (this.playerNode)
+
+
+
+	//if (this.playerNode)
 		if (moving) {
 			double closestNodefloat;
 			double closestNodefloatold = 0;

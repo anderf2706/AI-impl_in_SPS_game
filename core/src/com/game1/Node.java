@@ -220,9 +220,12 @@ public class Node implements Serializable, DistanceObjects {
 				if (j == 0) {
 					myBiome.mountain(this, 150);
 				}
+				/*
 				if (!this.occupied) {
 					myBiome.animal_1(this, 500);
 				}
+
+				 */
 
 				return;
 			}

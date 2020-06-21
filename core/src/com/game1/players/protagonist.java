@@ -44,7 +44,7 @@ public class protagonist extends Player {
 		this.the_player.height = 30;
 		this.the_player.width = 30;
 		this.health = 100;
-		this.attack = 20;
+		this.attack = 5;
 		this.defense = 2;
 		this.speed = 10;
 

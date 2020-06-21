@@ -617,7 +617,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 			}
 		}
 
-		for (List<Node> list : listOfLists){
+		/*for (List<Node> list : listOfLists){
 			for(Node node : list){
 				if (node != null) {
 					if (node.occupied){
@@ -629,6 +629,8 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 			}
 
 		}
+
+		 */
 
 
 		if(chosenNode != null) {
