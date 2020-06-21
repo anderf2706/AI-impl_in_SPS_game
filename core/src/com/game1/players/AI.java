@@ -1,5 +1,6 @@
 package com.game1.players;
 
+import com.badlogic.gdx.Gdx;
 import com.game1.*;
 
 import java.util.*;
@@ -55,13 +56,47 @@ public class AI extends Player {
 
 
 		if (openList.size() > 0){
+			System.out.println("1");
 
 			chosedir(openList.get(0));
+			//this.the_player.y < openList.get(0).y
+			if(this.playerNode.id == openList.get(0).id + 1){
+				while (true) {
+					System.out.println("inne");
+					this.the_player.y += 1 * 16 * 3 * Gdx.graphics.getDeltaTime();
+				}
+
+			}
+			if (this.playerNode.id == openList.get(0).id + (1+gamescreen.nodewidth)){
+
+			}
+			if (this.playerNode.id == openList.get(0).id + (1-gamescreen.nodewidth)){
+
+			}
+			if (this.playerNode.id == openList.get(0).id - 1){
+
+			}
+			if (this.playerNode.id == openList.get(0).id + ((-1) + gamescreen.nodewidth)){
+
+			}
+			if (openList.get(0).id == this.playerNode.id + ((-1) - gamescreen.nodewidth)){
+
+			}
+			if (this.playerNode.id == openList.get(0).id + gamescreen.nodewidth){
+
+			}
+			if (this.playerNode.id == openList.get(0).id - gamescreen.nodewidth){
+
+			}
+
+			/*
 			this.playerNode.occupied = false;
 			this.playerNode = openList.get(0);
 			this.the_player.x = this.playerNode.x - 16;
 			this.the_player.y = this.playerNode.y - 16;
 			this.playerNode.occupied = true;
+
+			 */
 		}
 
 		if (health <= 0){

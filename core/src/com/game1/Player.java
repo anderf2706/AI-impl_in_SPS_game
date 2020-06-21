@@ -326,7 +326,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 	
 	public void move(final Building building) {
 		dush = 0;
-		if(dush < finalpath.size() && !executed) {
+		if(dush < finalpath.size()) {
 			if(t != null){
 				t.cancel();
 			}
@@ -337,6 +337,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 				public void run() {
 					// TODO Auto-generated method stub
 					if (dush < finalpath.size()) {
+						/*
 						UP = false;
 						DOWN = false;
 						RIGHT = false;
@@ -345,10 +346,13 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 						UPLEFT = false;
 						DOWNLEFT = false;
 						DOWNRIGHT = false;
+
+						 */
 						move_t(dush);
 					}
 					else{
 						t.cancel();
+
 					}
 
 			    }
@@ -359,10 +363,19 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 		
 	public void move_t(int b) {
 		final Node nextnode = finalpath.get(b);
+		/*
+		if (b == finalpath.size() - 1){
+			this.playerNode = finalpath.get(b);
+			return;
+		}
+
+		 */
 		this.moving = true;
+		/*
 		if (nextnode.id == this.playerNode.id + 1){
 			spritedir = 1;
 			UP = true;
+
 
 		}
 
@@ -401,12 +414,14 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 			LEFT = true;
 		}
 
-		/*
+		 */
+
+
 		this.the_player.x = nextnode.x - the_player.width/2;
 		this.the_player.y = nextnode.y - the_player.height/2;
 
 
-		 */
+
 
 		if(colliding) {
 				
@@ -670,7 +685,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 			playerChosen = true;
 		}
 
-		executed = false;
+		executed= false;
 		return false;
 	}
 
@@ -973,7 +988,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 		}
 
 
-
+		/*
 		if (UP) {
 			this.the_player.y += 1 * 16 * 3 * Gdx.graphics.getDeltaTime();
 		}
@@ -1002,6 +1017,8 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 			this.the_player.x -= 1 * 16 * 3 * Gdx.graphics.getDeltaTime();
 			this.the_player.y -= 1 * 16 * 3 * Gdx.graphics.getDeltaTime();
 		}
+
+		 */
 
 
 
