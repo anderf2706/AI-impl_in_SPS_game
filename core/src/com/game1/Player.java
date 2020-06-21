@@ -45,14 +45,14 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 
 
 
-	boolean UP = false;
-	boolean DOWN = false;
-	boolean RIGHT = false;
-	boolean LEFT = false;
-	boolean UPRIGHT = false;
-	boolean UPLEFT = false;
-	boolean DOWNRIGHT = false;
-	boolean DOWNLEFT = false;
+	public boolean UP = false;
+	public boolean DOWN = false;
+	public boolean RIGHT = false;
+	public boolean LEFT = false;
+	public boolean UPRIGHT = false;
+	public boolean UPLEFT = false;
+	public boolean DOWNRIGHT = false;
+	public boolean DOWNLEFT = false;
 
 
 
@@ -988,7 +988,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 		}
 
 
-		/*
+
 		if (UP) {
 			this.the_player.y += 1 * 16 * 3 * Gdx.graphics.getDeltaTime();
 		}
@@ -1018,7 +1018,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 			this.the_player.y -= 1 * 16 * 3 * Gdx.graphics.getDeltaTime();
 		}
 
-		 */
+
 
 
 
