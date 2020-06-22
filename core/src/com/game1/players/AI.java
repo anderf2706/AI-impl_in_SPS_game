@@ -10,6 +10,7 @@ public class AI extends Player {
 	public GameScreen gamescreen;
 	Random rand;
 	int speed;
+	Node lastnode;
 
 	public AI(Node node, GameScreen gamescreen, Game1 game, int x, int y, int team, int speed) {
 		super(null, node, gamescreen, game, x, y, team);
@@ -27,11 +28,11 @@ public class AI extends Player {
 
 	}
 
-	public void monitorwalk(){
+	public void monitorwalk(Node lastnode) {
 		Node menode = gamescreen.me.playerNode;
 		ArrayList<Node> openList = new ArrayList<Node>();
 
-		for (Node node: playerNode.adjecent
+		for (Node node : playerNode.adjecent
 		) {
 
 			if (!node.occupied) {
@@ -42,7 +43,7 @@ public class AI extends Player {
 				}
 				node.h = Math.max(Math.abs(node.x - menode.x), Math.abs(node.y - menode.y));
 				node.f = node.h + node.cost;
-				if(node.f < 200){
+				if (node.f < 200) {
 					openList.add(node);
 				}
 			}
@@ -53,112 +54,80 @@ public class AI extends Player {
 				return Double.compare(n1.f, n2.f);
 			}
 		});
+		if (this.playerNode.adjecent.contains(gamescreen.me.playerNode)) {
+			this.moving = false;
+			return;
+		}
 
 
-		if (openList.size() > 0){
-			System.out.println("1");
+			UP = false;
+			DOWN = false;
+			RIGHT = false;
+			LEFT = false;
+			UPRIGHT = false;
+			UPLEFT = false;
+			DOWNRIGHT = false;
+			DOWNLEFT = false;
+			if (lastnode == null) {
 
-			chosedir(openList.get(0));
-			//this.the_player.y < openList.get(0).y
-			if(this.playerNode.id + 1 == openList.get(0).id){
-				if (this.the_player.y < openList.get(0).y - 16) {
+			} else {
+				this.the_player.x = lastnode.x - 16;
+				this.the_player.y = lastnode.y - 16;
+				this.playerNode = lastnode;
+			}
+
+
+			if (openList.size() > 0) {
+				System.out.println("1");
+				this.lastnode = openList.get(0);
+
+				this.moving = true;
+				chosedir(openList.get(0));
+
+				//this.the_player.y < openList.get(0).y
+				if (this.playerNode.id + 1 == openList.get(0).id) {
 					System.out.println("inne");
 					UP = true;
-				}
-				else {
-					UP = false;
-					this.playerNode = openList.get(0);
-					this.the_player.x = this.playerNode.x - 16;
-					this.the_player.y = this.playerNode.y - 16;
-					this.playerNode.occupied = true;
-				}
-
-			}
-			if (this.playerNode.id + (1+gamescreen.nodewidth) == openList.get(0).id){
-				if (this.the_player.y < openList.get(0).y - 16) {
-					System.out.println("inne");
-					UPRIGHT = true;
-				}
-				else {
-					UPRIGHT = false;
-					this.playerNode = openList.get(0);
-					this.the_player.x = this.playerNode.x - 16;
-					this.the_player.y = this.playerNode.y - 16;
 
 				}
-			}
-			if (this.playerNode.id  + (1-gamescreen.nodewidth) == openList.get(0).id){
-				if (this.the_player.y < openList.get(0).y) {
+				if (this.playerNode.id + (1 + gamescreen.nodewidth) == openList.get(0).id) {
 					System.out.println("inne");
-					UPLEFT = true;
+					UP = true;
+					RIGHT = true;
+
 				}
-				else {
-					UPLEFT = false;
-					this.playerNode = openList.get(0);
-					this.the_player.x = this.playerNode.x - 16;
-					this.the_player.y = this.playerNode.y - 16;
+				if (this.playerNode.id + (1 - gamescreen.nodewidth) == openList.get(0).id) {
+					System.out.println("inne");
+					UP = true;
+					LEFT = true;
+
 				}
-			}
-			if (this.playerNode.id  - 1 == openList.get(0).id){
-				if (this.the_player.y > openList.get(0).y) {
+				if (this.playerNode.id - 1 == openList.get(0).id) {
 					System.out.println("inne");
 					DOWN = true;
+
 				}
-				else {
-					DOWN = false;
-					this.playerNode = openList.get(0);
-					this.the_player.x = this.playerNode.x - 16;
-					this.the_player.y = this.playerNode.y - 16;
-				}
-			}
-			if (this.playerNode.id  + ((-1) + gamescreen.nodewidth) == openList.get(0).id){
-				if (this.the_player.y > openList.get(0).y) {
+				if (this.playerNode.id + ((-1) + gamescreen.nodewidth) == openList.get(0).id) {
 					System.out.println("inne");
-					DOWNRIGHT = true;
+					DOWN = true;
+					RIGHT = true;
+
 				}
-				else {
-					DOWNRIGHT = false;
-					this.playerNode = openList.get(0);
-					this.the_player.x = this.playerNode.x - 16;
-					this.the_player.y = this.playerNode.y - 16;
-				}
-			}
-			if (openList.get(0).id  + ((-1) - gamescreen.nodewidth) == this.playerNode.id){
-				if (this.the_player.y > openList.get(0).y) {
+				if (openList.get(0).id + ((-1) - gamescreen.nodewidth) == this.playerNode.id) {
 					System.out.println("inne");
-					DOWNLEFT = true;
+					DOWN = true;
+					LEFT = true;
+
 				}
-				else {
-					DOWNLEFT = false;
-					this.playerNode = openList.get(0);
-					this.the_player.x = this.playerNode.x - 16;
-					this.the_player.y = this.playerNode.y - 16;
-				}
-			}
-			if (this.playerNode.id + gamescreen.nodewidth == openList.get(0).id ){
-				if (this.the_player.x < openList.get(0).x) {
+				if (this.playerNode.id + gamescreen.nodewidth == openList.get(0).id) {
 					System.out.println("inne");
 					RIGHT = true;
 				}
-				else {
-					RIGHT = false;
-					this.playerNode = openList.get(0);
-					this.the_player.x = this.playerNode.x - 16;
-					this.the_player.y = this.playerNode.y - 16;
-				}
-			}
-			if (this.playerNode.id - gamescreen.nodewidth == openList.get(0).id){
-				if (this.the_player.x > openList.get(0).x) {
+				if (this.playerNode.id - gamescreen.nodewidth == openList.get(0).id) {
 					System.out.println("inne");
 					LEFT = true;
+
 				}
-				else {
-					LEFT = false;
-					this.playerNode = openList.get(0);
-					this.the_player.x = this.playerNode.x - 16;
-					this.the_player.y = this.playerNode.y - 16;
-				}
-			}
 
 			/*
 			this.playerNode.occupied = false;
@@ -168,17 +137,19 @@ public class AI extends Player {
 			this.playerNode.occupied = true;
 
 			 */
-		}
+			}
 
-		if (health <= 0){
-			this.dispose();
-		}
+			if (health <= 0) {
+				this.dispose();
+			}
+
 
 	}
 
+
 	class monitortimer extends TimerTask {
 		public void run() {
-			monitorwalk();
+			monitorwalk(lastnode);
 		}
 	}
 
@@ -190,6 +161,42 @@ public class AI extends Player {
 
 		}
 
+	}
+
+	@Override
+	protected void movesmooth() {
+		super.movesmooth();
+		if (UP) {
+			this.the_player.y += 1 * 16 * 2 * Gdx.graphics.getDeltaTime();
+		}
+		if (DOWN) {
+			this.the_player.y -= 1 * 16 * 2 * Gdx.graphics.getDeltaTime();
+		}
+		if (RIGHT) {
+			this.the_player.x += 1 * 16 * 2 * Gdx.graphics.getDeltaTime();
+		}
+		if (LEFT) {
+			this.the_player.x -= 1 * 16 * 2* Gdx.graphics.getDeltaTime();
+		}
+		/*
+		if (UPRIGHT) {
+			this.the_player.x += 1 * 16 * 2 * Gdx.graphics.getDeltaTime();
+			this.the_player.y += 1 * 16 * 2* Gdx.graphics.getDeltaTime();
+		}
+		if (UPLEFT) {
+			this.the_player.x -= 1 * 16 * 2 * Gdx.graphics.getDeltaTime();
+			this.the_player.y += 1 * 16 * 2 * Gdx.graphics.getDeltaTime();
+		}
+		if (DOWNRIGHT) {
+			this.the_player.x += 1 * 16 * 2 * Gdx.graphics.getDeltaTime();
+			this.the_player.y -= 1 * 16 * 2 * Gdx.graphics.getDeltaTime();
+		}
+		if (DOWNLEFT) {
+			this.the_player.x -= 1 * 16 * 2 * Gdx.graphics.getDeltaTime();
+			this.the_player.y -= 1 * 16 * 2 * Gdx.graphics.getDeltaTime();
+		}
+
+		 */
 	}
 
 	public void walkaroundwalk(){

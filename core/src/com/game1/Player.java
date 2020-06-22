@@ -116,7 +116,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 
 	boolean executed = false;
 	boolean colliding = false;
-	boolean attacking = false;
+	public boolean attacking = false;
 
 
 	int objectLayerId = 2;
@@ -146,7 +146,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 	public boolean isAttacking = false;
 	
 	boolean playerChosen = false;
-	boolean moving = false;
+	public boolean moving = false;
 	boolean following = false;
 
 	A_star astar;
@@ -974,6 +974,10 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 			}
 		}
 	}
+
+	protected void movesmooth(){
+
+    }
 	
 	public void check_player() {
 
@@ -988,35 +992,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 		}
 
 
-
-		if (UP) {
-			this.the_player.y += 1 * 16 * 3 * Gdx.graphics.getDeltaTime();
-		}
-		if (DOWN) {
-			this.the_player.y -= 1 * 16 * 3 * Gdx.graphics.getDeltaTime();
-		}
-		if (RIGHT) {
-			this.the_player.x += 1 * 16 * 3 * Gdx.graphics.getDeltaTime();
-		}
-		if (LEFT) {
-			this.the_player.x -= 1 * 16 * 3 * Gdx.graphics.getDeltaTime();
-		}
-		if (UPRIGHT) {
-			this.the_player.x += 1 * 16 * 3 * Gdx.graphics.getDeltaTime();
-			this.the_player.y += 1 * 16 * 3 * Gdx.graphics.getDeltaTime();
-		}
-		if (UPLEFT) {
-			this.the_player.x -= 1 * 16 * 3 * Gdx.graphics.getDeltaTime();
-			this.the_player.y += 1 * 16 * 3 * Gdx.graphics.getDeltaTime();
-		}
-		if (DOWNRIGHT) {
-			this.the_player.x += 1 * 16 * 3 * Gdx.graphics.getDeltaTime();
-			this.the_player.y -= 1 * 16 * 3 * Gdx.graphics.getDeltaTime();
-		}
-		if (DOWNLEFT) {
-			this.the_player.x -= 1 * 16 * 3 * Gdx.graphics.getDeltaTime();
-			this.the_player.y -= 1 * 16 * 3 * Gdx.graphics.getDeltaTime();
-		}
+		movesmooth();
 
 
 
