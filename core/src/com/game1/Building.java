@@ -40,8 +40,10 @@ public class Building implements InputProcessor, Screen, DistanceObjects{
 
 	int texturewidth;
 	int textureheight;
+	int texture_x;
+	int texture_y;
 	
-	public Building(GameScreen gamescreen, int x, int y, int width, int height, int texturewidth, int textureheight, int team) {
+	public Building(GameScreen gamescreen, int x, int y, int width, int height,int texture_x, int texture_y, int texturewidth, int textureheight, int team) {
 
 		this.gamescreen = gamescreen;
 		this.team = team;
@@ -50,15 +52,14 @@ public class Building implements InputProcessor, Screen, DistanceObjects{
 		the_building.width = width;
 		this.texturewidth = texturewidth;
 		this.textureheight = textureheight;
-		the_building.x = x - the_building.width / 2;
-		the_building.y= y - the_building.height / 2;
+		this.texture_x = texture_x;
+		this.texture_y = texture_y;
+		the_building.x = x ;
+		the_building.y= y ;
 			for (Node node : gamescreen.allnodes){
 				if(Intersector.overlaps(node.body, the_building)) {
 					this.buildingnode = gamescreen.chosenNode;
-
-					if(!(this instanceof Gate)) {
 						node.occupied = true;
-					}
 				}
 			}
 		if (this.team == 0){
@@ -114,7 +115,7 @@ public class Building implements InputProcessor, Screen, DistanceObjects{
 
 	public void batch(SpriteBatch batch) {
 		
-		batch.draw(building, the_building.x, the_building.y, texturewidth, textureheight);
+		batch.draw(building, texture_x, texture_y, texturewidth, textureheight);
 		
 		if(buildingChosen) {
 			batch.draw(green, the_building.x, the_building.y + 75, 50, 10);

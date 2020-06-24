@@ -19,9 +19,9 @@ public class Barracks extends Building {
 
 
 	public Barracks(GameScreen gamescreen, int x, int y, int team) {
-		super(gamescreen, x, y, 32*4-2, 32*3-2, 32*4, 32*4, team);
+		super(gamescreen, x -64, y -64, 32*4-2, 20*3, x - 76,y - 86, 32*4 + 20, 32*4 + 10, team);
 		this.gamescreen = gamescreen;
-		building = new Texture(Gdx.files.internal("Grassland/building_3"));
+		building = new Texture(Gdx.files.internal("Grassland/building_3.png"));
 
 		// TODO Auto-generated constructor stub
 

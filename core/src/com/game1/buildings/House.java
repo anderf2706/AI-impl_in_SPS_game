@@ -10,7 +10,7 @@ import java.util.Random;
 public class House extends Building {
 
 	public House(GameScreen gamescreen, int x, int y, int team) {
-		super(gamescreen, x , y + 30, 32*3 - 2, 44, 96, 96, team);
+		super(gamescreen, x - 48 , y - 48, 40*2 , 40, x - 96/2,y - 53, 96, 96, team);
 		Random random = new Random();
 		int rand = random.nextInt(3 - 1 + 1) + 1;
 		switch (rand){

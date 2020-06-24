@@ -9,7 +9,7 @@ import com.game1.huds.BuildingHud;
 public class Gate extends Building {
 
 	public Gate(GameScreen gamescreen, int x, int y, int team) {
-		super(gamescreen, x, y, 64, 32, 64, 64, team );
+		super(gamescreen, x - 32, y - 32, 40, 32, x- 48, y -48, 64, 64, team );
 		building = new Texture(Gdx.files.internal("Grassland/City/buildings/building_3/building_5.png"));
 		// TODO Auto-generated constructor stub
 

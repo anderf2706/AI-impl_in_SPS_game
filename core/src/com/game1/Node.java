@@ -5,6 +5,10 @@ import java.util.*;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
+import com.game1.buildings.Gate;
+import com.game1.buildings.Palicade_H;
+import com.game1.buildings.Palicade_V;
+import com.game1.buildings.Wall_H;
 
 
 public class Node implements Serializable, DistanceObjects {
@@ -76,14 +80,17 @@ public class Node implements Serializable, DistanceObjects {
 	}
 
 	public void checkrender(){
-		for (DistanceObjects object : gamescreen.team_0){
-			double ac = Math.abs(object.getY() - this.y);
-			double cb = Math.abs(object.getX() - this.x);
+		for (DistanceObjects object : gamescreen.team_0) {
+			if (!object.getClass().equals(Wall_H.class) && !object.getClass().equals(Palicade_H.class) && !object.getClass().equals(Palicade_V.class)
+			&& !object.getClass().equals(Gate.class)) {
+				double ac = Math.abs(object.getY() - this.y);
+				double cb = Math.abs(object.getX() - this.x);
 
-			double h = Math.hypot(ac, cb);
-			if (h < 200){
-				render = true;
-				return;
+				double h = Math.hypot(ac, cb);
+				if (h < 200) {
+					render = true;
+					return;
+				}
 			}
 		}
 		render = false;

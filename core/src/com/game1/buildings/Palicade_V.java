@@ -9,8 +9,8 @@ import com.game1.huds.BuildingHud;
 public class Palicade_V extends Building {
 
     public Palicade_V(GameScreen gamescreen, int x, int y, int team) {
-        super(gamescreen, x + 8, y, 16, 32, 32, 32, team );
-            building = new Texture(Gdx.files.internal("Tropical/decor_3.png"));
+        super(gamescreen, x - 16, y - 16, 20, 20, x - 4, y - 16, 8,  40, team );
+            building = new Texture(Gdx.files.internal("Grassland/decor_15.png"));
 
         // TODO Auto-generated constructor stub
 

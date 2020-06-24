@@ -155,6 +155,7 @@ public class  Playerhud extends Hud {
 				gamescreen.makeGate = false;
 				gamescreen.makeMine = false;
 				gamescreen.makeTowncenter = false;
+				gamescreen.makeTower = false;
 				gamescreen.makeBarracks = !gamescreen.makeBarracks;
 			}
 		});
@@ -164,7 +165,7 @@ public class  Playerhud extends Hud {
 		housebutton.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				gamescreen.makeHouse = false;
+				gamescreen.makeBarracks = false;
 				gamescreen.makeWall_H = false;
 				gamescreen.makeWall_V = false;
 				gamescreen.makePalicade_H = false;
@@ -173,6 +174,7 @@ public class  Playerhud extends Hud {
 				gamescreen.makeGate = false;
 				gamescreen.makeMine = false;
 				gamescreen.makeTowncenter = false;
+				gamescreen.makeTower = false;
 
 				gamescreen.makeHouse = !gamescreen.makeHouse;
 			}
@@ -189,21 +191,22 @@ public class  Playerhud extends Hud {
 				gamescreen.makePalicade_H = false;
 				gamescreen.makePalicade_V = false;
 				gamescreen.makeCastle = false;
-				gamescreen.makeGate = false;
+				gamescreen.makeBarracks = false;
 				gamescreen.makeMine = false;
 				gamescreen.makeTowncenter = false;
+				gamescreen.makeTower = false;
 
 				gamescreen.makeGate = !gamescreen.makeGate;
 			}
 		});
 
-		Button wall_hbutton = new TextButton("Wall_H", super.skin);
+		Button wall_hbutton = new TextButton("Wall", super.skin);
 		wall_hbutton.setPosition(gatebutton.getX() + gatebutton.getWidth(), 25);
 		wall_hbutton.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				gamescreen.makeHouse = false;
-				gamescreen.makeWall_H = false;
+				gamescreen.makeBarracks = false;
 				gamescreen.makeWall_V = false;
 				gamescreen.makePalicade_H = false;
 				gamescreen.makePalicade_V = false;
@@ -211,44 +214,29 @@ public class  Playerhud extends Hud {
 				gamescreen.makeGate = false;
 				gamescreen.makeMine = false;
 				gamescreen.makeTowncenter = false;
+				gamescreen.makeTower = false;
 
 				gamescreen.makeWall_H = !gamescreen.makeWall_H;
 			}
 		});
 
-		Button wall_vbutton = new TextButton("Wall_V", super.skin);
-		wall_vbutton.setPosition(wall_hbutton.getX() + wall_hbutton.getWidth(), 25);
-		wall_vbutton.addListener( new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				gamescreen.makeHouse = false;
-				gamescreen.makeWall_H = false;
-				gamescreen.makeWall_V = false;
-				gamescreen.makePalicade_H = false;
-				gamescreen.makePalicade_V = false;
-				gamescreen.makeCastle = false;
-				gamescreen.makeGate = false;
-				gamescreen.makeMine = false;
-				gamescreen.makeTowncenter = false;
 
-				gamescreen.makeWall_V = !gamescreen.makeWall_V;
-			}
-		});
 
 		Button palicade_hbutton = new TextButton("Palisade_H", super.skin);
-		palicade_hbutton.setPosition(wall_vbutton.getX() + wall_vbutton.getWidth(), 25);
+		palicade_hbutton.setPosition(wall_hbutton.getX() + wall_hbutton.getWidth(), 25);
 		palicade_hbutton.addListener( new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				gamescreen.makeHouse = false;
 				gamescreen.makeWall_H = false;
 				gamescreen.makeWall_V = false;
-				gamescreen.makePalicade_H = false;
+				gamescreen.makeBarracks = false;
 				gamescreen.makePalicade_V = false;
 				gamescreen.makeCastle = false;
 				gamescreen.makeGate = false;
 				gamescreen.makeMine = false;
 				gamescreen.makeTowncenter = false;
+				gamescreen.makeTower = false;
 
 				gamescreen.makePalicade_H = !gamescreen.makePalicade_H;
 			}
@@ -263,11 +251,12 @@ public class  Playerhud extends Hud {
 				gamescreen.makeWall_H = false;
 				gamescreen.makeWall_V = false;
 				gamescreen.makePalicade_H = false;
-				gamescreen.makePalicade_V = false;
+				gamescreen.makeBarracks = false;
 				gamescreen.makeCastle = false;
 				gamescreen.makeGate = false;
 				gamescreen.makeMine = false;
 				gamescreen.makeTowncenter = false;
+				gamescreen.makeTower = false;
 				gamescreen.makePalicade_V = !gamescreen.makePalicade_V;
 			}
 		});
@@ -282,10 +271,11 @@ public class  Playerhud extends Hud {
 				gamescreen.makeWall_V = false;
 				gamescreen.makePalicade_H = false;
 				gamescreen.makePalicade_V = false;
-				gamescreen.makeCastle = false;
+				gamescreen.makeBarracks = false;
 				gamescreen.makeGate = false;
 				gamescreen.makeMine = false;
 				gamescreen.makeTowncenter = false;
+				gamescreen.makeTower = false;
 
 				gamescreen.makeCastle = !gamescreen.makeCastle;
 			}
@@ -303,8 +293,9 @@ public class  Playerhud extends Hud {
 				gamescreen.makePalicade_V = false;
 				gamescreen.makeCastle = false;
 				gamescreen.makeGate = false;
-				gamescreen.makeMine = false;
+				gamescreen.makeBarracks = false;
 				gamescreen.makeTowncenter = false;
+				gamescreen.makeTower = false;
 
 				gamescreen.makeMine = !gamescreen.makeMine;
 			}
@@ -323,9 +314,29 @@ public class  Playerhud extends Hud {
 				gamescreen.makeCastle = false;
 				gamescreen.makeGate = false;
 				gamescreen.makeMine = false;
-				gamescreen.makeTowncenter = false;
+				gamescreen.makeBarracks = false;
+				gamescreen.makeTower = false;
 
 				gamescreen.makeTowncenter= !gamescreen.makeTowncenter;
+			}
+		});
+
+		Button towerbutton = new TextButton("Tower", super.skin);
+		towerbutton.setPosition(towncenterbutton.getX() + towncenterbutton.getWidth(), 25);
+		towerbutton.addListener( new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				gamescreen.makeHouse = false;
+				gamescreen.makeBarracks = false;
+				gamescreen.makeWall_V = false;
+				gamescreen.makePalicade_H = false;
+				gamescreen.makePalicade_V = false;
+				gamescreen.makeCastle = false;
+				gamescreen.makeGate = false;
+				gamescreen.makeMine = false;
+				gamescreen.makeTowncenter = false;
+
+				gamescreen.makeTower = !gamescreen.makeTower;
 			}
 		});
 
@@ -407,12 +418,12 @@ public class  Playerhud extends Hud {
 		buildertable.addActor(barracksbutton);
 		buildertable.addActor(housebutton);
 		buildertable.addActor(wall_hbutton);
-		buildertable.addActor(wall_vbutton);
 		buildertable.addActor(palicade_hbutton);
 		buildertable.addActor(palicade_vbutton);
 		buildertable.addActor(castlebutton);
 		buildertable.addActor(gatebutton);
 		buildertable.addActor(minebutton);
+		buildertable.addActor(towerbutton);
 		buildertable.addActor(towncenterbutton);
 
 		playstattable.addActor(playerbutton);

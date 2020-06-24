@@ -17,14 +17,14 @@ public class MakingBuildings{
 
             for (int i = 0; i < this.gamescreen.buildings.size(); i++) {
 
-                if((Intersector.overlaps(new Rectangle(gamescreen.chosenNode.x - 64, gamescreen.chosenNode.y - 64, 32*4, 32*4), gamescreen.buildings.get(i).the_building))){
+                if((Intersector.overlaps(new Rectangle(gamescreen.chosenNode.x - 64, gamescreen.chosenNode.y - 64, 32*4, 32*3), gamescreen.buildings.get(i).the_building))){
 
                     return;
                 }
             }
             for (int i = 0; i < this.gamescreen.nature.size(); i++) {
 
-                if((Intersector.overlaps(new Rectangle(gamescreen.chosenNode.x - 64, gamescreen.chosenNode.y - 64, 32*4, 32*4), gamescreen.nature.get(i).the_nature))){
+                if((Intersector.overlaps(new Rectangle(gamescreen.chosenNode.x - 64, gamescreen.chosenNode.y - 64, 32*4, 32*3), gamescreen.nature.get(i).the_nature))){
 
                     return;
                 }
@@ -60,7 +60,7 @@ public class MakingBuildings{
             }
 
 
-            if(gamescreen.chosenNode == null) {
+            if(gamescreen.chosenNode == null && gamescreen.chosenNode.adjecent.contains(null)) {
                 return;
             }
 
@@ -70,7 +70,7 @@ public class MakingBuildings{
         }
 
         public void makePalicade_H() {
-
+            /*
             for (int i = 0; i < this.gamescreen.buildings.size(); i++) {
 
                 if((Intersector.overlaps(new Rectangle(gamescreen.chosenNode.x - 16, gamescreen.chosenNode.y - 16, 32, 32), gamescreen.buildings.get(i).the_building))){
@@ -86,8 +86,16 @@ public class MakingBuildings{
                 }
             }
 
-            if(gamescreen.chosenNode == null) {
+             */
+
+
+            if(gamescreen.chosenNode == null && gamescreen.chosenNode.adjecent.contains(null)) {
                 return;
+            }
+            else{
+                if (gamescreen.chosenNode.occupied){
+                    return;
+                }
             }
 
 
@@ -96,6 +104,7 @@ public class MakingBuildings{
         }
 
     public void makePalicade_V() {
+        /*
 
         for (int i = 0; i < this.gamescreen.buildings.size(); i++) {
 
@@ -112,16 +121,24 @@ public class MakingBuildings{
             }
         }
 
-        if(gamescreen.chosenNode == null) {
+         */
+
+        if(gamescreen.chosenNode == null && gamescreen.chosenNode.adjecent.contains(null)) {
             return;
+        }
+        else{
+            if (gamescreen.chosenNode.occupied){
+                return;
+            }
         }
 
 
-        new Palicade_H(gamescreen, gamescreen.chosenNode.x, gamescreen.chosenNode.y, gamescreen.team);
+        new Palicade_V(gamescreen, gamescreen.chosenNode.x, gamescreen.chosenNode.y, gamescreen.team);
 
     }
 
     public void makeWall_H() {
+        /*
 
         for (int i = 0; i < this.gamescreen.buildings.size(); i++) {
 
@@ -138,8 +155,15 @@ public class MakingBuildings{
             }
         }
 
-        if(gamescreen.chosenNode == null) {
+         */
+
+        if(gamescreen.chosenNode == null && gamescreen.chosenNode.adjecent.contains(null)) {
             return;
+        }
+        else{
+            if (gamescreen.chosenNode.occupied){
+                return;
+            }
         }
 
 
@@ -147,57 +171,62 @@ public class MakingBuildings{
 
     }
 
-    public void makeWall_V() {
+
+        public void makeCastle() {
 
         for (int i = 0; i < this.gamescreen.buildings.size(); i++) {
 
-            if((Intersector.overlaps(new Rectangle(gamescreen.chosenNode.x - 16, gamescreen.chosenNode.y - 16, 32, 32), gamescreen.buildings.get(i).the_building))){
+            if((Intersector.overlaps(new Rectangle(gamescreen.chosenNode.x - 76, gamescreen.chosenNode.y - 76, 32*6, 34), gamescreen.buildings.get(i).the_building))){
 
                 return;
             }
         }
         for (int i = 0; i < this.gamescreen.nature.size(); i++) {
 
-            if((Intersector.overlaps(new Rectangle(gamescreen.chosenNode.x - 16, gamescreen.chosenNode.y - 16, 32, 32), gamescreen.nature.get(i).the_nature))){
+            if((Intersector.overlaps(new Rectangle(gamescreen.chosenNode.x - 76, gamescreen.chosenNode.y - 76, 32*6, 34), gamescreen.nature.get(i).the_nature))){
 
                 return;
             }
         }
 
-        if(gamescreen.chosenNode == null) {
+        if(gamescreen.chosenNode == null && gamescreen.chosenNode.adjecent.contains(null)) {
             return;
         }
 
 
-        new Wall_V(gamescreen, gamescreen.chosenNode.x, gamescreen.chosenNode.y, gamescreen.team);
+
+
+        new Castle(gamescreen, gamescreen.chosenNode.x, gamescreen.chosenNode.y, gamescreen.team);
 
     }
 
-        public void makeCastle() {
+    public void makeTower() {
 
-            for (int i = 0; i < this.gamescreen.buildings.size(); i++) {
+        for (int i = 0; i < this.gamescreen.buildings.size(); i++) {
 
-                if((Intersector.overlaps(new Rectangle(gamescreen.chosenNode.x - 32*6/2, gamescreen.chosenNode.y - 32*4/2, 32*6, 32*4), gamescreen.buildings.get(i).the_building))){
+            if((Intersector.overlaps(new Rectangle(gamescreen.chosenNode.x - 32, gamescreen.chosenNode.y - 32, 32*2, 32*2), gamescreen.buildings.get(i).the_building))){
 
-                    return;
-                }
-            }
-            for (int i = 0; i < this.gamescreen.nature.size(); i++) {
-
-                if((Intersector.overlaps(new Rectangle(gamescreen.chosenNode.x - 32*6/2, gamescreen.chosenNode.y - 32*4/2, 32*6, 32*4), gamescreen.nature.get(i).the_nature))){
-
-                    return;
-                }
-            }
-
-            if(gamescreen.chosenNode == null && gamescreen.chosenNode.adjecent.contains(null)) {
                 return;
             }
-
-
-            new Castle(gamescreen, gamescreen.chosenNode.x, gamescreen.chosenNode.y, gamescreen.team);
-
         }
+        for (int i = 0; i < this.gamescreen.nature.size(); i++) {
+
+            if((Intersector.overlaps(new Rectangle(gamescreen.chosenNode.x - 32, gamescreen.chosenNode.y - 32, 32*2, 32*2), gamescreen.nature.get(i).the_nature))){
+
+                return;
+            }
+        }
+
+        if(gamescreen.chosenNode == null && gamescreen.chosenNode.adjecent.contains(null)) {
+                return;
+        }
+
+
+
+
+        new Tower(gamescreen, gamescreen.chosenNode.x, gamescreen.chosenNode.y, gamescreen.team);
+
+    }
 
         public void makeGate() {
             for (int i = 0; i < this.gamescreen.buildings.size(); i++) {

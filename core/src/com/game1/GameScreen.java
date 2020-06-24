@@ -89,6 +89,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	public boolean makeGate = false;
 	public boolean makeTowncenter = false;
 	public boolean makeMine = false;
+	public boolean makeTower = false;
 	////////////////////////////
 	boolean menu = false;
 	boolean rotate1 = false;
@@ -328,6 +329,52 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 	}
 
+	public void renderbuild(float delta){
+		if (makeBarracks) {
+			game.batch.draw(tex.barracks, the_mouse.x - 76, the_mouse.y - 86, 32 * 4 + 20, 32 * 4 + 10);
+
+		}
+		if (makeHouse){
+			game.batch.draw(tex.house, the_mouse.x - 48, the_mouse.y - 53, 96, 96);
+
+		}
+		if (makePalicade_H){
+			game.batch.draw(tex.palicade, the_mouse.x - 16, the_mouse.y - 16, 32, 64);
+
+		}
+		if (makePalicade_V){
+			game.batch.draw(tex.palicade, the_mouse.x - 4, the_mouse.y - 16, 8, 40);
+
+		}
+		if (makeWall_H){
+			game.batch.draw(tex.wall, the_mouse.x - 16, the_mouse.y - 16, 32, 64);
+
+		}
+		if (makeCastle){
+			game.batch.draw(tex.castle, the_mouse.x - 96, the_mouse.y - 96, 32* 6 + 40, 32*6 + 20);
+
+		}
+		if (makeGate){
+			game.batch.draw(tex.gate, the_mouse.x - 48, the_mouse.y - 48, 64, 64);
+
+		}
+		if (makeTowncenter){
+			game.batch.draw(tex.towncenter, the_mouse.x - 100, the_mouse.y - 80, 32*6 + 40, 32*5);
+
+		}
+		if (makeMine){
+			game.batch.draw(tex.mine, the_mouse.x - 48, the_mouse.y - 20, 64, 64);
+
+		}
+		if (makeTower){
+		game.batch.draw(tex.tower, the_mouse.x - 64, the_mouse.y - 64, 84, 32*8);
+
+		}
+
+
+
+	}
+
 
 	public Node findavailablenode(Node playerNode){
 		ArrayList<ArrayList> available_nodes = new ArrayList<ArrayList>();
@@ -562,6 +609,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
         game.batch.begin();
 
+
 		for (List<Node> list : listOfLists){
 		    for(Node node : list){
 		    	if (node != null) {
@@ -577,6 +625,9 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 
         }
+
+		renderbuild(delta);
+
 
 
 		for (int j = 36; j >= 0; j--) {
@@ -905,13 +956,12 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		if(	keycode == Input.Keys.D) {
 			if (cameraonplayer) {
 				RMA = true;
-			}
-            }
-			else {
+			} else {
 				if (D) {
 					renderboolean = true;
 					right = 1;
 					cmerasafe_x += 64;
+					System.out.println("D");
 
 					ArrayList<Node> templist = new ArrayList<Node>();
 					Node node1;
@@ -955,6 +1005,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 				}
 			}
+		}
 
 
 
@@ -968,6 +1019,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 				if (A) {
 					left = -1;
 					cmerasafe_x -= 64;
+					System.out.println("A");
 					ArrayList<Node> templist = new ArrayList<Node>();
 					Node node1;
 					if (cmerasafe_x >= cmerasafe_x_min) {
@@ -1022,6 +1074,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 				if (W) {
 
 					up = 1;
+					System.out.println("W");
 					Node node;
 					Node node2;
 
@@ -1054,6 +1107,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 					Node node;
 					Node node2;
 					down = -1;
+					System.out.println("S");
 					try {
 						node = nodedict.get(listOfLists.get(0).get(0).id - 1);
 						node2 = nodedict.get(listOfLists.get(0).get(0).id - 2);
@@ -1285,6 +1339,12 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		if(makeWall_H && button == Input.Buttons.LEFT) {
 			MakeBuilding.makeWall_H();
 		}
+		if(makePalicade_H && button == Input.Buttons.LEFT) {
+			MakeBuilding.makePalicade_H();
+		}
+		if(makePalicade_V && button == Input.Buttons.LEFT) {
+			MakeBuilding.makePalicade_V();
+		}
 		if(makeCastle && button == Input.Buttons.LEFT) {
 			MakeBuilding.makeCastle();
 			makeCastle = !makeCastle;
@@ -1300,7 +1360,11 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		if (makeMine && button == Input.Buttons.LEFT){
 			MakeBuilding.makeMine();
 			makeMine = !makeMine;
+		}if (makeTower && button == Input.Buttons.LEFT){
+			MakeBuilding.makeTower();
+			makeTower = !makeTower;
 		}
+
 
 		return false;
 			

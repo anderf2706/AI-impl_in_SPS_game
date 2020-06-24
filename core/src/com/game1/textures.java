@@ -288,8 +288,9 @@ public class textures {
 	public Texture barrel;
 	public Texture road;
 	public Texture castle;
-	public Texture pavement;
+	public Texture palicade;
 	public Texture mine;
+	public Texture tower;
 
 
 
@@ -603,6 +604,11 @@ public class textures {
 		road =  new Texture(Gdx.files.internal("Grassland/City/road/road_17.png"));
 		gate = new Texture(Gdx.files.internal("Grassland/City/buildings/building_3/building_5.png"));
 		mine = new Texture(Gdx.files.internal("Tropical/City/buildings/building_18/building_1.png"));
+		wall = new Texture(Gdx.files.internal("Grassland/City/buildings/building_1/building_7.png"));
+		palicade = new Texture(Gdx.files.internal("Grassland/decor_15.png"));
+		castle = new Texture(Gdx.files.internal("Grassland/City/buildings/building_1/building_1.png"));
+		tower = new Texture(Gdx.files.internal("Grassland/building_4.png"));
+
 	}
 
 	public void misctextures(){
