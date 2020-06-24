@@ -33,11 +33,8 @@ import com.game1.biomes.Rainforest;
 import com.game1.biomes.Tundra;
 import com.game1.buildings.*;
 import com.game1.huds.Maingamehud;
-import com.game1.players.animals.cow;
 import com.game1.players.footenemy;
 import com.game1.players.protagonist;
-
-import javax.print.attribute.standard.Sides;
 
 
 public class GameScreen extends ApplicationAdapter implements Screen, InputProcessor {
@@ -80,11 +77,19 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
     boolean UMA = false;
     boolean DMA = false;
 
+    ////////Buildings///////////
+
 	public boolean makeBarracks = false;
 	public boolean makeHouse = false;
-	public boolean makeWall = false;
+	public boolean makeWall_H = false;
+	public boolean makeWall_V = false;
+	public boolean makePalicade_H = false;
+	public boolean makePalicade_V = false;
 	public boolean makeCastle = false;
 	public boolean makeGate = false;
+	public boolean makeTowncenter = false;
+	public boolean makeMine = false;
+	////////////////////////////
 	boolean menu = false;
 	boolean rotate1 = false;
 	boolean rotate2 = false;
@@ -183,6 +188,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 	boolean debug = false;
 	public boolean cameraonplayer = true;
+	public MakingBuildings MakeBuilding = new MakingBuildings(this);
 
 	public GameScreen(Game1 game, Player startme, int nodewidth, int startposx, int startposy, int games_i, int games_j) throws IOException {
 		game.games[games_i][games_j] = this;
@@ -192,6 +198,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
         for(int i = 0; i < 64; i++)  {
             listOfLists.add(new ArrayList<Node>());
         }
+
 		settextures();
 
         this.nodewidth = nodewidth;
@@ -633,6 +640,8 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 
 
+
+
 		if(chosenNode != null) {
         	game.batch.draw(green, chosenNode.x - 8, chosenNode.y - 8, 16, 16);
 			font.draw(game.batch, chosenNode.x + " " + chosenNode.y + " " + chosenNode.humidity, chosenNode.x, chosenNode.y);
@@ -805,137 +814,6 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 
 	}
-
-	public void makeBarracks() {
-
-				for (int i = 0; i < this.buildings.size(); i++) {
-
-					if((Intersector.overlaps(new Rectangle(chosenNode.x - 48, chosenNode.y - 48, 96, 96), buildings.get(i).the_building))){
-
-						return;
-					}
-				}
-				for (int i = 0; i < this.nature.size(); i++) {
-
-					if((Intersector.overlaps(new Rectangle(chosenNode.x - 48, chosenNode.y - 48, 96, 96), nature.get(i).the_nature))){
-
-						return;
-					}
-				}
-
-
-				for (Node node : chosenNode.adjecent) {
-					if(node == null) {
-						return;
-					}
-
-				}
-				new Barracks(this, chosenNode.x, chosenNode.y, team);
-
-
-	}
-
-	public void makeHouse() {
-
-		for (int i = 0; i < this.buildings.size(); i++) {
-
-			if((Intersector.overlaps(new Rectangle(chosenNode.x - 16, chosenNode.y - 16, 32, 32), buildings.get(i).the_building))){
-
-				return;
-			}
-		}
-		for (int i = 0; i < this.nature.size(); i++) {
-
-			if((Intersector.overlaps(new Rectangle(chosenNode.x - 32, chosenNode.y - 32, 64, 64), nature.get(i).the_nature))){
-
-				return;
-			}
-		}
-
-
-		if(chosenNode == null) {
-			return;
-		}
-
-
-		new House(this, chosenNode.x, chosenNode.y, team);
-
-	}
-
-		public void makeWall() {
-
-			for (int i = 0; i < this.buildings.size(); i++) {
-
-				if((Intersector.overlaps(new Rectangle(chosenNode.x - 16, chosenNode.y - 16, 32, 32), buildings.get(i).the_building))){
-
-					return;
-				}
-			}
-			for (int i = 0; i < this.nature.size(); i++) {
-
-				if((Intersector.overlaps(new Rectangle(chosenNode.x - 16, chosenNode.y - 16, 32, 32), nature.get(i).the_nature))){
-
-					return;
-				}
-			}
-
-			if(chosenNode == null) {
-				return;
-			}
-
-
-			new Wall(this, chosenNode.x, chosenNode.y, team);
-
-	}
-
-public void makeCastle() {
-
-			for (int i = 0; i < this.buildings.size(); i++) {
-
-				if((Intersector.overlaps(new Rectangle(chosenNode.x - 64, chosenNode.y - 64, 128, 128), buildings.get(i).the_building))){
-
-					return;
-				}
-			}
-	for (int i = 0; i < this.nature.size(); i++) {
-
-		if((Intersector.overlaps(new Rectangle(chosenNode.x - 64, chosenNode.y - 64, 128, 128), nature.get(i).the_nature))){
-
-			return;
-		}
-	}
-
-			if(chosenNode == null && chosenNode.adjecent.contains(null)) {
-				return;
-			}
-
-
-			new Castle(this, chosenNode.x, chosenNode.y, team);
-
-	}
-
-	public void makeGate() {
-		for (int i = 0; i < this.buildings.size(); i++) {
-
-			if((Intersector.overlaps(new Rectangle(chosenNode.x - 16, chosenNode.y - 16, 32, 32), buildings.get(i).the_building))){
-
-				return;
-			}
-		}
-		for (int i = 0; i < this.nature.size(); i++) {
-
-			if((Intersector.overlaps(new Rectangle(chosenNode.x - 16, chosenNode.y - 16, 32, 32), nature.get(i).the_nature))){
-
-				return;
-			}
-		}
-
-
-		new Gate(this, chosenNode.x, chosenNode.y, team);
-
-	}
-
-
 
 
 	public void rotate(int b) {
@@ -1354,7 +1232,12 @@ public void makeCastle() {
 		if(button == Input.Buttons.RIGHT) {
 				makeBarracks = false;
 				makeHouse = false;
-				makeWall = false;
+				makeWall_V = false;
+				makeWall_H = false;
+				makePalicade_V = false;
+				makePalicade_H = false;
+				makeTowncenter = false;
+				makeMine = false;
 				makeCastle = false;
 				makeGate = false;
 		}
@@ -1392,23 +1275,31 @@ public void makeCastle() {
 		}
 			
 		if(makeBarracks && button == Input.Buttons.LEFT) {
-			makeBarracks();
+			MakeBuilding.makeBarracks();
 			makeBarracks = !makeBarracks;
 		}
 		if(makeHouse && button == Input.Buttons.LEFT) {
-			makeHouse();
+			MakeBuilding.makeHouse();
 			makeHouse = !makeHouse;
 		}
-		if(makeWall && button == Input.Buttons.LEFT) {
-			makeWall();
+		if(makeWall_H && button == Input.Buttons.LEFT) {
+			MakeBuilding.makeWall_H();
 		}
 		if(makeCastle && button == Input.Buttons.LEFT) {
-			makeCastle();
+			MakeBuilding.makeCastle();
 			makeCastle = !makeCastle;
 		}
 		if (makeGate && button == Input.Buttons.LEFT){
-			makeGate();
+			MakeBuilding.makeGate();
 			makeGate = !makeGate;
+		}
+		if (makeTowncenter && button == Input.Buttons.LEFT){
+			MakeBuilding.makeTowncenter();
+			makeTowncenter = !makeTowncenter;
+		}
+		if (makeMine && button == Input.Buttons.LEFT){
+			MakeBuilding.makeMine();
+			makeMine = !makeMine;
 		}
 
 		return false;

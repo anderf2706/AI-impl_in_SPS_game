@@ -8,9 +8,8 @@ import com.game1.GameScreen;
 public class Castle extends Building {
 
 	public Castle(GameScreen gamescreen, int x, int y, int team) {
-		super(gamescreen, x, y, 32*4-2, 32*4-2, team);
-		building = new Texture(Gdx.files.internal("buildingtextures/house.png"));
-		
+		super(gamescreen, x, y, 32*6-2, 32*4-2, 32*6, 32*6, team);
+		building = new Texture(Gdx.files.internal("Grassland/City/buildings/building_1/building_1.png"));
 		// TODO Auto-generated constructor stub
 	}
 	

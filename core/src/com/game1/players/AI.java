@@ -54,10 +54,7 @@ public class AI extends Player {
 				return Double.compare(n1.f, n2.f);
 			}
 		});
-		if (this.playerNode.adjecent.contains(gamescreen.me.playerNode)) {
-			this.moving = false;
-			return;
-		}
+
 
 
 			UP = false;
@@ -68,6 +65,12 @@ public class AI extends Player {
 			UPLEFT = false;
 			DOWNRIGHT = false;
 			DOWNLEFT = false;
+
+		if (this.playerNode.adjecent.contains(gamescreen.me.playerNode)) {
+			this.moving = false;
+			return;
+		}
+
 			if (lastnode == null) {
 
 			} else {
@@ -94,6 +97,7 @@ public class AI extends Player {
 					System.out.println("inne");
 					UP = true;
 					RIGHT = true;
+					System.out.println("topright");
 
 				}
 				if (this.playerNode.id + (1 - gamescreen.nodewidth) == openList.get(0).id) {
@@ -113,10 +117,11 @@ public class AI extends Player {
 					RIGHT = true;
 
 				}
-				if (openList.get(0).id + ((-1) - gamescreen.nodewidth) == this.playerNode.id) {
+				if (openList.get(0).id == this.playerNode.id + ((-1) - gamescreen.nodewidth)) {
 					System.out.println("inne");
 					DOWN = true;
 					LEFT = true;
+					System.out.println("downleft");
 
 				}
 				if (this.playerNode.id + gamescreen.nodewidth == openList.get(0).id) {

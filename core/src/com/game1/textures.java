@@ -289,6 +289,7 @@ public class textures {
 	public Texture road;
 	public Texture castle;
 	public Texture pavement;
+	public Texture mine;
 
 
 
@@ -596,17 +597,16 @@ public class textures {
 	}
 
 	public void buildingtextures(){
-		house = new Texture(Gdx.files.internal("buildingtextures/house2.png"));
-		barracks = new Texture(Gdx.files.internal("buildingtextures/house3.png"));
-		towncenter = new Texture(Gdx.files.internal("buildingtextures/house.png"));
-		road =  new Texture(Gdx.files.internal("buildingtextures/tile_pavement.png"));
-		wall = new Texture(Gdx.files.internal("buildingtextures/wall.png"));
-		gate = new Texture(Gdx.files.internal("buildingtextures/gate.png"));
-		pavement = new Texture(Gdx.files.internal("buildingtextures/tile_pavement.png"));
+		house = new Texture(Gdx.files.internal("Grassland/building_1.png"));
+		barracks = new Texture(Gdx.files.internal("Grassland/building_3.png"));
+		towncenter = new Texture(Gdx.files.internal("Tropical/City/buildings/building_17/building_1.png"));
+		road =  new Texture(Gdx.files.internal("Grassland/City/road/road_17.png"));
+		gate = new Texture(Gdx.files.internal("Grassland/City/buildings/building_3/building_5.png"));
+		mine = new Texture(Gdx.files.internal("Tropical/City/buildings/building_18/building_1.png"));
 	}
 
 	public void misctextures(){
-		barrel = new Texture(Gdx.files.internal("buildingtextures/barel.png"));
-		crate = new Texture(Gdx.files.internal("buildingtextures/crate.png"));
+		barrel = new Texture(Gdx.files.internal("Grassland/decor_10.png"));
+		crate = new Texture(Gdx.files.internal("Grassland/City/decor/decor_11.png"));
 	}
 }

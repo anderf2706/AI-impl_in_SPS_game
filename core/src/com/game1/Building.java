@@ -17,6 +17,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.game1.buildings.Gate;
 import com.game1.huds.BuildingHud;
 
+
 public class Building implements InputProcessor, Screen, DistanceObjects{
 
 	public Node buildingnode;
@@ -36,19 +37,25 @@ public class Building implements InputProcessor, Screen, DistanceObjects{
 
 	BuildingHud bhud;
 	boolean notrun = false;
+
+	int texturewidth;
+	int textureheight;
 	
-	public Building(GameScreen gamescreen, int x, int y, int width, int height, int team) {
+	public Building(GameScreen gamescreen, int x, int y, int width, int height, int texturewidth, int textureheight, int team) {
 
 		this.gamescreen = gamescreen;
 		this.team = team;
 		the_building = new Rectangle();
 		the_building.height = height;
 		the_building.width = width;
+		this.texturewidth = texturewidth;
+		this.textureheight = textureheight;
 		the_building.x = x - the_building.width / 2;
 		the_building.y= y - the_building.height / 2;
 			for (Node node : gamescreen.allnodes){
 				if(Intersector.overlaps(node.body, the_building)) {
 					this.buildingnode = gamescreen.chosenNode;
+
 					if(!(this instanceof Gate)) {
 						node.occupied = true;
 					}
@@ -107,7 +114,7 @@ public class Building implements InputProcessor, Screen, DistanceObjects{
 
 	public void batch(SpriteBatch batch) {
 		
-		batch.draw(building, the_building.x, the_building.y, the_building.width, the_building.height);
+		batch.draw(building, the_building.x, the_building.y, texturewidth, textureheight);
 		
 		if(buildingChosen) {
 			batch.draw(green, the_building.x, the_building.y + 75, 50, 10);
