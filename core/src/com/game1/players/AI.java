@@ -43,7 +43,7 @@ public class AI extends Player {
 				}
 				node.h = Math.max(Math.abs(node.x - menode.x), Math.abs(node.y - menode.y));
 				node.f = node.h + node.cost;
-				if (node.f < 200) {
+				if (node.f < 100) {
 					openList.add(node);
 				}
 			}
@@ -66,7 +66,7 @@ public class AI extends Player {
 			DOWNRIGHT = false;
 			DOWNLEFT = false;
 
-		if (this.playerNode.adjecent.contains(gamescreen.me.playerNode)) {
+		if (this.playerNode.adjecent.contains(gamescreen.me.playerNode) || openList.size() == 0) {
 			this.moving = false;
 			return;
 		}
@@ -134,14 +134,7 @@ public class AI extends Player {
 
 				}
 
-			/*
-			this.playerNode.occupied = false;
-			this.playerNode = openList.get(0);
-			this.the_player.x = this.playerNode.x - 16;
-			this.the_player.y = this.playerNode.y - 16;
-			this.playerNode.occupied = true;
 
-			 */
 			}
 
 			if (health <= 0) {
@@ -183,25 +176,7 @@ public class AI extends Player {
 		if (LEFT) {
 			this.the_player.x -= 1 * 16 * 2* Gdx.graphics.getDeltaTime();
 		}
-		/*
-		if (UPRIGHT) {
-			this.the_player.x += 1 * 16 * 2 * Gdx.graphics.getDeltaTime();
-			this.the_player.y += 1 * 16 * 2* Gdx.graphics.getDeltaTime();
-		}
-		if (UPLEFT) {
-			this.the_player.x -= 1 * 16 * 2 * Gdx.graphics.getDeltaTime();
-			this.the_player.y += 1 * 16 * 2 * Gdx.graphics.getDeltaTime();
-		}
-		if (DOWNRIGHT) {
-			this.the_player.x += 1 * 16 * 2 * Gdx.graphics.getDeltaTime();
-			this.the_player.y -= 1 * 16 * 2 * Gdx.graphics.getDeltaTime();
-		}
-		if (DOWNLEFT) {
-			this.the_player.x -= 1 * 16 * 2 * Gdx.graphics.getDeltaTime();
-			this.the_player.y -= 1 * 16 * 2 * Gdx.graphics.getDeltaTime();
-		}
 
-		 */
 	}
 
 	public void walkaroundwalk(){

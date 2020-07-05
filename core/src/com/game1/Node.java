@@ -9,6 +9,7 @@ import com.game1.buildings.Gate;
 import com.game1.buildings.Palicade_H;
 import com.game1.buildings.Palicade_V;
 import com.game1.buildings.Wall_H;
+import com.game1.players.footenemy;
 
 
 public class Node implements Serializable, DistanceObjects {
@@ -185,6 +186,7 @@ public class Node implements Serializable, DistanceObjects {
 				if (!this.occupied) {
 					myBiome.greenery(this, 15);
 				}
+
 				int j = 0;
 				for (Node node : closest) {
 					if (node.y >= this.y && this.y + 96 >= node.y &&
@@ -218,6 +220,7 @@ public class Node implements Serializable, DistanceObjects {
 				if (!this.occupied) {
 					myBiome.greenery(this, 15);
 				}
+
 				int j = 0;
 				for (Node node : adjecent) {
 					if (node.occupied) {

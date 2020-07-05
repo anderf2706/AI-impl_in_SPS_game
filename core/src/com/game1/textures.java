@@ -78,6 +78,48 @@ public class textures {
     public Animation<TextureRegion> warriorrightharvest;
     public Animation<TextureRegion> warriorleftharvest;
 
+    public Animation<TextureRegion>   nudefrontidle;
+    public Animation<TextureRegion>   nudebackidle;
+    public Animation<TextureRegion>   nuderightidle;
+    public Animation<TextureRegion>   nudeleftidle;
+
+    public Animation<TextureRegion>   nudefrontwalk;
+    public Animation<TextureRegion>   nudebackwalk;
+    public Animation<TextureRegion>   nuderightwalk;
+    public Animation<TextureRegion>   nudeleftwalk;
+
+    public Animation<TextureRegion>   nudefrontharvest;
+    public Animation<TextureRegion>   nudebackharvest;
+    public Animation<TextureRegion>   nuderightharvest;
+    public Animation<TextureRegion>   nudeleftharvest;
+
+
+
+
+
+
+
+
+
+	public Texture green_bar_1;
+	public Texture green_bar_2;
+	public Texture green_bar_3;
+	public Texture green_bar_4;
+	public Texture green_bar_5;
+	public Texture green_bar_6;
+	public Texture green_bar_7;
+	public Texture green_bar_8;
+	public Texture green_bar_9;
+
+
+
+
+
+
+
+
+
+
 
 	////////////////desert//////////////////////
 
@@ -323,24 +365,6 @@ public class textures {
 	}
 
 	public void sprites() throws IOException {
-		spritefront = new Texture(Gdx.files.internal("sprites/knt1/knt1_fr1.gif"));
-		spritefront2 = new Texture(Gdx.files.internal("sprites/knt1/knt1_fr2.gif"));
-		spriteback = new Texture(Gdx.files.internal("sprites/knt1/knt1_bk1.gif"));
-		spriteback2 = new Texture(Gdx.files.internal("sprites/knt1/knt1_bk2.gif"));
-		spriteleft = new Texture(Gdx.files.internal("sprites/knt1/knt1_lf1.gif"));
-		spriteleft2 = new Texture(Gdx.files.internal("sprites/knt1/knt1_lf2.gif"));
-		spriteright = new Texture(Gdx.files.internal("sprites/knt1/knt1_rt1.gif"));
-		spriteright2 = new Texture(Gdx.files.internal("sprites/knt1/knt1_rt2.gif"));
-
-
-		spriteprotfront = new Texture(Gdx.files.internal("sprites/man1/man1_fr1.gif"));
-		spriteprotfront2 = new Texture(Gdx.files.internal("sprites/man1/man1_fr2.gif"));
-		spriteprotback = new Texture(Gdx.files.internal("sprites/man1/man1_bk1.gif"));
-		spriteprotback2 = new Texture(Gdx.files.internal("sprites/man1/man1_bk2.gif"));
-		spriteprotleft = new Texture(Gdx.files.internal("sprites/man1/man1_lf1.gif"));
-		spriteprotleft2 = new Texture(Gdx.files.internal("sprites/man1/man1_lf2.gif"));
-		spriteprotright = new Texture(Gdx.files.internal("sprites/man1/man1_rt1.gif"));
-		spriteprotright2 = new Texture(Gdx.files.internal("sprites/man1/man1_rt2.gif"));
 
 		spritecowfront = new Texture(Gdx.files.internal("sprites/cow/cowfront1.png"));
 		spritecowfront2 = new Texture(Gdx.files.internal("sprites/cow/cowfront1.png"));
@@ -351,7 +375,31 @@ public class textures {
 		spritecowright = new Texture(Gdx.files.internal("sprites/cow/cowright1.png"));
 		spritecowright2 = new Texture(Gdx.files.internal("sprites/cow/cowright2.png"));
 
-		////////////////////////////////wizard/////////////////////////////////////////
+		//////////////////////////////naked man///////////////////////////////////////
+
+		String nude_front = "sprites/wizard/Wizard_animations/Front/PNG Sequences/Wizard_clothes_empty/";
+		String nude_back = "sprites/wizard/Wizard_animations/Back/PNG Sequences/Wizard_clothes_empty/";
+		String nude_right = "sprites/wizard/Wizard_animations/Right_Side/PNG Sequences/Wizard_clothes_empty/";
+		String nude_left = "sprites/wizard/Wizard_animations/Left_Side/PNG Sequences/Wizard_clothes_empty/";
+		nudefrontidle = new Animation<TextureRegion>((float) 0.05, this.getAllImages(nude_front + "Idle Blinking/"));
+		nudebackidle = new Animation<TextureRegion>((float) 0.05, this.getAllImages(nude_back + "Idle/"));
+		nuderightidle = new Animation<TextureRegion>((float) 0.05, this.getAllImages(nude_right + "Idle Blinking/"));
+		nudeleftidle = new Animation<TextureRegion>((float) 0.05, this.getAllImages(nude_left + "Idle Blinking/"));
+
+		nudefrontwalk = new Animation<TextureRegion>((float) 0.05, this.getAllImages(nude_front + "Run/"));
+		nudebackwalk = new Animation<TextureRegion>((float) 0.05, this.getAllImages(nude_back + "Run/"));
+		nuderightwalk = new Animation<TextureRegion>((float) 0.05, this.getAllImages(nude_right + "Run/"));
+		nudeleftwalk = new Animation<TextureRegion>((float) 0.05, this.getAllImages(nude_left + "Run/"));
+
+		nudefrontharvest = new Animation<TextureRegion>((float) 0.05, this.getAllImages(nude_front + "Attack_1/"));
+		nudebackharvest = new Animation<TextureRegion>((float) 0.05, this.getAllImages(nude_back + "Attack_1/"));
+		nuderightharvest = new Animation<TextureRegion>((float) 0.05, this.getAllImages(nude_right + "Attack_1/"));
+		nudeleftharvest = new Animation<TextureRegion>((float) 0.05, this.getAllImages(nude_left + "Attack_1/"));
+
+		//////////////////////////////////////////////////////////////////////////////
+
+		////////////////////////////////wizard////////////////////////////////////////
+
         String wizard_front = "sprites/wizard/Wizard_animations/Front/PNG Sequences/Wizard_clothes_1/";
 		String wizard_back = "sprites/wizard/Wizard_animations/Back/PNG Sequences/Wizard_clothes_1/";
 		String wizard_right = "sprites/wizard/Wizard_animations/Right_Side/PNG Sequences/Wizard_clothes_1/";
@@ -614,5 +662,15 @@ public class textures {
 	public void misctextures(){
 		barrel = new Texture(Gdx.files.internal("Grassland/decor_10.png"));
 		crate = new Texture(Gdx.files.internal("Grassland/City/decor/decor_11.png"));
+		green_bar_1 = new Texture(Gdx.files.internal("ui/upd_separeted_png/Green bar/1.png"));
+		green_bar_2 = new Texture(Gdx.files.internal("ui/upd_separeted_png/Green bar/2.png"));
+		green_bar_3 = new Texture(Gdx.files.internal("ui/upd_separeted_png/Green bar/3.png"));
+		green_bar_4 = new Texture(Gdx.files.internal("ui/upd_separeted_png/Green bar/4.png"));
+		green_bar_5 = new Texture(Gdx.files.internal("ui/upd_separeted_png/Green bar/5.png"));
+		green_bar_6 = new Texture(Gdx.files.internal("ui/upd_separeted_png/Green bar/6.png"));
+		green_bar_7 = new Texture(Gdx.files.internal("ui/upd_separeted_png/Green bar/7.png"));
+		green_bar_8 = new Texture(Gdx.files.internal("ui/upd_separeted_png/Green bar/8.png"));
+		green_bar_9 = new Texture(Gdx.files.internal("ui/upd_separeted_png/Green bar/9.png"));
+
 	}
 }

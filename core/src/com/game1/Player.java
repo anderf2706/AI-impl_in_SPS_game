@@ -946,7 +946,7 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 
 
 
-		else{
+		else if(health > 0){
 			checkrender();
 		}
 		if (gamescreen.renderboolean) {
@@ -1084,7 +1084,13 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 		if (isAttacking){
 			tattack.cancel();
 		}
-		this.dispose();
+		if (team == 1){
+			this.timer.cancel();
+		}
+		this.playerNode.players.remove(this);
+		this.playerNode.occupied = false;
+		this.playerNode = null;
+
 
 	}
 

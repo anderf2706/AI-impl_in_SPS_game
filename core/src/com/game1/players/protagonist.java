@@ -15,20 +15,20 @@ public class protagonist extends Player {
 	public protagonist(Player player, Node node, GameScreen gamescreen, Game1 game, int x, int y) {
 		super(player, node, gamescreen, game, x, y, 0);
 
-    idle_spritefront = gamescreen.tex.wizardfrontidle;
-	idle_spriteback = gamescreen.tex.wizardbackidle;
-	idle_spriteright = gamescreen.tex.wizardrightidle;
-	idle_spriteleft = gamescreen.tex.wizardleftidle;
+    idle_spritefront = gamescreen.tex.nudefrontidle;
+	idle_spriteback = gamescreen.tex.nudebackidle;
+	idle_spriteright = gamescreen.tex.nuderightidle;
+	idle_spriteleft = gamescreen.tex.nudeleftidle;
 
-	walk_spritefront = gamescreen.tex.wizardfrontwalk;
-	walk_spriteback = gamescreen.tex.wizardbackwalk;
-	walk_spriteright = gamescreen.tex.wizardrightwalk;
-	walk_spriteleft = gamescreen.tex.wizardleftwalk;
+	walk_spritefront = gamescreen.tex.nudefrontwalk;
+	walk_spriteback = gamescreen.tex.nudebackwalk;
+	walk_spriteright = gamescreen.tex.nuderightwalk;
+	walk_spriteleft = gamescreen.tex.nudeleftwalk;
 
-	harvest_spritefront = gamescreen.tex.wizardfrontharvest;
-	harvest_spriteback = gamescreen.tex.wizardbackharvest;
-	harvest_spriteright = gamescreen.tex.wizardrightharvest;
-	harvest_spriteleft = gamescreen.tex.wizardleftharvest;
+	harvest_spritefront = gamescreen.tex.nudefrontharvest;
+	harvest_spriteback = gamescreen.tex.nudebackharvest;
+	harvest_spriteright = gamescreen.tex.nuderightharvest;
+	harvest_spriteleft = gamescreen.tex.nudeleftharvest;
 
 	spriteback = gamescreen.tex.spriteprotback;
 	spriteback2 = gamescreen.tex.spriteprotback2;

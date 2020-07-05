@@ -12,10 +12,12 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -27,12 +29,14 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 
+import com.badlogic.gdx.utils.Timer;
 import com.game1.biomes.Desert;
 import com.game1.biomes.Forest_temp;
 import com.game1.biomes.Rainforest;
 import com.game1.biomes.Tundra;
 import com.game1.buildings.*;
 import com.game1.huds.Maingamehud;
+import com.game1.players.AI;
 import com.game1.players.footenemy;
 import com.game1.players.protagonist;
 
@@ -120,6 +124,8 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	ShapeRenderer sr;
 	ArrayList<ArrayList> dalist;
 
+	int cycletime;
+
 	float up;
 	float down;
 	float right;
@@ -157,9 +163,16 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	public Item stick;
 	public Item water;
 
+	Texture black;
+    float trans;
 
-	public int nodewidth;
+    float elapsedTime;
+
+
+    public int nodewidth;
     List<List<Node>> listOfLists;
+
+    java.util.Timer cycle = new java.util.Timer();
 
 	public textures tex;
 
@@ -212,7 +225,6 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 		mapWidth = nodewidth * 32;
 		mapHeight = nodewidth *32;
-
 
 
 		this.game = game;
@@ -283,6 +295,37 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		camera.position.y = me.the_player.y;
 
 		this.fixborder();
+
+		this.populate();
+
+		//start the world clock
+		cycle();
+
+
+	}
+
+    public void cycle(){
+
+        cycle.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                cycletime += 1;
+
+            }
+        }, 0, 1000);
+    }
+
+	public void populate(){
+		Random rand = new Random();
+		for (Node node : this.allnodes){
+			int random = rand.nextInt(200 - 1 + 1) + 1;
+			if (!node.occupied && random == 1){
+				new footenemy(node, this, this.game, node.x, node.y);
+			}
+
+
+		}
 	}
 
 	public void makebiomes(){
@@ -409,6 +452,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		sand = tex.sand;
 		snow = tex.snow;
 		dirt = tex.dirt;
+        black = new Texture(Gdx.files.internal("black.jpg"));
 	}
 	
 	public void makenodes() throws IOException {
@@ -607,6 +651,9 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
         check_me_walking();
 
+        game.batch.enableBlending();
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         game.batch.begin();
 
 
@@ -627,6 +674,9 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
         }
 
 		renderbuild(delta);
+
+
+
 
 
 
@@ -661,6 +711,10 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 								}
 							}
 							player.batch(game.batch);
+
+							if (player != me) {
+								font.draw(game.batch, "" + player.health, player.the_player.x, player.the_player.y + 50);
+							}
 						}
 					}
 				}
@@ -701,6 +755,45 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 
 		}
+		Vector3 vector = new Vector3();
+		vector.x = 1800;
+		vector.y = 900;
+		vector.z = 0;
+		camera.project(vector);
+		switch (me.health/10){
+
+			case 10:
+				game.batch.draw(tex.green_bar_9, Gdx.graphics.getWidth() - 500, Gdx.graphics.getHeight() - 500, 50, 20);
+		}
+
+
+		Color c = game.batch.getColor();
+
+
+		if (cycletime < 60*5){//day
+		    trans = 0.0f;
+            game.batch.setColor(c.r, c.g,c.b, trans);
+        }
+		else if (cycletime< 400){//dusk
+            trans += Gdx.graphics.getDeltaTime()/125;
+            game.batch.setColor(c.r, c.g,c.b, trans);
+        }
+		else if (cycletime < 700){//night
+		    trans = 0.8f;
+            game.batch.setColor(c.r, c.g,c.b, trans);
+
+        }
+		else if (cycletime < 800){//dawn
+            trans -= Gdx.graphics.getDeltaTime()/125;
+            game.batch.setColor(c.r, c.g,c.b, trans);
+        }
+		else{
+		    cycletime = 0;
+        }
+
+
+		game.batch.draw(black, 0, 0, nodewidth*32, nodewidth*32);
+
 
 		game.batch.end();
 
@@ -712,18 +805,33 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 		}
 
-		for(int i = 0; i<players.size(); i++ ) {
+		for(int i = 0; i <players.size(); i++ ) {
 			if (players.get(i).health <= 0){
-				players.get(i).playerNode.players.remove(players.get(i));
-				players.get(i).playerNode.occupied = false;
-				players.get(i).playerNode = null;
-                players.get(i).eliminate();
+				deathanimation(players.get(i).playerNode, players.get(i).spritedir);
+				players.get(i).eliminate();
 				players.remove(players.get(i));
 				i -= 1;
+				players.get(i).dispose();
+				/*
+				players.get(i[0]).eliminate();
+				java.util.Timer deathtimer = new java.util.Timer();
+				deathtimer.schedule(new TimerTask() {
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						players.remove(players.get(i[0]));
+						i[0] -= 1;
+						players.get(i[0]).dispose();
+
+					}
+				}, 750L);
+
+				 */
 			}
+
 		}
 		for(Player player2 : players) {
-            player2.render(delta);
+			player2.render(delta);
             if (player2.playerChosen) {
                 nothud = true;
             }
@@ -798,6 +906,34 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		}
 
 
+
+	}
+
+	public void deathanimation(Node playernode, int dir, Player player){
+		Texture currentFrame;
+		elapsedTime += Gdx.graphics.getDeltaTime();
+		switch (dir) {
+			case 1:
+				currentFrame = (Texture) harvest_spriteback.getKeyFrame(elapsedTime, false);
+				batch.draw(currentFrame, playernode.x - 16, playernode.y - 10, player.the_player.width * 2, player.the_player.height * 2);
+				break;
+
+			case 2:
+				 currentFrame = (Texture) harvest_spriteright.getKeyFrame(elapsedTime, false);
+				batch.draw(currentFrame, playernode.x - 16, playernode.y - 10, player.the_player.width * 2, player.the_player.height * 2);
+				break;
+
+			case 3:
+				currentFrame = (Texture) harvest_spriteleft.getKeyFrame(elapsedTime, false);
+				batch.draw(currentFrame, playernode.x - 16, playernode.y - 10, player.the_player.width * 2, player.the_player.height * 2);
+
+				break;
+
+			case 4:
+				currentFrame = (Texture) harvest_spritefront.getKeyFrame(elapsedTime, false);
+				batch.draw(currentFrame, playernode.x - 16, playernode.y - 10, player.the_player.width * 2, player.the_player.height * 2);
+				break;
+		}
 
 	}
 
@@ -882,7 +1018,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		}
 		if (keycode == Input.Keys.ENTER) {
 			/////////////////////right/////////////////////////////
-			if (me.playerNode.x == 6368) {
+			if (me.playerNode.x == 32*nodewidth - 32) {
 				if (game.games[this.games_i + 1][this.games_j] == null) {
 					try {
 						game.setScreen(new GameScreen(game, me, nodewidth, 0, this.me.playerNode.y, this.games_i + 1, this.games_j));
@@ -902,12 +1038,12 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 			if (me.playerNode.x == 0) {
 				if (game.games[this.games_i - 1][this.games_j] == null) {
 					try {
-						game.setScreen(new GameScreen(game, me, nodewidth, 6368, this.me.playerNode.y, this.games_i - 1, this.games_j));
+						game.setScreen(new GameScreen(game, me, nodewidth, nodewidth*32 - 32, this.me.playerNode.y, this.games_i - 1, this.games_j));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
 				} else {
-					game.games[this.games_i - 1][this.games_j].me.playerNode.x = 6368;
+					game.games[this.games_i - 1][this.games_j].me.playerNode.x = nodewidth*32 - 32;
 					game.games[this.games_i - 1][this.games_j].me.playerNode.y = this.me.playerNode.y;
 					game.setScreen(game.games[this.games_i - 1][this.games_j]);
 
@@ -920,13 +1056,13 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 			if (me.playerNode.y == 0) {
 				if (game.games[this.games_i][this.games_j - 1] == null) {
 					try {
-						game.setScreen(new GameScreen(game, me, nodewidth, this.me.playerNode.x, 6368, this.games_i, this.games_j - 1));
+						game.setScreen(new GameScreen(game, me, nodewidth, this.me.playerNode.x, nodewidth*32 - 32, this.games_i, this.games_j - 1));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
 				} else {
 					game.games[this.games_i][this.games_j - 1].me.playerNode.x = this.me.playerNode.x;
-					game.games[this.games_i][this.games_j - 1].me.playerNode.y = 6368;
+					game.games[this.games_i][this.games_j - 1].me.playerNode.y = nodewidth*32 - 32;
 					game.setScreen(game.games[this.games_i][this.games_j - 1]);
 
 				}
@@ -935,7 +1071,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 
 			////////////////////////////up////////////////////////////
-			if (me.playerNode.y == 6368) {
+			if (me.playerNode.y == nodewidth*32 -32) {
 				if (game.games[this.games_i][this.games_j + 1] == null) {
 					try {
 						game.setScreen(new GameScreen(game, me, nodewidth, this.me.playerNode.x, 0, this.games_i, this.games_j + 1));
