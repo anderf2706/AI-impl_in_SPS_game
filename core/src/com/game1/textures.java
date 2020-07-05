@@ -78,6 +78,11 @@ public class textures {
     public Animation<TextureRegion> warriorrightharvest;
     public Animation<TextureRegion> warriorleftharvest;
 
+	public Animation<TextureRegion> warriorfrontdeath;
+	public Animation<TextureRegion> warriorbackdeath;
+	public Animation<TextureRegion> warriorrightdeath;
+	public Animation<TextureRegion> warriorleftdeath;
+
     public Animation<TextureRegion>   nudefrontidle;
     public Animation<TextureRegion>   nudebackidle;
     public Animation<TextureRegion>   nuderightidle;
@@ -92,6 +97,7 @@ public class textures {
     public Animation<TextureRegion>   nudebackharvest;
     public Animation<TextureRegion>   nuderightharvest;
     public Animation<TextureRegion>   nudeleftharvest;
+
 
 
 
@@ -439,6 +445,11 @@ public class textures {
         warriorbackharvest = new Animation<TextureRegion>((float) 0.05, this.getAllImages(warrior_back + "Attack_1/"));
         warriorrightharvest = new Animation<TextureRegion>((float) 0.05, this.getAllImages(warrior_right + "Attack_1/"));
         warriorleftharvest = new Animation<TextureRegion>((float) 0.05, this.getAllImages(warrior_left + "Attack_1/"));
+
+		warriorfrontdeath = new Animation<TextureRegion>((float) 0.05, this.getAllImages(warrior_front + "Died/"));
+		warriorbackdeath = new Animation<TextureRegion>((float) 0.05, this.getAllImages(warrior_back + "Died/"));
+		warriorrightdeath = new Animation<TextureRegion>((float) 0.05, this.getAllImages(warrior_right + "Died/"));
+		warriorleftdeath = new Animation<TextureRegion>((float) 0.05, this.getAllImages(warrior_left + "Died/"));
         /////////////////////////////////////////////////////////////////////////
 
 

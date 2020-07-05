@@ -97,6 +97,11 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 	public Animation harvest_spriteright;
 	public Animation harvest_spriteleft;
 
+	public Animation death_spritefront;
+	public Animation death_spriteback;
+	public Animation death_spriteright;
+	public Animation death_spriteleft;
+
 
 
 
@@ -1089,7 +1094,6 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 		}
 		this.playerNode.players.remove(this);
 		this.playerNode.occupied = false;
-		this.playerNode = null;
 
 
 	}

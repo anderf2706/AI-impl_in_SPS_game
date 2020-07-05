@@ -148,6 +148,8 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	int startposx;
 	int startposy;
 
+	ArrayList<Player> deathanimations = new ArrayList<Player>();
+
 
 
 	public InputMultiplexer multiplexer;
@@ -216,6 +218,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		settextures();
 
         this.nodewidth = nodewidth;
+
 
         this.startposx = startposx;
         this.startposy = startposy;
@@ -677,7 +680,11 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 
 
-
+		if(deathanimations.size() > 0){
+			for (Player player : deathanimations){
+				deathanimation(player.playerNode, player.spritedir, player);
+			}
+		}
 
 
 		for (int j = 36; j >= 0; j--) {
@@ -807,11 +814,10 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 		for(int i = 0; i <players.size(); i++ ) {
 			if (players.get(i).health <= 0){
-				deathanimation(players.get(i).playerNode, players.get(i).spritedir);
+				deathanimations.add(players.get(i));
 				players.get(i).eliminate();
 				players.remove(players.get(i));
 				i -= 1;
-				players.get(i).dispose();
 				/*
 				players.get(i[0]).eliminate();
 				java.util.Timer deathtimer = new java.util.Timer();
@@ -912,27 +918,42 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	public void deathanimation(Node playernode, int dir, Player player){
 		Texture currentFrame;
 		elapsedTime += Gdx.graphics.getDeltaTime();
+		System.out.println(player);
+		System.out.println(player.playerNode);
 		switch (dir) {
 			case 1:
-				currentFrame = (Texture) harvest_spriteback.getKeyFrame(elapsedTime, false);
-				batch.draw(currentFrame, playernode.x - 16, playernode.y - 10, player.the_player.width * 2, player.the_player.height * 2);
+				currentFrame = (Texture) player.death_spriteback.getKeyFrame(elapsedTime, true);
+				System.out.println(currentFrame);
+				game.batch.draw(currentFrame, playernode.x - 16, playernode.y - 10, player.the_player.width * 2, player.the_player.height * 2);
 				break;
 
 			case 2:
-				 currentFrame = (Texture) harvest_spriteright.getKeyFrame(elapsedTime, false);
-				batch.draw(currentFrame, playernode.x - 16, playernode.y - 10, player.the_player.width * 2, player.the_player.height * 2);
+				 currentFrame = (Texture) player.death_spriteright.getKeyFrame(elapsedTime, true);
+				System.out.println(currentFrame);
+
+				game.batch.draw(currentFrame, playernode.x - 16, playernode.y - 10, player.the_player.width * 2, player.the_player.height * 2);
 				break;
 
 			case 3:
-				currentFrame = (Texture) harvest_spriteleft.getKeyFrame(elapsedTime, false);
-				batch.draw(currentFrame, playernode.x - 16, playernode.y - 10, player.the_player.width * 2, player.the_player.height * 2);
+				currentFrame = (Texture) player.death_spriteleft.getKeyFrame(elapsedTime, true);
+				System.out.println(currentFrame);
+
+				game.batch.draw(currentFrame, playernode.x - 16, playernode.y - 10, player.the_player.width * 2, player.the_player.height * 2);
 
 				break;
 
 			case 4:
-				currentFrame = (Texture) harvest_spritefront.getKeyFrame(elapsedTime, false);
-				batch.draw(currentFrame, playernode.x - 16, playernode.y - 10, player.the_player.width * 2, player.the_player.height * 2);
+				currentFrame = (Texture) player.death_spritefront.getKeyFrame(elapsedTime, true);
+				System.out.println(currentFrame);
+
+				game.batch.draw(currentFrame, playernode.x - 16, playernode.y - 10, player.the_player.width * 2, player.the_player.height * 2);
 				break;
+		}
+		if(player.death_spritefront.getKeyFrameIndex(elapsedTime) == 28 || player.death_spriteback.getKeyFrameIndex(elapsedTime) == 28 ||
+				player.death_spriteright.getKeyFrameIndex(elapsedTime) == 28 || player.death_spriteleft.getKeyFrameIndex(elapsedTime) == 28){
+			deathanimations.remove(player);
+			player.dispose();
+
 		}
 
 	}
