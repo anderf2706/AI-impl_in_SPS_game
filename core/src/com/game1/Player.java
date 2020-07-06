@@ -1094,6 +1094,9 @@ public class Player implements Screen, InputProcessor, DistanceObjects{
 		}
 		this.playerNode.players.remove(this);
 		this.playerNode.occupied = false;
+		isAttacking = false;
+		is_harvesting = false;
+
 
 
 	}

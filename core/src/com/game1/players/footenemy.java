@@ -24,10 +24,10 @@ public class footenemy extends AI{
         harvest_spriteright = gamescreen.tex.warriorrightharvest;
         harvest_spriteleft = gamescreen.tex.warriorleftharvest;
 
-		death_spritefront = gamescreen.tex.warriorfrontharvest;
-		death_spriteback = gamescreen.tex.warriorbackharvest;
-		death_spriteright = gamescreen.tex.warriorrightharvest;
-		death_spriteleft = gamescreen.tex.warriorleftharvest;
+		death_spritefront = gamescreen.tex.warriorfrontdeath;
+		death_spriteback = gamescreen.tex.warriorbackdeath;
+		death_spriteright = gamescreen.tex.warriorrightdeath;
+		death_spriteleft = gamescreen.tex.warriorleftdeath;
 
         the_player.x = x - 15;
 		the_player.y = y - 15;
